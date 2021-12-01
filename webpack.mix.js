@@ -15,6 +15,10 @@ mix
     // JS
     .js("resources/js/app.js", "public/js")
     .js(
+        "resources/js/contents/masters/categories/category.js",
+        "public/js/contents/masters/categories/category.js"
+    )
+    .js(
         "resources/js/contents/masters/uoms/uom.js",
         "public/js/contents/masters/uoms/uom.js"
     )

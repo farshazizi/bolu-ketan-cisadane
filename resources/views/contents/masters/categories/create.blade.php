@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Uom</h3>
+    <h3>Kategori</h3>
 @endsection
 
 @section('content-body')
@@ -10,8 +10,9 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header ms-auto">
-                        <div class="buttons"><a href="{{ route('uoms.index') }}"
-                                class="btn btn-secondary">Kembali</a></div>
+                        <div class="buttons">
+                            <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kembali</a>
+                        </div>
                     </div>
 
                     <div class="card-content">
@@ -23,7 +24,7 @@
                                         aria-label="Close"></button>
                                 </div>
                             @endif
-                            <form class="form form-vertical" action="{{ route('uoms.store') }}" method="POST">
+                            <form class="form form-vertical" action="{{ route('categories.store') }}" method="POST">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
