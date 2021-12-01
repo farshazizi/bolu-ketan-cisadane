@@ -20,6 +20,15 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+
+                <li class="sidebar-title">Master</li>
+
+                <li class="sidebar-item {{ (request()->is('uoms*')) ? 'active' : '' }}">
+                    <a href="{{ route('uoms.index') }}" class='sidebar-link'>
+                        <i class="bi bi-hexagon-fill"></i>
+                        <span>Uom</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
