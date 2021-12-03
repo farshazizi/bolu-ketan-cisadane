@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Satuan</h3>
+    <h3>Bahan</h3>
 @endsection
 
 @section('content-body')
@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ms-auto">
                         <div class="buttons">
-                            <a href="{{ route('uoms.create') }}" class="btn btn-primary">Tambah Satuan</a>
+                            <a href="{{ route('ingredients.create') }}" class="btn btn-primary">Tambah Bahan</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -19,7 +19,8 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
+                                    <th>Nama Bahan</th>
+                                    <th>Nama Satuan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -36,8 +37,8 @@
 
 @section('content-js')
     <script type="text/javascript">
-        var dataUrl = "{{ route('uoms.data') }}";
-        var destroyUrl = "{{ route('uoms.destroy', ':id') }}";
+        var dataUrl = "{{ route('ingredients.data') }}";
+        var destroyUrl = "{{ route('ingredients.destroy', ':id') }}";
     </script>
-    <script src="{{ asset(mix('js/contents/masters/uoms/uom.js')) }}"></script>
+    <script src="{{ asset(mix('js/contents/masters/ingredients/ingredient.js')) }}"></script>
 @endsection

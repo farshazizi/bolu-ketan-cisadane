@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Uom</h3>
+    <h3>Satuan</h3>
 @endsection
 
 @section('content-body')

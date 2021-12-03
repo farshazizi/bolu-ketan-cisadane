@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models\Masters\Uoms;
+namespace App\Models\Masters\Ingredients;
 
-use App\Models\Masters\Ingredients\Ingredient;
+use App\Models\Masters\Uoms\Uom;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Uom extends Model
+class Ingredient extends Model
 {
     use SoftDeletes;
 
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function ingredients()
+    public function uom()
     {
-        return $this->hasMany(Ingredient::class);
+        return $this->hasOne(Uom::class, 'id', 'uom_id');
     }
 }

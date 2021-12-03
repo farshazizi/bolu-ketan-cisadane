@@ -25,6 +25,13 @@
 
                 <li class="sidebar-title">Master</li>
 
+                <li class="sidebar-item {{ request()->is('ingredients*') ? 'active' : '' }}">
+                    <a href="{{ route('ingredients.index') }}" class='sidebar-link'>
+                        <i class="bi bi-hexagon-fill"></i>
+                        <span>Bahan</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item {{ request()->is('categories*') ? 'active' : '' }}">
                     <a href="{{ route('categories.index') }}" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
@@ -35,7 +42,7 @@
                 <li class="sidebar-item {{ request()->is('uoms*') ? 'active' : '' }}">
                     <a href="{{ route('uoms.index') }}" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
-                        <span>Uom</span>
+                        <span>Satuan</span>
                     </a>
                 </li>
             </ul>

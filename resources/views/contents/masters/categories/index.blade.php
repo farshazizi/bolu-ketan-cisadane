@@ -20,7 +20,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Actions</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -19,6 +19,10 @@ mix
         "public/js/contents/masters/categories/category.js"
     )
     .js(
+        "resources/js/contents/masters/ingredients/ingredient.js",
+        "public/js/contents/masters/ingredients/ingredient.js"
+    )
+    .js(
         "resources/js/contents/masters/uoms/uom.js",
         "public/js/contents/masters/uoms/uom.js"
     )
