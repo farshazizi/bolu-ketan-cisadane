@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Uom</h3>
+    <h3>Satuan</h3>
 @endsection
 
 @section('content-body')
@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ms-auto">
                         <div class="buttons">
-                            <a href="{{ route('uoms.create') }}" class="btn btn-primary">Tambah Uom</a>
+                            <a href="{{ route('uoms.create') }}" class="btn btn-primary">Tambah Satuan</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -19,8 +19,8 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Name</th>
-                                    <th>Actions</th>
+                                    <th>Nama</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
