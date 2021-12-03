@@ -42,7 +42,7 @@
                 <li class="sidebar-item {{ request()->is('uoms*') ? 'active' : '' }}">
                     <a href="{{ route('uoms.index') }}" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
-                        <span>Uom</span>
+                        <span>Satuan</span>
                     </a>
                 </li>
             </ul>
