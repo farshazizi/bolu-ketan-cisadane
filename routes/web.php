@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Masters\Categories\CategoryController;
+use App\Http\Controllers\Masters\Ingredients\IngredientController;
 use App\Http\Controllers\Masters\Uoms\UomController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,17 @@ Route::prefix('/categories')->group(function () {
     Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::patch('/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+});
+
+// Ingredient
+Route::prefix('/ingredients')->group(function () {
+    Route::get('/', [IngredientController::class, 'index'])->name('ingredients.index');
+    Route::get('/data', [IngredientController::class, 'data'])->name('ingredients.data');
+    Route::get('/create', [IngredientController::class, 'create'])->name('ingredients.create');
+    Route::post('/', [IngredientController::class, 'store'])->name('ingredients.store');
+    Route::get('/{id}/edit', [IngredientController::class, 'edit'])->name('ingredients.edit');
+    Route::patch('/{id}', [IngredientController::class, 'update'])->name('ingredients.update');
+    Route::delete('/{id}', [IngredientController::class, 'destroy'])->name('ingredients.destroy');
 });
 
 // Uom
