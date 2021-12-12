@@ -27,7 +27,7 @@
 
                 <li class="sidebar-item {{ request()->is('ingredients*') ? 'active' : '' }}">
                     <a href="{{ route('ingredients.index') }}" class='sidebar-link'>
-                        <i class="bi bi-hexagon-fill"></i>
+                        <i class="bi bi-bootstrap-fill"></i>
                         <span>Bahan</span>
                     </a>
                 </li>
