@@ -32,22 +32,22 @@
                                             <div class="form-group">
                                                 <label for="nama">Nama</label>
                                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                    id="name" name="name" placeholder="Nama">
+                                                    id="name" name="name" placeholder="Nama" value="{{ old('name') }}">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
                                                 <label for="uom">Uom</label>
-                                                <fieldset class="form-group">
-                                                    <select class="form-select @error('uom') is-invalid @enderror" id="uom"
-                                                        name="uom">
-                                                        <option value="">Pilih Uom</option>
-                                                        @foreach ($uoms as $uom)
-                                                            <option value="{{ $uom->id }}" @if (old('uom') == $uom->id) selected @endif>{{ $uom->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </fieldset>
+                                                <select class="form-select @error('uom') is-invalid @enderror" id="uom"
+                                                    name="uom">
+                                                    <option value="">Pilih Uom</option>
+                                                    @foreach ($uoms as $uom)
+                                                        <option value="{{ $uom->id }}" @if (old('uom') == $uom->id) selected @endif>
+                                                            {{ $uom->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                                 @error('uom')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
