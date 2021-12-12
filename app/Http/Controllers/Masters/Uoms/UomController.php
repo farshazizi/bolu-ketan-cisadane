@@ -7,7 +7,6 @@ use App\Http\Requests\Masters\Uoms\StoreUomRequest;
 use App\Http\Requests\Masters\Uoms\UpdateUomRequest;
 use App\Services\Masters\Uoms\UomService;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UomController extends Controller
@@ -47,31 +46,27 @@ class UomController extends Controller
 
     public function store(StoreUomRequest $storeUomRequest)
     {
-        DB::beginTransaction();
         try {
             $request = $storeUomRequest->safe()->collect();
 
             $uom = $this->uomService->store($request);
-
             if ($uom) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
-                    'message' => 'Uom berhasil ditambahkan.'
+                    'message' => 'Satuan berhasil ditambahkan.'
                 ]);
             }
 
             return back()->with([
                 'status' => 'error',
-                'message' => 'Uom gagal ditambahkan.'
-            ]);
+                'message' => 'Satuan gagal ditambahkan.'
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
-                'message' => 'Uom gagal ditambahkan.'
-            ]);
+                'message' => 'Satuan gagal ditambahkan.'
+            ])->withInput();
         }
     }
 
@@ -91,52 +86,46 @@ class UomController extends Controller
 
     public function update(UpdateUomRequest $updateUomRequest, $id)
     {
-        DB::beginTransaction();
         try {
             $request = $updateUomRequest->safe()->collect();
 
             $uom = $this->uomService->update($request, $id);
 
             if ($uom) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
-                    'message' => 'Uom berhasil diperbaharui.'
+                    'message' => 'Satuan berhasil diperbaharui.'
                 ]);
             }
 
             return back()->with([
                 'status' => 'error',
-                'message' => 'Uom gagal diperbaharui.'
-            ]);
+                'message' => 'Satuan gagal diperbaharui.'
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
-                'message' => 'Uom gagal diperbaharui.'
-            ]);
+                'message' => 'Satuan gagal diperbaharui.'
+            ])->withInput();
         }
     }
 
     public function destroy($id)
     {
-        DB::beginTransaction();
         try {
             $uom = $this->uomService->destroy($id);
 
             if ($uom) {
-                DB::commit();
                 return response()->json([
-                    'message' => 'Uom berhasil dihapus.'
+                    'message' => 'Satuan berhasil dihapus.'
                 ], 200);
             }
 
             return response()->json([
-                'message' => 'Uom gagal dihapus.'
+                'message' => 'Satuan gagal dihapus.'
             ], 500);
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return response()->json([
                 'message' => $exception->getMessage()
