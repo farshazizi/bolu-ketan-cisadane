@@ -51,14 +51,12 @@ class IngredientController extends Controller
 
     public function store(StoreIngredientRequest $storeIngredientRequest)
     {
-        DB::beginTransaction();
         try {
             $request = $storeIngredientRequest->safe()->collect();
 
             $ingredient = $this->ingredientService->store($request);
 
             if ($ingredient) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
                     'message' => 'Bahan berhasil ditambahkan.'
@@ -68,14 +66,13 @@ class IngredientController extends Controller
             return back()->with([
                 'status' => 'error',
                 'message' => 'Bahan gagal ditambahkan.'
-            ]);
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
                 'message' => 'Bahan gagal ditambahkan.'
-            ]);
+            ])->withInput();
         }
     }
 
@@ -96,14 +93,12 @@ class IngredientController extends Controller
 
     public function update(UpdateIngredientRequest $updateIngredientRequest, $id)
     {
-        DB::beginTransaction();
         try {
             $request = $updateIngredientRequest->safe()->collect();
 
             $ingredient = $this->ingredientService->update($request, $id);
 
             if ($ingredient) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
                     'message' => 'Bahan berhasil diperbaharui.'
@@ -113,25 +108,22 @@ class IngredientController extends Controller
             return back()->with([
                 'status' => 'error',
                 'message' => 'Bahan gagal diperbaharui.'
-            ]);
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
                 'message' => 'Bahan gagal diperbaharui.'
-            ]);
+            ])->withInput();
         }
     }
 
     public function destroy($id)
     {
-        DB::beginTransaction();
         try {
             $ingredient = $this->ingredientService->destroy($id);
 
             if ($ingredient) {
-                DB::commit();
                 return response()->json([
                     'message' => 'Bahan berhasil dihapus.'
                 ], 200);
@@ -141,7 +133,6 @@ class IngredientController extends Controller
                 'message' => 'Bahan gagal dihapus.'
             ], 500);
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return response()->json([
                 'message' => $exception->getMessage()
