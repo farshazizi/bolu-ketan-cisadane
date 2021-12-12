@@ -3,6 +3,9 @@
 namespace App\Services\Masters\Uoms;
 
 use App\Models\Masters\Uoms\Uom;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 
 class UomService
@@ -15,12 +18,20 @@ class UomService
 
     public function store($data)
     {
-        $uom = new Uom;
-        $uom->id = Uuid::uuid4();
-        $uom->name = $data['name'];
-        $uom->save();
+        DB::beginTransaction();
+        try {
+            $uom = new Uom;
+            $uom->id = Uuid::uuid4();
+            $uom->name = $data['name'];
+            $uom->save();
+            DB::commit();
 
-        return $uom;
+            return $uom;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            throw new Exception('Satuan gagal ditambahkan.');
+        }
     }
 
     public function getUomById($id)
@@ -31,18 +42,34 @@ class UomService
 
     public function update($data, $id)
     {
-        $uom = Uom::findOrFail($id);
-        $uom->name = $data['name'];
-        $uom->save();
+        DB::beginTransaction();
+        try {
+            $uom = Uom::findOrFail($id);
+            $uom->name = $data['name'];
+            $uom->save();
+            DB::commit();
 
-        return $uom;
+            return $uom;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            throw new Exception('Satuan gagal dirubah.');
+        }
     }
 
     public function destroy($id)
     {
-        $uom = Uom::findOrFail($id);
-        $uom->delete();
+        DB::beginTransaction();
+        try {
+            $uom = Uom::findOrFail($id);
+            $uom->delete();
+            DB::commit();
 
-        return $uom;
+            return $uom;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            throw new Exception('Satuan gagal dihapus.');
+        }
     }
 }
