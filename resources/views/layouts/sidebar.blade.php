@@ -34,7 +34,7 @@
 
                 <li class="sidebar-item {{ request()->is('categories*') ? 'active' : '' }}">
                     <a href="{{ route('categories.index') }}" class='sidebar-link'>
-                        <i class="bi bi-hexagon-fill"></i>
+                        <i class="bi bi-collection-fill"></i>
                         <span>Kategori</span>
                     </a>
                 </li>
