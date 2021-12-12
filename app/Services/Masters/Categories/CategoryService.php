@@ -53,7 +53,7 @@ class CategoryService
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
-            throw new Exception('Kategori gagal dirubah.');
+            throw new Exception('Kategori gagal diperbaharui.');
         }
     }
 

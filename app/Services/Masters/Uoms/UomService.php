@@ -53,7 +53,7 @@ class UomService
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
-            throw new Exception('Satuan gagal dirubah.');
+            throw new Exception('Satuan gagal diperbaharui.');
         }
     }
 
