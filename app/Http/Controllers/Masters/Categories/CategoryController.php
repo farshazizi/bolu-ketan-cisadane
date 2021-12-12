@@ -7,7 +7,6 @@ use App\Http\Requests\Masters\Categories\StoreCategoryRequest;
 use App\Http\Requests\Masters\Categories\UpdateCategoryRequest;
 use App\Services\Masters\Categories\CategoryService;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -47,14 +46,12 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $storeCategoryRequest)
     {
-        DB::beginTransaction();
         try {
             $request = $storeCategoryRequest->safe()->collect();
 
             $category = $this->categoryService->store($request);
 
             if ($category) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
                     'message' => 'Kategori berhasil ditambahkan.'
@@ -64,14 +61,13 @@ class CategoryController extends Controller
             return back()->with([
                 'status' => 'error',
                 'message' => 'Kategori gagal ditambahkan.'
-            ]);
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
                 'message' => 'Kategori gagal ditambahkan.'
-            ]);
+            ])->withInput();
         }
     }
 
@@ -85,20 +81,18 @@ class CategoryController extends Controller
             return back()->with([
                 'status' => 'error',
                 'message' => 'Terjadi kendala.'
-            ]);
+            ])->withInput();
         }
     }
 
     public function update(UpdateCategoryRequest $updateCategoryRequest, $id)
     {
-        DB::beginTransaction();
         try {
             $request = $updateCategoryRequest->safe()->collect();
 
             $category = $this->categoryService->update($request, $id);
 
             if ($category) {
-                DB::commit();
                 return back()->with([
                     'status' => 'success',
                     'message' => 'Kategori berhasil diperbaharui.'
@@ -108,25 +102,22 @@ class CategoryController extends Controller
             return back()->with([
                 'status' => 'error',
                 'message' => 'Kategori gagal diperbaharui.'
-            ]);
+            ])->withInput();
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return back()->with([
                 'status' => 'error',
                 'message' => 'Kategori gagal diperbaharui.'
-            ]);
+            ])->withInput();
         }
     }
 
     public function destroy($id)
     {
-        DB::beginTransaction();
         try {
             $category = $this->categoryService->destroy($id);
 
             if ($category) {
-                DB::commit();
                 return response()->json([
                     'message' => 'Kategori berhasil dihapus.'
                 ], 200);
@@ -136,7 +127,6 @@ class CategoryController extends Controller
                 'message' => 'Kategori gagal dihapus.'
             ], 500);
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             return response()->json([
                 'message' => $exception->getMessage()
