@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/js/contents/masters/categories/category.js": "/js/contents/masters/categories/category.js",
     "/js/contents/masters/ingredients/ingredient.js": "/js/contents/masters/ingredients/ingredient.js",
+    "/js/contents/masters/inventoryStocks/inventoryStock.js": "/js/contents/masters/inventoryStocks/inventoryStock.js",
     "/js/contents/masters/uoms/uom.js": "/js/contents/masters/uoms/uom.js",
     "/css/app.css": "/css/app.css"
 }
