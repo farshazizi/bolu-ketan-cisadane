@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Masters\Categories\CategoryController;
 use App\Http\Controllers\Masters\Ingredients\IngredientController;
+use App\Http\Controllers\Masters\InventoryStocks\InventoryStockController;
 use App\Http\Controllers\Masters\Uoms\UomController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,17 @@ Route::prefix('/ingredients')->group(function () {
     Route::get('/{id}/edit', [IngredientController::class, 'edit'])->name('ingredients.edit');
     Route::patch('/{id}', [IngredientController::class, 'update'])->name('ingredients.update');
     Route::delete('/{id}', [IngredientController::class, 'destroy'])->name('ingredients.destroy');
+});
+
+// Inventory Stock
+Route::prefix('/inventory-stocks')->group(function () {
+    Route::get('/', [InventoryStockController::class, 'index'])->name('inventory-stocks.index');
+    Route::get('/data', [InventoryStockController::class, 'data'])->name('inventory-stocks.data');
+    Route::get('/create', [InventoryStockController::class, 'create'])->name('inventory-stocks.create');
+    Route::post('/', [InventoryStockController::class, 'store'])->name('inventory-stocks.store');
+    Route::get('/{id}/edit', [InventoryStockController::class, 'edit'])->name('inventory-stocks.edit');
+    Route::patch('/{id}', [InventoryStockController::class, 'update'])->name('inventory-stocks.update');
+    Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory-stocks.destroy');
 });
 
 // Uom

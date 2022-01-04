@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 
+    <!-- Jquery Datatable -->
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css') }}">
+    <!-- End Jquery Datatable -->
+
     <!-- Sweet Alert 2 -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <!-- End Sweet Alert 2 -->
@@ -68,9 +73,36 @@
     <script src="{{ asset('assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js') }}"></script>
     <!-- End Jquery Datatable -->
 
+    <!-- Jquery -->
+    <script src="{{ asset('assets/vendors/jquery/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/jquery/jquery.inputmask.min.js') }}"></script>
+    <!-- End Jquery -->
+
     <!-- Sweet Alert 2 -->
     <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- End Sweet Alert 2 -->
+
+    <script type="text/javascript">
+        $(function() {
+            // Call function mask currency
+            maskCurrency();
+        });
+
+        function maskCurrency() {
+            // Jquery inputmask
+            $('.maskCurrency').inputmask({
+                alias: 'decimal',
+                allowMinus: true,
+                digits: 2,
+                digitsOptional: false,
+                groupSeparator: ',',
+                removeMaskOnSubmit: true,
+                rightAlign: true,
+            });
+        }
+    </script>
 
     @yield('content-js')
 </body>

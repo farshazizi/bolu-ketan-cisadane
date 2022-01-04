@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIngredientsTable extends Migration
+class CreateInventoryStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateIngredientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingredients', function (Blueprint $table) {
+        Schema::create('inventory_stocks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->uuid('uom_id')->index();
+            $table->uuid('category_id')->index();
+            $table->integer('minimal_quantity');
+            $table->integer('price');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('uom_id')->references('id')->on('uoms');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
@@ -30,6 +32,6 @@ class CreateIngredientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingredients');
+        Schema::dropIfExists('inventory_stocks');
     }
 }
