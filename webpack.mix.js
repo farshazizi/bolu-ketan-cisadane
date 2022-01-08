@@ -27,6 +27,10 @@ mix
         "public/js/contents/masters/inventoryStocks/inventoryStock.js"
     )
     .js(
+        "resources/js/contents/masters/stocks/stock.js",
+        "public/js/contents/masters/stocks/stock.js"
+    )
+    .js(
         "resources/js/contents/masters/uoms/uom.js",
         "public/js/contents/masters/uoms/uom.js"
     )
