@@ -3,6 +3,10 @@
 use App\Http\Controllers\Masters\Categories\CategoryController;
 use App\Http\Controllers\Masters\Ingredients\IngredientController;
 use App\Http\Controllers\Masters\InventoryStocks\InventoryStockController;
+use App\Http\Controllers\Masters\Stocks\StockController;
+use App\Http\Controllers\Masters\Stocks\StockInController;
+use App\Http\Controllers\Masters\Stocks\StockInventoryStockController;
+use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +60,27 @@ Route::prefix('/inventory-stocks')->group(function () {
     Route::get('/{id}/edit', [InventoryStockController::class, 'edit'])->name('inventory-stocks.edit');
     Route::patch('/{id}', [InventoryStockController::class, 'update'])->name('inventory-stocks.update');
     Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory-stocks.destroy');
+});
+
+// Stock
+Route::prefix('/stocks')->group(function () {
+    Route::get('/', [StockController::class, 'index'])->name('stocks.index');
+    Route::get('/data', [StockController::class, 'data'])->name('stocks.data');
+    Route::get('/{id}', [StockController::class, 'show'])->name('stocks.show');
+    Route::delete('/{id}', [StockController::class, 'destroy'])->name('stocks.destroy');
+    Route::get('/inventory-stock', [StockInventoryStockController::class, '__invoke'])->name('stocks.inventory-stocks');
+
+    // Stock In
+    Route::prefix('/stocks-in')->group(function () {
+        Route::get('/create', [StockInController::class, 'create'])->name('stocks.stocks-in.create');
+        Route::post('/', [StockInController::class, 'store'])->name('stocks.stocks-in.store');
+    });
+
+    // Stock Out
+    Route::prefix('/stocks-out')->group(function () {
+        Route::get('/create', [StockOutController::class, 'create'])->name('stocks.stocks-out.create');
+        Route::post('/', [StockOutController::class, 'store'])->name('stocks.stocks-out.store');
+    });
 });
 
 // Uom
