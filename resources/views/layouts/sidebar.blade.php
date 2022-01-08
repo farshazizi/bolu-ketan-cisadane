@@ -52,6 +52,13 @@
                         <span>Stok</span>
                     </a>
                 </li>
+
+                <li class="sidebar-item {{ request()->is('stocks*') ? 'active' : '' }}">
+                    <a href="{{ route('stocks.index') }}" class='sidebar-link'>
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span>Stok Masuk/Keluar</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
