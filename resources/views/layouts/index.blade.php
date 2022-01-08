@@ -95,7 +95,7 @@
             $('.maskCurrency').inputmask({
                 alias: 'decimal',
                 allowMinus: true,
-                digits: 2,
+                digits: 0,
                 digitsOptional: false,
                 groupSeparator: ',',
                 removeMaskOnSubmit: true,
