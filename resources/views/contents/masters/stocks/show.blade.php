@@ -1,7 +1,11 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Stok Masuk</h3>
+    @if ($stock->stock_type == 0)
+        <h3>Stok Masuk</h3>
+    @elseif ($stock->stock_type == 1)
+        <h3>Stok Keluar</h3>
+    @endif
 @endsection
 
 @section('content-body')
