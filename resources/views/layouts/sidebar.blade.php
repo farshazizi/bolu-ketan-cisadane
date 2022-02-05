@@ -59,6 +59,15 @@
                         <span>Stok Masuk/Keluar</span>
                     </a>
                 </li>
+
+                <li class="sidebar-title">Transaksi</li>
+
+                <li class="sidebar-item {{ request()->is('sales*') ? 'active' : '' }}">
+                    <a href="{{ route('sales.index') }}" class='sidebar-link'>
+                        <i class="bi bi-basket3-fill"></i>
+                        <span>Penjualan</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
