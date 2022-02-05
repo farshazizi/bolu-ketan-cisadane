@@ -2,33 +2,33 @@
 
 namespace App\Services\Masters\Uoms;
 
-use App\Models\Masters\Uoms\Uom;
+use App\Repositories\Masters\Uoms\UomRepository;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid;
 
 class UomService
 {
-    public function data()
+    private $uomRepository;
+
+    public function __construct(UomRepository $uomRepository)
     {
-        $data = Uom::all();
-        return $data;
+        $this->uomRepository = $uomRepository;
     }
 
-    public function store($data)
+    public function data()
     {
-        DB::beginTransaction();
+        $uoms = $this->uomRepository->getUoms();
+
+        return $uoms;
+    }
+
+    public function storeUom($data)
+    {
         try {
-            $uom = new Uom;
-            $uom->id = Uuid::uuid4();
-            $uom->name = $data['name'];
-            $uom->save();
-            DB::commit();
+            $uom = $this->uomRepository->storeUom($data);
 
             return $uom;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Satuan gagal ditambahkan.');
         }
@@ -36,38 +36,30 @@ class UomService
 
     public function getUomById($id)
     {
-        $uom = Uom::findOrFail($id);
+        $uom = $this->uomRepository->getUomById($id);
+
         return $uom;
     }
 
-    public function update($data, $id)
+    public function updateUomById($data, $id)
     {
-        DB::beginTransaction();
         try {
-            $uom = Uom::findOrFail($id);
-            $uom->name = $data['name'];
-            $uom->save();
-            DB::commit();
+            $uom = $this->uomRepository->updateUomById($data, $id);
 
             return $uom;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Satuan gagal diperbaharui.');
         }
     }
 
-    public function destroy($id)
+    public function destroyUomById($id)
     {
-        DB::beginTransaction();
         try {
-            $uom = Uom::findOrFail($id);
-            $uom->delete();
-            DB::commit();
+            $uom = $this->uomRepository->destroyUomById($id);
 
             return $uom;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Satuan gagal dihapus.');
         }

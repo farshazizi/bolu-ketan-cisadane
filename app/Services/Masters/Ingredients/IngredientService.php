@@ -2,34 +2,33 @@
 
 namespace App\Services\Masters\Ingredients;
 
-use App\Models\Masters\Ingredients\Ingredient;
+use App\Repositories\Masters\Ingredients\IngredientRepository;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid;
 
 class IngredientService
 {
-    public function data()
+    private $ingredientRepository;
+
+    public function __construct(IngredientRepository $ingredientRepository)
     {
-        $data = Ingredient::with('uom')->get();
-        return $data;
+        $this->ingredientRepository = $ingredientRepository;
     }
 
-    public function store($data)
+    public function data()
     {
-        DB::beginTransaction();
-        try {
-            $uom = new Ingredient;
-            $uom->id = Uuid::uuid4();
-            $uom->name = $data['name'];
-            $uom->uom_id = $data['uom'];
-            $uom->save();
-            DB::commit();
+        $ingredients = $this->ingredientRepository->getIngredients();
 
-            return $uom;
+        return $ingredients;
+    }
+
+    public function storeIngredient($data)
+    {
+        try {
+            $ingredient = $this->ingredientRepository->storeIngredient($data);
+
+            return $ingredient;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Bahan berhasil ditambahkan.');
         }
@@ -37,39 +36,30 @@ class IngredientService
 
     public function getIngredientById($id)
     {
-        $uom = Ingredient::findOrFail($id);
-        return $uom;
+        $ingredient = $this->ingredientRepository->getIngredientById($id);
+
+        return $ingredient;
     }
 
-    public function update($data, $id)
+    public function updateIngredientById($data, $id)
     {
-        DB::beginTransaction();
         try {
-            $uom = Ingredient::findOrFail($id);
-            $uom->name = $data['name'];
-            $uom->uom_id = $data['uom'];
-            $uom->save();
-            DB::commit();
+            $ingredient = $this->ingredientRepository->updateIngredientById($data, $id);
 
-            return $uom;
+            return $ingredient;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Bahan berhasil diperbaharui.');
         }
     }
 
-    public function destroy($id)
+    public function destroyIngredientById($id)
     {
-        DB::beginTransaction();
         try {
-            $uom = Ingredient::findOrFail($id);
-            $uom->delete();
-            DB::commit();
+            $ingredient = $this->ingredientRepository->destroyIngredientById($id);
 
-            return $uom;
+            return $ingredient;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Bahan berhasil dihapus.');
         }
