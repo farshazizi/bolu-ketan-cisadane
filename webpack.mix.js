@@ -39,6 +39,14 @@ mix
         "public/js/contents/masters/stocks/stock.js"
     )
     .js(
+        "resources/js/contents/masters/stocks/stock-in/stock-in-create-vue.js",
+        "public/js/contents/masters/stocks/stock-in/stock-in-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/masters/stocks/stock-out/stock-out-create-vue.js",
+        "public/js/contents/masters/stocks/stock-out/stock-out-create-vue.js"
+    )
+    .js(
         "resources/js/contents/masters/uoms/uom.js",
         "public/js/contents/masters/uoms/uom.js"
     )
