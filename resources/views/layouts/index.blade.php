@@ -26,6 +26,15 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <!-- End Sweet Alert 2 -->
 
+    <!-- Select 2 -->
+    <link href="{{ asset('assets/vendors/select2/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendors/select2/select2-bootstrap4.min.css') }}" rel="stylesheet" />
+    <!-- End Select 2 -->
+
+    <!-- Vue -->
+    <link href="{{ asset('assets/vendors/vue-datepicker/bootstrap-datetimepicker.css') }}" rel="stylesheet">
+    <!-- End Vue -->
+
     @yield('content-css')
 </head>
 
@@ -83,6 +92,28 @@
     <!-- Sweet Alert 2 -->
     <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- End Sweet Alert 2 -->
+
+    <!-- Moment -->
+    <script src="{{ asset('assets/js/plugins/moment/moment.min.js') }}"></script>
+    <!-- End Moment -->
+
+    <!-- Select 2 -->
+    <script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
+    <!-- End Select 2 -->
+
+    <!-- Vue -->
+    <script src="{{ asset('assets/vendors/vue/vue.js') }}"></script>
+    <script src="{{ asset('assets/vendors/vue/axios.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/vue/custom-vue.js') }}"></script>
+    <script src="{{ asset('assets/vendors/vue/vuex.js') }}"></script>
+    <script src="{{ asset('assets/vendors/vue-datepicker/vue-bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/vue-datepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <!-- End Vue -->
+
+    <!-- Additional -->
+    <script src="{{ asset('assets/js/plugins/money/formatUang.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/money/keyPressuang.js') }}"></script>
+    <!-- End Additional -->
 
     <script type="text/javascript">
         $(function() {
