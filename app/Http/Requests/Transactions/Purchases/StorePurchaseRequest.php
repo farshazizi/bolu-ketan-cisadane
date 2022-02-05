@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transactions\Sales;
+namespace App\Http\Requests\Transactions\Purchases;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSaleRequest extends FormRequest
+class StorePurchaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class StoreSaleRequest extends FormRequest
             'notes' => 'nullable',
             'grandTotal' => 'required',
             'detail' => 'required|array',
-            'detail.*.inventoryStock' => 'required|string',
+            'detail.*.ingredient' => 'required|string',
             'detail.*.quantity' => 'required',
             'detail.*.price' => 'required'
         ];

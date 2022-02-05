@@ -62,6 +62,13 @@
 
                 <li class="sidebar-title">Transaksi</li>
 
+                <li class="sidebar-item {{ request()->is('purchases*') ? 'active' : '' }}">
+                    <a href="{{ route('purchases.index') }}" class='sidebar-link'>
+                        <i class="bi bi-bag-fill"></i>
+                        <span>Pembelian</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item {{ request()->is('sales*') ? 'active' : '' }}">
                     <a href="{{ route('sales.index') }}" class='sidebar-link'>
                         <i class="bi bi-basket3-fill"></i>

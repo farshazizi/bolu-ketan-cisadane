@@ -17,6 +17,7 @@ class SalePriceController extends Controller
             if ($price) {
                 return response()->json([
                     'status' => 'success',
+                    'code' => 'get-price-success',
                     'message' => 'Get price success.',
                     'data' => [
                         'price' => $price->price
@@ -26,6 +27,7 @@ class SalePriceController extends Controller
 
             return response()->json([
                 'status' => 'error',
+                'code' => 'get-price-failed',
                 'message' => 'Get price failed.',
                 'data' => []
             ], 200);
@@ -33,6 +35,7 @@ class SalePriceController extends Controller
             Log::error($exception);
             return response()->json([
                 'status' => 'error',
+                'code' => 'get-price-failed',
                 'message' => 'Get price success.',
                 'data' => []
             ], 500);

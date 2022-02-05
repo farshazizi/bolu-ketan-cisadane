@@ -15,6 +15,6 @@ class Ingredient extends Model
 
     public function uom()
     {
-        return $this->hasOne(Uom::class, 'id', 'uom_id');
+        return $this->belongsTo(Uom::class);
     }
 }

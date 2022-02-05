@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Services\Masters\Ingredients;
+namespace App\Repositories\Masters\Ingredients;
 
-use App\Repositories\Masters\Ingredients\IngredientRepository;
+use App\Models\Masters\Ingredients\Ingredient;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Uuid;
 
-class IngredientService
+class IngredientRepository implements IngredientInterface
 {
-    private $ingredientRepository;
-
-    public function __construct(IngredientRepository $ingredientRepository)
+    public function getIngredients()
     {
-        $this->ingredientRepository = $ingredientRepository;
-    }
-
-    public function data()
-    {
-        $ingredients = $this->ingredientRepository->getIngredients();
+        $ingredients = Ingredient::with('uom')->get();
 
         return $ingredients;
     }
@@ -25,7 +19,11 @@ class IngredientService
     public function storeIngredient($data)
     {
         try {
-            $ingredient = $this->ingredientRepository->storeIngredient($data);
+            $ingredient = new Ingredient;
+            $ingredient->id = Uuid::uuid4();
+            $ingredient->name = $data['name'];
+            $ingredient->uom_id = $data['uom'];
+            $ingredient->save();
 
             return $ingredient;
         } catch (Exception $exception) {
@@ -36,7 +34,7 @@ class IngredientService
 
     public function getIngredientById($id)
     {
-        $ingredient = $this->ingredientRepository->getIngredientById($id);
+        $ingredient = Ingredient::with('uom')->findOrFail($id);
 
         return $ingredient;
     }
@@ -44,7 +42,10 @@ class IngredientService
     public function updateIngredientById($data, $id)
     {
         try {
-            $ingredient = $this->ingredientRepository->updateIngredientById($data, $id);
+            $ingredient = Ingredient::findOrFail($id);
+            $ingredient->name = $data['name'];
+            $ingredient->uom_id = $data['uom'];
+            $ingredient->save();
 
             return $ingredient;
         } catch (Exception $exception) {
@@ -56,7 +57,8 @@ class IngredientService
     public function destroyIngredientById($id)
     {
         try {
-            $ingredient = $this->ingredientRepository->destroyIngredientById($id);
+            $ingredient = Ingredient::findOrFail($id);
+            $ingredient->delete();
 
             return $ingredient;
         } catch (Exception $exception) {

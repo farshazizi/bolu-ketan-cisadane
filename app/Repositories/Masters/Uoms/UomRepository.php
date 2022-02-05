@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Services\Masters\Uoms;
+namespace App\Repositories\Masters\Uoms;
 
-use App\Repositories\Masters\Uoms\UomRepository;
+use App\Models\Masters\Uoms\Uom;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Uuid;
 
-class UomService
+class UomRepository implements UomInterface
 {
-    private $uomRepository;
-
-    public function __construct(UomRepository $uomRepository)
+    public function getUoms()
     {
-        $this->uomRepository = $uomRepository;
-    }
-
-    public function data()
-    {
-        $uoms = $this->uomRepository->getUoms();
+        $uoms = Uom::all();
 
         return $uoms;
     }
@@ -25,7 +19,10 @@ class UomService
     public function storeUom($data)
     {
         try {
-            $uom = $this->uomRepository->storeUom($data);
+            $uom = new Uom;
+            $uom->id = Uuid::uuid4();
+            $uom->name = $data['name'];
+            $uom->save();
 
             return $uom;
         } catch (Exception $exception) {
@@ -36,7 +33,7 @@ class UomService
 
     public function getUomById($id)
     {
-        $uom = $this->uomRepository->getUomById($id);
+        $uom = Uom::findOrFail($id);
 
         return $uom;
     }
@@ -44,7 +41,9 @@ class UomService
     public function updateUomById($data, $id)
     {
         try {
-            $uom = $this->uomRepository->updateUomById($data, $id);
+            $uom = Uom::findOrFail($id);
+            $uom->name = $data['name'];
+            $uom->save();
 
             return $uom;
         } catch (Exception $exception) {
@@ -56,12 +55,13 @@ class UomService
     public function destroyUomById($id)
     {
         try {
-            $uom = $this->uomRepository->destroyUomById($id);
+            $uom = Uom::findOrFail($id);
+            $uom->delete();
 
             return $uom;
         } catch (Exception $exception) {
             Log::error($exception);
-            throw new Exception('Satuan gagal dihapus.');
+            throw new Exception('Bahan berhasil dihapus.');
         }
     }
 }
