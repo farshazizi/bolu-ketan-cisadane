@@ -47,7 +47,7 @@
                 </li>
 
                 <li class="sidebar-item {{ request()->is('inventory-stocks*') ? 'active' : '' }}">
-                    <a href="{{ route('inventory-stocks.index') }}" class='sidebar-link'>
+                    <a href="{{ route('inventory_stocks.index') }}" class='sidebar-link'>
                         <i class="bi bi-bucket-fill"></i>
                         <span>Stok</span>
                     </a>

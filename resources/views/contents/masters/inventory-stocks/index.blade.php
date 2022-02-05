@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ms-auto">
                         <div class="buttons">
-                            <a href="{{ route('inventory-stocks.create') }}" class="btn btn-primary">Tambah Stok</a>
+                            <a href="{{ route('inventory_stocks.create') }}" class="btn btn-primary">Tambah Stok</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -37,8 +37,8 @@
 
 @section('content-js')
     <script type="text/javascript">
-        var dataUrl = "{{ route('inventory-stocks.data') }}";
-        var destroyUrl = "{{ route('inventory-stocks.destroy', ':id') }}";
+        var dataUrl = "{{ route('inventory_stocks.data') }}";
+        var destroyUrl = "{{ route('inventory_stocks.destroy', ':id') }}";
     </script>
     <script src="{{ asset(mix('js/contents/masters/inventoryStocks/inventoryStock.js')) }}"></script>
 @endsection

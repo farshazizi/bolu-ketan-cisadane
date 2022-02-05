@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ms-auto">
                         <div class="buttons">
-                            <a href="{{ route('inventory-stocks.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('inventory_stocks.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
 
@@ -24,7 +24,7 @@
                                         aria-label="Close"></button>
                                 </div>
                             @endif
-                            <form class="form form-vertical" action="{{ route('inventory-stocks.store') }}" method="POST">
+                            <form class="form form-vertical" action="{{ route('inventory_stocks.store') }}" method="POST">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
