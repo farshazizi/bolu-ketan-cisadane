@@ -27,6 +27,14 @@ mix
         "public/js/contents/masters/inventoryStocks/inventoryStock.js"
     )
     .js(
+        "resources/js/contents/transactions/purchases/purchase.js",
+        "public/js/contents/transactions/purchases/purchase.js"
+    )
+    .js(
+        "resources/js/contents/transactions/purchases/purchase-create-vue.js",
+        "public/js/contents/transactions/purchases/purchase-create-vue.js"
+    )
+    .js(
         "resources/js/contents/transactions/sales/sale.js",
         "public/js/contents/transactions/sales/sale.js"
     )
