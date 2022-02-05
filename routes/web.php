@@ -8,6 +8,8 @@ use App\Http\Controllers\Masters\Stocks\StockInController;
 use App\Http\Controllers\Masters\Stocks\StockInventoryStockController;
 use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
+use App\Http\Controllers\Transactions\Purchases\PurchaseController;
+use App\Http\Controllers\Transactions\Purchases\PurchaseUomController;
 use App\Http\Controllers\Transactions\Sales\SaleController;
 use App\Http\Controllers\Transactions\Sales\SaleInventoryStockController;
 use App\Http\Controllers\Transactions\Sales\SalePriceController;
@@ -63,6 +65,18 @@ Route::prefix('/inventory-stocks')->group(function () {
     Route::get('/{id}/edit', [InventoryStockController::class, 'edit'])->name('inventory_stocks.edit');
     Route::patch('/{id}', [InventoryStockController::class, 'update'])->name('inventory_stocks.update');
     Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory_stocks.destroy');
+});
+
+// Purchase
+Route::prefix('purchases')->group(function () {
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/data', [PurchaseController::class, 'data'])->name('purchases.data');
+    Route::get('/create', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('/', [PurchaseController::class, 'store'])->name('purchases.store');
+    Route::get('/{id}', [PurchaseController::class, 'show'])->name('purchases.show');
+    Route::delete('/{id}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::get('/inventory-stock', [PurchaseInventoryStockController::class, '__invoke'])->name('purchases.inventory_stocks');
+    Route::get('/uom/{id}', [PurchaseUomController::class, '__invoke'])->name('purchases.uom');
 });
 
 // Sale
