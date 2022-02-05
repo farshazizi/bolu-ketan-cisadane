@@ -27,9 +27,9 @@ class StoreStockOutRequest extends FormRequest
             'stockType' => 'required',
             'date' => 'required',
             'notes' => 'nullable',
-            'inventoryStock' => 'required|array',
-            'quantity' => 'required|array',
-            'notesDetail' => 'nullable|array'
+            'detail' => 'required|array',
+            'detail.*.inventoryStock' => 'required|string',
+            'detail.*.quantity' => 'required'
         ];
     }
 
