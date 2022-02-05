@@ -8,6 +8,9 @@ use App\Http\Controllers\Masters\Stocks\StockInController;
 use App\Http\Controllers\Masters\Stocks\StockInventoryStockController;
 use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
+use App\Http\Controllers\Transactions\Sales\SaleController;
+use App\Http\Controllers\Transactions\Sales\SaleInventoryStockController;
+use App\Http\Controllers\Transactions\Sales\SalePriceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,13 +56,25 @@ Route::prefix('/ingredients')->group(function () {
 
 // Inventory Stock
 Route::prefix('/inventory-stocks')->group(function () {
-    Route::get('/', [InventoryStockController::class, 'index'])->name('inventory-stocks.index');
-    Route::get('/data', [InventoryStockController::class, 'data'])->name('inventory-stocks.data');
-    Route::get('/create', [InventoryStockController::class, 'create'])->name('inventory-stocks.create');
-    Route::post('/', [InventoryStockController::class, 'store'])->name('inventory-stocks.store');
-    Route::get('/{id}/edit', [InventoryStockController::class, 'edit'])->name('inventory-stocks.edit');
-    Route::patch('/{id}', [InventoryStockController::class, 'update'])->name('inventory-stocks.update');
-    Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory-stocks.destroy');
+    Route::get('/', [InventoryStockController::class, 'index'])->name('inventory_stocks.index');
+    Route::get('/data', [InventoryStockController::class, 'data'])->name('inventory_stocks.data');
+    Route::get('/create', [InventoryStockController::class, 'create'])->name('inventory_stocks.create');
+    Route::post('/', [InventoryStockController::class, 'store'])->name('inventory_stocks.store');
+    Route::get('/{id}/edit', [InventoryStockController::class, 'edit'])->name('inventory_stocks.edit');
+    Route::patch('/{id}', [InventoryStockController::class, 'update'])->name('inventory_stocks.update');
+    Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory_stocks.destroy');
+});
+
+// Sale
+Route::prefix('sales')->group(function () {
+    Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/data', [SaleController::class, 'data'])->name('sales.data');
+    Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::post('/', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/{id}', [SaleController::class, 'show'])->name('sales.show');
+    Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+    Route::get('/inventory-stock', [SaleInventoryStockController::class, '__invoke'])->name('sales.inventory_stocks');
+    Route::get('/price/{id}', [SalePriceController::class, '__invoke'])->name('sales.price');
 });
 
 // Stock
@@ -68,18 +83,18 @@ Route::prefix('/stocks')->group(function () {
     Route::get('/data', [StockController::class, 'data'])->name('stocks.data');
     Route::get('/{id}', [StockController::class, 'show'])->name('stocks.show');
     Route::delete('/{id}', [StockController::class, 'destroy'])->name('stocks.destroy');
-    Route::get('/inventory-stock', [StockInventoryStockController::class, '__invoke'])->name('stocks.inventory-stocks');
+    Route::get('/inventory-stock', [StockInventoryStockController::class, '__invoke'])->name('stocks.inventory_stocks');
 
     // Stock In
     Route::prefix('/stocks-in')->group(function () {
-        Route::get('/create', [StockInController::class, 'create'])->name('stocks.stocks-in.create');
-        Route::post('/', [StockInController::class, 'store'])->name('stocks.stocks-in.store');
+        Route::get('/create', [StockInController::class, 'create'])->name('stocks.stocks_in.create');
+        Route::post('/', [StockInController::class, 'store'])->name('stocks.stocks_in.store');
     });
 
     // Stock Out
     Route::prefix('/stocks-out')->group(function () {
-        Route::get('/create', [StockOutController::class, 'create'])->name('stocks.stocks-out.create');
-        Route::post('/', [StockOutController::class, 'store'])->name('stocks.stocks-out.store');
+        Route::get('/create', [StockOutController::class, 'create'])->name('stocks.stocks_out.create');
+        Route::post('/', [StockOutController::class, 'store'])->name('stocks.stocks_out.store');
     });
 });
 

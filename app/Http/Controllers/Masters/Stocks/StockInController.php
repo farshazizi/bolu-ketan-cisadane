@@ -23,6 +23,7 @@ class StockInController extends Controller
     public function create()
     {
         $inventoryStocks = $this->inventoryStockService->data();
+
         return view('contents.masters.stocks.stock-in.create', compact('inventoryStocks'));
     }
 
@@ -34,22 +35,30 @@ class StockInController extends Controller
             $stockIn = $this->stockService->store($request);
 
             if ($stockIn) {
-                return back()->with([
+                return response()->json([
                     'status' => 'success',
-                    'message' => 'Stok masuk berhasil ditambahkan.'
-                ]);
+                    'code' => 'store-stock-in-success',
+                    'message' => 'Stok masuk berhasil ditambahkan.',
+                    'data' => [
+                        'stockIn' => $stockIn
+                    ]
+                ], 200);
             }
 
-            return back()->with([
-                'status' => 'danger',
-                'message' => 'Stok masuk gagal ditambahkan.'
-            ]);
+            return response()->json([
+                'status' => 'error',
+                'code' => 'store-stock-in-failed',
+                'message' => 'Stok masuk gagal ditambahkan.',
+                'data' => []
+            ], 200);
         } catch (Exception $exception) {
             Log::error($exception);
-            return back()->with([
-                'status' => 'danger',
-                'message' => 'Stok masuk gagal ditambahkan.'
-            ]);
+            return response()->json([
+                'status' => 'error',
+                'code' => 'store-stock-in-failed',
+                'message' => 'Stok masuk gagal ditambahkan.',
+                'data' => []
+            ], 500);
         }
     }
 }

@@ -17,8 +17,8 @@
                                     Stok
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ route('stocks.stocks-in.create') }}">Stok Masuk</a>
-                                    <a class="dropdown-item" href="{{ route('stocks.stocks-out.create') }}">Stok
+                                    <a class="dropdown-item" href="{{ route('stocks.stocks_in.create') }}">Stok Masuk</a>
+                                    <a class="dropdown-item" href="{{ route('stocks.stocks_out.create') }}">Stok
                                         Keluar</a>
                                 </div>
                             </div>

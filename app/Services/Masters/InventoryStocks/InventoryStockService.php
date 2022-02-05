@@ -2,29 +2,30 @@
 
 namespace App\Services\Masters\InventoryStocks;
 
-use App\Models\Masters\InventoryStocks\InventoryStock;
+use App\Repositories\Masters\InventoryStocks\InventoryStockRepository;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid;
 
 class InventoryStockService
 {
-    public function data()
+    private $inventoryStockRepository;
+
+    public function __construct(InventoryStockRepository $inventoryStockRepository)
     {
-        $data = InventoryStock::with('category')->get();
-        return $data;
+        $this->inventoryStockRepository = $inventoryStockRepository;
     }
 
-    public function store($data)
+    public function data()
+    {
+        $inventoryStocks = $this->inventoryStockRepository->getInventoryStocks();
+
+        return $inventoryStocks;
+    }
+
+    public function storeInventoryStock($data)
     {
         try {
-            $inventoryStock = new InventoryStock;
-            $inventoryStock->id = Uuid::uuid4();
-            $inventoryStock->name = $data['name'];
-            $inventoryStock->minimal_quantity = parseStringToInteger($data['minimalQuantity']);
-            $inventoryStock->price = parseStringToInteger($data['price']);
-            $inventoryStock->category_id = $data['category'];
-            $inventoryStock->save();
+            $inventoryStock = $this->inventoryStockRepository->storeInventoryStock($data);
 
             return $inventoryStock;
         } catch (Exception $exception) {
@@ -35,19 +36,15 @@ class InventoryStockService
 
     public function getInventoryStockById($id)
     {
-        $inventoryStock = InventoryStock::findOrFail($id);
+        $inventoryStock = $this->inventoryStockRepository->getInventoryStockById($id);
+
         return $inventoryStock;
     }
 
-    public function update($data, $id)
+    public function updateInventoryStockById($data, $id)
     {
         try {
-            $inventoryStock = InventoryStock::findOrFail($id);
-            $inventoryStock->name = $data['name'];
-            $inventoryStock->minimal_quantity = parseStringToInteger($data['minimalQuantity']);
-            $inventoryStock->price = parseStringToInteger($data['price']);
-            $inventoryStock->category_id = $data['category'];
-            $inventoryStock->save();
+            $inventoryStock = $this->updateInventoryStockById($data, $id);
 
             return $inventoryStock;
         } catch (Exception $exception) {
@@ -56,16 +53,22 @@ class InventoryStockService
         }
     }
 
-    public function destroy($id)
+    public function destroyInventoryStockById($id)
     {
         try {
-            $inventoryStock = InventoryStock::findOrFail($id);
-            $inventoryStock->delete();
+            $inventoryStock = $this->destroyInventoryStockById($id);
 
             return $inventoryStock;
         } catch (Exception $exception) {
             Log::error($exception);
             throw new Exception('Stok gagal dihapus.');
         }
+    }
+
+    public function getPriceById($id)
+    {
+        $price = $this->inventoryStockRepository->getPriceById($id);
+
+        return $price;
     }
 }

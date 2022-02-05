@@ -29,12 +29,13 @@ class InventoryStockController extends Controller
     public function data()
     {
         $data = $this->inventoryStockService->data();
+
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($inventoryStock) {
                 return ('
                 <div class="btn-group btn-group-sm" style="float: left">
-                    <a class="btn nav-link" href="' . route('inventory-stocks.edit', ['id' => $inventoryStock->id]) . '" data-id="' . $inventoryStock->id . '"><i class="far fa-edit fa-lg"></i></a>
+                    <a class="btn nav-link" href="' . route('inventory_stocks.edit', ['id' => $inventoryStock->id]) . '" data-id="' . $inventoryStock->id . '"><i class="far fa-edit fa-lg"></i></a>
                     <a class="btn nav-link" id="delete" data-id="' . $inventoryStock->id . '" href="#"><i class="far fa-trash-alt fa-lg"></i></a>
                 </div>
                 ');
@@ -45,6 +46,7 @@ class InventoryStockController extends Controller
     public function create()
     {
         $categories = $this->categoryService->data();
+
         return view('contents.masters.inventory-stocks.create', compact('categories'));
     }
 
@@ -53,7 +55,7 @@ class InventoryStockController extends Controller
         try {
             $request = $storeInventoryStockRequest->safe()->collect();
 
-            $inventoryStock = $this->inventoryStockService->store($request);
+            $inventoryStock = $this->inventoryStockService->storeInventoryStock($request);
 
             if ($inventoryStock) {
                 return back()->with([
@@ -78,15 +80,15 @@ class InventoryStockController extends Controller
     public function edit($id)
     {
         try {
-            $inventoryStock = $this->inventoryStockService->getInventoryStockById($id);
             $categories = $this->categoryService->data();
+            $inventoryStock = $this->inventoryStockService->getInventoryStockById($id);
 
-            return view('contents.masters.inventory-stocks.edit', compact('id', 'inventoryStock', 'categories'));
+            return view('contents.masters.inventory-stocks.edit', compact('categories', 'id', 'inventoryStock'));
         } catch (Exception $exception) {
             Log::error($exception);
             return back()->with([
                 'status' => 'danger',
-                'message' => 'Terjadi kendala.'
+                'message' => 'Terjadi kendala menampilkan data.'
             ]);
         }
     }
@@ -96,7 +98,7 @@ class InventoryStockController extends Controller
         try {
             $request = $updateInventoryStockRequest->safe()->collect();
 
-            $inventoryStock = $this->inventoryStockService->update($request, $id);
+            $inventoryStock = $this->inventoryStockService->updateInventoryStockById($request, $id);
 
             if ($inventoryStock) {
                 return back()->with([
@@ -121,7 +123,7 @@ class InventoryStockController extends Controller
     public function destroy($id)
     {
         try {
-            $inventoryStock = $this->inventoryStockService->destroy($id);
+            $inventoryStock = $this->inventoryStockService->destroyInventoryStockById($id);
 
             if ($inventoryStock) {
                 return response()->json([

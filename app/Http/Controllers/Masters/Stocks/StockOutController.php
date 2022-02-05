@@ -23,6 +23,7 @@ class StockOutController extends Controller
     public function create()
     {
         $inventoryStocks = $this->inventoryStockService->data();
+
         return view('contents.masters.stocks.stock-out.create', compact('inventoryStocks'));
     }
 
@@ -31,25 +32,33 @@ class StockOutController extends Controller
         try {
             $request = $storeStockOutRequest->safe()->collect();
 
-            $inventoryStock = $this->stockService->store($request);
+            $stockOut = $this->stockService->store($request);
 
-            if ($inventoryStock) {
-                return back()->with([
+            if ($stockOut) {
+                return response()->json([
                     'status' => 'success',
-                    'message' => 'Stok keluar berhasil ditambahkan.'
-                ]);
+                    'code' => 'store-stock-out-success',
+                    'message' => 'Stok keluar berhasil ditambahkan.',
+                    'data' => [
+                        'stockOut' => $stockOut
+                    ]
+                ], 200);
             }
 
-            return back()->with([
-                'status' => 'danger',
-                'message' => 'Stok keluar gagal ditambahkan.'
-            ]);
+            return response()->json([
+                'status' => 'error',
+                'code' => 'store-stock-out-failed',
+                'message' => 'Stok keluar gagal ditambahkan.',
+                'data' => []
+            ], 200);
         } catch (Exception $exception) {
             Log::error($exception);
-            return back()->with([
-                'status' => 'danger',
-                'message' => 'Stok keluar gagal ditambahkan.'
-            ]);
+            return response()->json([
+                'status' => 'error',
+                'code' => 'store-stock-out-failed',
+                'message' => 'Stok keluar gagal ditambahkan.',
+                'data' => []
+            ], 500);
         }
     }
 }

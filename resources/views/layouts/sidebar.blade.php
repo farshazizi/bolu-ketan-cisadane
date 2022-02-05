@@ -47,7 +47,7 @@
                 </li>
 
                 <li class="sidebar-item {{ request()->is('inventory-stocks*') ? 'active' : '' }}">
-                    <a href="{{ route('inventory-stocks.index') }}" class='sidebar-link'>
+                    <a href="{{ route('inventory_stocks.index') }}" class='sidebar-link'>
                         <i class="bi bi-bucket-fill"></i>
                         <span>Stok</span>
                     </a>
@@ -57,6 +57,15 @@
                     <a href="{{ route('stocks.index') }}" class='sidebar-link'>
                         <i class="bi bi-arrow-left-right"></i>
                         <span>Stok Masuk/Keluar</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-title">Transaksi</li>
+
+                <li class="sidebar-item {{ request()->is('sales*') ? 'active' : '' }}">
+                    <a href="{{ route('sales.index') }}" class='sidebar-link'>
+                        <i class="bi bi-basket3-fill"></i>
+                        <span>Penjualan</span>
                     </a>
                 </li>
             </ul>
