@@ -25,6 +25,7 @@ class StockController extends Controller
     public function data()
     {
         $data = $this->stockService->data();
+
         return datatables()->of($data)
             ->addIndexColumn()
             ->editColumn('date', function ($stock) {
@@ -54,6 +55,7 @@ class StockController extends Controller
     public function show($id)
     {
         $stock = $this->stockService->getStockById($id);
+
         return view('contents.masters.stocks.show', compact('stock'));
     }
 
