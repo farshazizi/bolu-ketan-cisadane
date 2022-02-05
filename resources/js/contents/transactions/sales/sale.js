@@ -27,6 +27,9 @@ $(function () {
             },
         ],
         order: [[1, "asc"]],
+        language: {
+            emptyTable: "Tidak ada data",
+        },
     });
 });
 
@@ -65,7 +68,7 @@ $(document).on("click", "#delete", function (event) {
     event.preventDefault();
     Swal.fire({
         title: "Apakah kamu yakin?",
-        text: "Stok akan dihapus",
+        text: "Penjualan akan dihapus",
         showCancelButton: true,
         confirmButtonText: "Hapus",
         cancelButtonText: "Batal",
