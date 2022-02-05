@@ -26,8 +26,8 @@ class SaleRepository implements SaleInterface
             $saleId = Uuid::uuid4();
             $sale->id = $saleId;
             $sale->date = $data['date'];
-            $sale->notes = $data['notes'];
             $sale->grand_total = $data['grandTotal'];
+            $sale->notes = $data['notes'];
             $sale->save();
 
             if ($data['detail']) {

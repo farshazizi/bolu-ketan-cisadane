@@ -29,8 +29,8 @@ class StoreSaleRequest extends FormRequest
             'grandTotal' => 'required',
             'detail' => 'required|array',
             'detail.*.inventoryStock' => 'required|string',
-            'detail.*.price' => 'required',
-            'detail.*.quantity' => 'required'
+            'detail.*.quantity' => 'required',
+            'detail.*.price' => 'required'
         ];
     }
 
