@@ -3,7 +3,11 @@
     "/js/contents/masters/categories/category.js": "/js/contents/masters/categories/category.js",
     "/js/contents/masters/ingredients/ingredient.js": "/js/contents/masters/ingredients/ingredient.js",
     "/js/contents/masters/inventoryStocks/inventoryStock.js": "/js/contents/masters/inventoryStocks/inventoryStock.js",
+    "/js/contents/transactions/sales/sale.js": "/js/contents/transactions/sales/sale.js",
+    "/js/contents/transactions/sales/sale-create-vue.js": "/js/contents/transactions/sales/sale-create-vue.js",
     "/js/contents/masters/stocks/stock.js": "/js/contents/masters/stocks/stock.js",
+    "/js/contents/masters/stocks/stock-in/stock-in-create-vue.js": "/js/contents/masters/stocks/stock-in/stock-in-create-vue.js",
+    "/js/contents/masters/stocks/stock-out/stock-out-create-vue.js": "/js/contents/masters/stocks/stock-out/stock-out-create-vue.js",
     "/js/contents/masters/uoms/uom.js": "/js/contents/masters/uoms/uom.js",
     "/css/app.css": "/css/app.css"
 }
