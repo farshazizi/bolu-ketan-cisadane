@@ -62,6 +62,18 @@ Route::prefix('/inventory-stocks')->group(function () {
     Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory-stocks.destroy');
 });
 
+// Sale
+Route::prefix('sales')->group(function () {
+    Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/data', [SaleController::class, 'data'])->name('sales.data');
+    Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::post('/', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/{id}', [SaleController::class, 'show'])->name('sales.show');
+    Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+    Route::get('/inventory-stock', [SaleInventoryStockController::class, '__invoke'])->name('sales.inventory_stocks');
+    Route::get('/price/{id}', [SalePriceController::class, '__invoke'])->name('sales.price');
+});
+
 // Stock
 Route::prefix('/stocks')->group(function () {
     Route::get('/', [StockController::class, 'index'])->name('stocks.index');
