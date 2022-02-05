@@ -71,7 +71,7 @@ class SaleController extends Controller
                     'code' => 'store-sale-success',
                     'message' => 'Penjualan berhasil ditambahkan.',
                     'data' => [
-                        'sales' => $sale
+                        'sale' => $sale
                     ]
                 ], 200);
             }
