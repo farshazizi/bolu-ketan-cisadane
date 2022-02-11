@@ -103,9 +103,9 @@ class SaleController extends Controller
     public function destroy($id)
     {
         try {
-            $stock = $this->saleService->destroyInventoryStockById($id);
+            $sale = $this->saleService->destroyInventoryStockById($id);
 
-            if ($stock) {
+            if ($sale) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Penjualan berhasil dihapus.'
