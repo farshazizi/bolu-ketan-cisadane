@@ -60,6 +60,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item {{ request()->is('additionals*') ? 'active' : '' }}">
+                    <a href="{{ route('additionals.index') }}" class='sidebar-link'>
+                        <i class="bi bi-bookmark-plus-fill"></i>
+                        <span>Tambahan</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-title">Transaksi</li>
 
                 <li class="sidebar-item {{ request()->is('purchases*') ? 'active' : '' }}">

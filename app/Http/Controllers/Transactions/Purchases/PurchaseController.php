@@ -107,9 +107,9 @@ class PurchaseController extends Controller
     public function destroy($id)
     {
         try {
-            $stock = $this->purchaseService->destroyPurchaseById($id);
+            $purchase = $this->purchaseService->destroyPurchaseById($id);
 
-            if ($stock) {
+            if ($purchase) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Pembelian berhasil dihapus.'
