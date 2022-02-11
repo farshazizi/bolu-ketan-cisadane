@@ -101,24 +101,26 @@ var app = new Vue({
             this.errors = [];
             event.preventDefault();
 
-            if (!this.date) {
-                this.errors.push("Tanggal wajib diisi.");
-            }
-
             let dataDetail = this.detail;
-            for (let index = 0; index < dataDetail.length; index++) {
-                if (!dataDetail[index].inventoryStock) {
-                    this.errors.push(
-                        "Stok pada baris ke-" + (index + 1) + " wajib diisi."
-                    );
+            if (dataDetail.length > 0) {
+                for (let index = 0; index < dataDetail.length; index++) {
+                    if (!dataDetail[index].inventoryStock) {
+                        this.errors.push(
+                            "Stok pada baris ke-" +
+                                (index + 1) +
+                                " wajib diisi."
+                        );
+                    }
+                    if (!dataDetail[index].quantity) {
+                        this.errors.push(
+                            "Kuantitas pada baris ke-" +
+                                (index + 1) +
+                                " wajib diisi."
+                        );
+                    }
                 }
-                if (!dataDetail[index].quantity) {
-                    this.errors.push(
-                        "Kuantitas pada baris ke-" +
-                            (index + 1) +
-                            " wajib diisi."
-                    );
-                }
+            } else {
+                this.errors.push("Detail penjualan harus diinputkan.");
             }
 
             if (this.errors.length > 0) {
