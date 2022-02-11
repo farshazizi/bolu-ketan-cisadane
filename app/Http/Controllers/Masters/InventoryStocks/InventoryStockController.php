@@ -32,6 +32,14 @@ class InventoryStockController extends Controller
 
         return datatables()->of($data)
             ->addIndexColumn()
+            ->editColumn('minimal_quantity', function ($inventoryStock) {
+                $minimalQuantity = number_format($inventoryStock->minimal_quantity, 0);
+                return $minimalQuantity;
+            })
+            ->editColumn('price', function ($inventoryStock) {
+                $price = number_format($inventoryStock->price, 0);
+                return $price;
+            })
             ->addColumn('action', function ($inventoryStock) {
                 return ('
                 <div class="btn-group btn-group-sm" style="float: left">

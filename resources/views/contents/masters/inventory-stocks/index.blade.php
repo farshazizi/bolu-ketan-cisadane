@@ -27,11 +27,12 @@
                                     <th>No</th>
                                     <th>Nama Stok</th>
                                     <th>Nama Kategori</th>
+                                    <th>Min. Kuantitas</th>
+                                    <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
