@@ -3,7 +3,7 @@ var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
-        date: "",
+        date: new Date().toISOString().slice(0, 10),
         notes: "",
         grandTotal: 0,
         detail: [],

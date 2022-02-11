@@ -35,7 +35,7 @@
                                             <div class="form-group">
                                                 <label for="date">Tanggal</label>
                                                 <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date" value="{{ old('date') }}">
+                                                    id="date" name="date" v-model="date" disabled>
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
