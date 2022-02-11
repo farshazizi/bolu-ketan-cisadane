@@ -83,16 +83,16 @@
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control" id="uom" name="uom"
-                                                                disabled>
+                                                                v-model="data.uom" disabled>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control" id="quantity"
-                                                                name="quantity" :index="index" v-model="data.quantity">
+                                                                name="quantity" v-model="data.quantity" :index="index">
                                                             </input-currency>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control" id="price"
-                                                                name="price" :index="index" v-model="data.price">
+                                                                name="price" v-model="data.price" :index="index">
                                                             </input-currency>
                                                         </td>
                                                         <td>
