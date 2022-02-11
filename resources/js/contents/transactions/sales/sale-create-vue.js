@@ -127,43 +127,7 @@ var app = new Vue({
                 return;
             }
 
-            // save menggunakan button (vue js)
             var data = JSON.parse(JSON.stringify(this.$data));
-
-            // save menggunakan form
-            const formData = new FormData();
-            formData.append("date", data.date);
-            formData.append("notes", data.notes);
-
-            let grandTotal = 0;
-            for (var i = 0; i < data.detail.length; i++) {
-                formData.append(
-                    "detail[" + i + "][inventoryStock]",
-                    this.detail[i].inventoryStock
-                );
-                formData.append(
-                    "detail[" + i + "][quantity]",
-                    this.detail[i].quantity
-                );
-                formData.append(
-                    "detail[" + i + "][price]",
-                    this.detail[i].price
-                );
-                formData.append(
-                    "detail[" + i + "][discount]",
-                    this.detail[i].discount
-                );
-                formData.append(
-                    "detail[" + i + "][total]",
-                    this.detail[i].total
-                );
-                formData.append(
-                    "detail[" + i + "][notes]",
-                    this.detail[i].notes
-                );
-                grandTotal += this.detail[i]["total"];
-            }
-            formData.append("grandTotal", grandTotal);
 
             $.ajaxSetup({
                 headers: {
@@ -173,22 +137,11 @@ var app = new Vue({
                 },
             });
             $.ajax({
-                cache: false,
-                processData: false,
-                //vue
-                // type: 'POST',
-                // dataType: 'json',
-                // contentType: 'application/json',
-                // data: JSON.stringify(data),
-                // form
-                dataType: "json",
-                method: "POST",
-                contentType: false,
-                data: formData,
-                theme: "bootstrap4",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                type: "POST",
                 url: storeRoute,
                 success: function (response) {
-                    console.log(response);
                     if (
                         response.status === "success" &&
                         response.code === "store-sale-success"
