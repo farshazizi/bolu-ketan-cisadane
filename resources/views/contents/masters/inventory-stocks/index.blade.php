@@ -2,6 +2,12 @@
 
 @section('content-header')
     <h3>Stok</h3>
+    <style>
+        .text-right {
+            text-align: right;
+        }
+
+    </style>
 @endsection
 
 @section('content-body')
