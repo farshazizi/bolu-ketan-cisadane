@@ -8,6 +8,6 @@ interface InventoryStockInterface
     public function storeInventoryStock($data);
     public function getInventoryStockById($id);
     public function updateInventoryStockById($data, $id);
-    public function destoryInventoryStockById($id);
+    public function destroyInventoryStockById($id);
     public function getPriceById($id);
 }

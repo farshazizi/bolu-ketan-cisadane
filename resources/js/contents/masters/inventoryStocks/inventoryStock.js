@@ -17,6 +17,13 @@ $(function () {
                 data: "category.name",
             },
             {
+                data: "minimal_quantity",
+            },
+            {
+                data: "price",
+                className: "text-right",
+            },
+            {
                 data: "action",
                 orderable: false,
                 searchable: false,

@@ -2,6 +2,12 @@
 
 @section('content-header')
     <h3>Stok</h3>
+    <style>
+        .text-right {
+            text-align: right;
+        }
+
+    </style>
 @endsection
 
 @section('content-body')
@@ -21,11 +27,12 @@
                                     <th>No</th>
                                     <th>Nama Stok</th>
                                     <th>Nama Kategori</th>
+                                    <th>Min. Kuantitas</th>
+                                    <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>

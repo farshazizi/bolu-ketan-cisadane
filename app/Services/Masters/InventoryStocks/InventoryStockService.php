@@ -44,7 +44,7 @@ class InventoryStockService
     public function updateInventoryStockById($data, $id)
     {
         try {
-            $inventoryStock = $this->updateInventoryStockById($data, $id);
+            $inventoryStock = $this->inventoryStockRepository->updateInventoryStockById($data, $id);
 
             return $inventoryStock;
         } catch (Exception $exception) {
@@ -56,7 +56,7 @@ class InventoryStockService
     public function destroyInventoryStockById($id)
     {
         try {
-            $inventoryStock = $this->destroyInventoryStockById($id);
+            $inventoryStock = $this->inventoryStockRepository->destroyInventoryStockById($id);
 
             return $inventoryStock;
         } catch (Exception $exception) {
