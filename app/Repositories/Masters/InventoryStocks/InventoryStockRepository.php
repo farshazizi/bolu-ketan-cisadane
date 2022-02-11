@@ -46,7 +46,7 @@ class InventoryStockRepository implements InventoryStockInterface
         return $inventoryStock;
     }
 
-    public function destoryInventoryStockById($id)
+    public function destroyInventoryStockById($id)
     {
         $inventoryStock = InventoryStock::findOrFail($id);
         $inventoryStock->delete();
