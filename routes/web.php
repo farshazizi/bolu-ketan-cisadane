@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Masters\Additionals\AdditionalController;
 use App\Http\Controllers\Masters\Categories\CategoryController;
 use App\Http\Controllers\Masters\Ingredients\IngredientController;
 use App\Http\Controllers\Masters\InventoryStocks\InventoryStockController;
@@ -33,6 +34,17 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// Additional
+Route::prefix('/additionals')->group(function () {
+    Route::get('/', [AdditionalController::class, 'index'])->name('additionals.index');
+    Route::get('/data', [AdditionalController::class, 'data'])->name('additionals.data');
+    Route::get('/create', [AdditionalController::class, 'create'])->name('additionals.create');
+    Route::post('/', [AdditionalController::class, 'store'])->name('additionals.store');
+    Route::get('/{id}/edit', [AdditionalController::class, 'edit'])->name('additionals.edit');
+    Route::patch('/{id}', [AdditionalController::class, 'update'])->name('additionals.update');
+    Route::delete('/{id}', [AdditionalController::class, 'destroy'])->name('additionals.destroy');
+});
 
 // Category
 Route::prefix('/categories')->group(function () {
