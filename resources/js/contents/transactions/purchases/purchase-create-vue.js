@@ -3,7 +3,7 @@ var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
-        date: "",
+        date: new Date().toISOString().slice(0, 10),
         notes: "",
         grandTotal: 0,
         detail: [],
@@ -84,7 +84,6 @@ var app = new Vue({
                 success: function (response) {
                     let uomName = response.data.ingredient.uom.name;
                     dataDetail.uom = uomName;
-                    $("#uom").val(uomName);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     Swal.fire({
@@ -102,29 +101,33 @@ var app = new Vue({
             this.errors = [];
             event.preventDefault();
 
-            if (!this.date) {
-                this.errors.push("Tanggal wajib diisi.");
-            }
-
             let dataDetail = this.detail;
-            for (let index = 0; index < dataDetail.length; index++) {
-                if (!dataDetail[index].ingredient) {
-                    this.errors.push(
-                        "Stok pada baris ke-" + (index + 1) + " wajib diisi."
-                    );
+            if (dataDetail.length > 0) {
+                for (let index = 0; index < dataDetail.length; index++) {
+                    if (!dataDetail[index].ingredient) {
+                        this.errors.push(
+                            "Bahan pada baris ke-" +
+                                (index + 1) +
+                                " wajib diisi."
+                        );
+                    }
+                    if (!dataDetail[index].quantity) {
+                        this.errors.push(
+                            "Kuantitas pada baris ke-" +
+                                (index + 1) +
+                                " wajib diisi."
+                        );
+                    }
+                    if (!dataDetail[index].price) {
+                        this.errors.push(
+                            "Harga pada baris ke-" +
+                                (index + 1) +
+                                " wajib diisi."
+                        );
+                    }
                 }
-                if (!dataDetail[index].quantity) {
-                    this.errors.push(
-                        "Kuantitas pada baris ke-" +
-                            (index + 1) +
-                            " wajib diisi."
-                    );
-                }
-                if (!dataDetail[index].price) {
-                    this.errors.push(
-                        "Harga pada baris ke-" + (index + 1) + " wajib diisi."
-                    );
-                }
+            } else {
+                this.errors.push("Detail pembelian harus diinputkan.");
             }
 
             if (this.errors.length > 0) {
@@ -146,7 +149,6 @@ var app = new Vue({
                 type: "POST",
                 url: storeRoute,
                 success: function (response) {
-                    console.log(response);
                     if (
                         response.status === "success" &&
                         response.code === "store-purchase-success"

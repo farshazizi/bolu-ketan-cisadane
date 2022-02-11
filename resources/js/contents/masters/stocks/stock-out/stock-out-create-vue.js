@@ -77,7 +77,6 @@ var app = new Vue({
                 type: "POST",
                 url: storeRoute,
                 success: function (response) {
-                    console.log(response);
                     if (
                         response.status === "success" &&
                         response.code === "store-stock-out-success"
