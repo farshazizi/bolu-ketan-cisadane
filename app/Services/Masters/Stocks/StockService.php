@@ -3,6 +3,7 @@
 namespace App\Services\Masters\Stocks;
 
 use App\Models\Masters\Stocks\Stock;
+use App\Repositories\Masters\InventoryStocks\InventoryStockRepository;
 use App\Repositories\Masters\Stocks\StockRepository;
 use App\Repositories\Transactions\Sales\SaleRepository;
 use Exception;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Log;
 
 class StockService
 {
+    private $inventoryStockRepository;
     private $saleRepository;
     private $stockRepository;
 
-    public function __construct(SaleRepository $saleRepository, StockRepository $stockRepository)
+    public function __construct(InventoryStockRepository $inventoryStockRepository, SaleRepository $saleRepository, StockRepository $stockRepository)
     {
+        $this->inventoryStockRepository = $inventoryStockRepository;
         $this->saleRepository = $saleRepository;
         $this->stockRepository = $stockRepository;
     }
@@ -100,5 +103,19 @@ class StockService
             Log::error($exception);
             throw new Exception('Gagal mendapatkan stock.');
         }
+    }
+
+    public function getStocks()
+    {
+        $stocks = $this->inventoryStockRepository->getInventoryStocks();
+
+        $dataStocks = [];
+        foreach ($stocks as $key => $stock) {
+            $stockExist = $this->getStockByInventoryStockId($stock->id);
+            $dataStocks[$key]['name'] = $stock->name;
+            $dataStocks[$key]['stock'] = $stockExist;
+        }
+
+        return $dataStocks;
     }
 }
