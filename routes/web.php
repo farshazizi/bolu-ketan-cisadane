@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Masters\Additionals\AdditionalController;
 use App\Http\Controllers\Masters\Categories\CategoryController;
 use App\Http\Controllers\Masters\Ingredients\IngredientController;
@@ -29,9 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.index');
-})->name('/');
+Route::get('/', [DashboardController::class, 'index'])->name('/');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
