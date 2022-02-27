@@ -9,4 +9,5 @@ interface SaleInterface
     public function getSaleById($id);
     public function destorySaleById($id);
     public function getStockByInventoryStockId($id);
+    public function getGrandTotalDailySale();
 }

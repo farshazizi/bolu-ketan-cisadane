@@ -114,4 +114,11 @@ class SaleRepository implements SaleInterface
 
         return $stockDetail;
     }
+
+    public function getGrandTotalDailySale()
+    {
+        $grandTotal = Sale::sum('grand_total');
+
+        return $grandTotal;
+    }
 }
