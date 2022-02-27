@@ -3,10 +3,12 @@ var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
+        indexDetail: 0,
         date: new Date().toISOString().slice(0, 10),
         notes: "",
         grandTotal: 0,
         detail: [],
+        detailAdditional: [],
         errors: [],
         config: {
             format: "DD-MM-YYYY",
@@ -23,9 +25,19 @@ var app = new Vue({
             $("body").on("change", "#quantity", function (event) {
                 let index = $(event.target).attr("index");
                 let value = $(event.target).val();
-                let total = value * vm.detail[index].price;
 
-                vm.$set(vm.detail[index], "total", total);
+                if (value > vm.detail[index].stock) {
+                    Swal.fire({
+                        icon: "warning",
+                        text: "Kuantitas melebihi stok.",
+                        showConfirmButton: false,
+                    });
+
+                    vm.$set(vm.detail[index], "quantity", 0);
+                } else {
+                    let total = value * vm.detail[index].price;
+                    vm.$set(vm.detail[index], "total", total);
+                }
             });
 
             $("body").on("change", "#discount", function (event) {
@@ -35,6 +47,10 @@ var app = new Vue({
                 let totalDiscount = total - value;
 
                 vm.$set(vm.detail[index], "total", totalDiscount);
+            });
+
+            $("body").on("hide.bs.modal", "#additionalModal", function (event) {
+                $("#additional").val("");
             });
         });
     },
@@ -49,11 +65,29 @@ var app = new Vue({
     computed: {
         calculateGrandTotal: function () {
             let grandTotal = 0;
+            let grandTotalDetail = 0;
+            let grandTotalAdditional = 0;
+
             if (this.detail.length > 0) {
-                for (var index = 0; index < this.detail.length; index++) {
-                    grandTotal += parseFloat(this.detail[index].total);
+                for (let index = 0; index < this.detail.length; index++) {
+                    grandTotalDetail += parseFloat(this.detail[index].total);
                 }
             }
+
+            if (this.detailAdditional.length > 0) {
+                for (
+                    let indexAdditinoal = 0;
+                    indexAdditinoal < this.detailAdditional.length;
+                    indexAdditinoal++
+                ) {
+                    grandTotalAdditional += parseFloat(
+                        this.detailAdditional[indexAdditinoal].price
+                    );
+                }
+            }
+
+            grandTotal = grandTotalDetail + grandTotalAdditional;
+            this.grandTotal = grandTotal;
 
             return grandTotal;
         },
@@ -62,10 +96,12 @@ var app = new Vue({
         addSale: function () {
             let dataDetail = {
                 inventoryStock: "",
+                stock: 0,
                 quantity: 0,
                 price: 0,
                 discount: 0,
                 total: 0,
+                totalAdditional: 0,
                 notes: "",
             };
             this.detail.push(dataDetail);
@@ -73,12 +109,43 @@ var app = new Vue({
         deleteSale: function (index) {
             this.detail.splice(index, 1);
         },
+        getStock: function (index) {
+            let dataDetail = this.detail[index];
+            let inventoryId = dataDetail.inventoryStock;
+            let url = getStockRoute.replace(":id", inventoryId);
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    let stock = response.data.stock;
+                    dataDetail.stock = stock;
+
+                    if (stock == 0) {
+                        Swal.fire({
+                            icon: "warning",
+                            text: "Stok barang 0.",
+                            showConfirmButton: false,
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    Swal.fire({
+                        icon: xhr.responseJSON.status,
+                        text: xhr.responseJSON.message,
+                        showConfirmButton: false,
+                    });
+                },
+            });
+        },
         getPrice: function (index) {
             let dataDetail = this.detail[index];
             let inventoryId = dataDetail.inventoryStock;
-            route = getPriceRoute.replace(":id", inventoryId);
+            let url = getPriceRoute.replace(":id", inventoryId);
+
             $.ajax({
-                url: route,
+                url: url,
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
@@ -94,6 +161,44 @@ var app = new Vue({
                 },
             });
         },
+        setIndexAdditional: function (index) {
+            this.indexDetail = index;
+        },
+        addAdditional: function () {
+            let index = this.indexDetail;
+            let additionalId = $("#additional").val();
+
+            if (additionalId) {
+                let additionalName = $("#additional option:selected")
+                    .text()
+                    .trim();
+                let price = $("#additional option:selected").attr("price");
+                let dataDetailAdditional = {
+                    additionalId: additionalId,
+                    additionalName: additionalName,
+                    price: price,
+                    index: index,
+                };
+                this.detailAdditional.push(dataDetailAdditional);
+                this.calculateTotalAdditional();
+            }
+        },
+        deleteAdditional: function (index) {
+            this.detailAdditional.splice(index, 1);
+            this.calculateTotalAdditional();
+        },
+        calculateTotalAdditional: function () {
+            let totalPrice = 0;
+
+            for (let key = 0; key < this.detailAdditional.length; key++) {
+                let detailIndex = this.detailAdditional[key].index;
+                if (detailIndex == this.indexDetail) {
+                    totalPrice += parseInt(this.detailAdditional[key].price);
+                }
+            }
+
+            this.detail[this.indexDetail].totalAdditional = totalPrice;
+        },
         closeValidation: function () {
             this.errors = [];
         },
@@ -102,6 +207,7 @@ var app = new Vue({
             event.preventDefault();
 
             let dataDetail = this.detail;
+
             if (dataDetail.length > 0) {
                 for (let index = 0; index < dataDetail.length; index++) {
                     if (!dataDetail[index].inventoryStock) {

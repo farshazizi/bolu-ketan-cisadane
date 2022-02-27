@@ -9,10 +9,17 @@ use Illuminate\Support\Facades\Log;
 
 class SalePriceController extends Controller
 {
-    public function __invoke(InventoryStockService $inventoryStockService, $id)
+    private $inventoryStockService;
+
+    public function __construct(InventoryStockService $inventoryStockService)
+    {
+        $this->inventoryStockService = $inventoryStockService;
+    }
+
+    public function __invoke($id)
     {
         try {
-            $price = $inventoryStockService->getPriceById($id);
+            $price = $this->inventoryStockService->getPriceById($id);
 
             if ($price) {
                 return response()->json([

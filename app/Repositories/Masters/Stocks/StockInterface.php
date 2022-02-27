@@ -8,4 +8,6 @@ interface StockInterface
     public function storeStock($data);
     public function getStockById($id);
     public function destoryStockById($id);
+    public function getStockInByInventoryStockId($id);
+    public function getStockOutByInventoryStockId($id);
 }

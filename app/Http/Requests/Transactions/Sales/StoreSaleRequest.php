@@ -30,7 +30,8 @@ class StoreSaleRequest extends FormRequest
             'detail' => 'required|array',
             'detail.*.inventoryStock' => 'required|string',
             'detail.*.quantity' => 'required',
-            'detail.*.price' => 'required'
+            'detail.*.price' => 'required',
+            'detailAdditional' => 'sometimes|array'
         ];
     }
 
