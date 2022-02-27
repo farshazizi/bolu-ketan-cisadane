@@ -3,6 +3,7 @@
 namespace App\Repositories\Transactions\Sales;
 
 use App\Models\Transactions\Sales\Sale;
+use App\Models\Transactions\Sales\SaleAdditionalDetail;
 use App\Models\Transactions\Sales\SaleDetail;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,8 @@ class SaleRepository implements SaleInterface
             if ($data['detail']) {
                 for ($index = 0; $index < count($data['detail']); $index++) {
                     $saleDetail = new SaleDetail;
-                    $saleDetail->id = Uuid::uuid4();
+                    $saleDetailId = Uuid::uuid4();
+                    $saleDetail->id = $saleDetailId;
                     $saleDetail->sale_id = $saleId;
                     $saleDetail->inventory_stock_id = $data['detail'][$index]['inventoryStock'];
                     $saleDetail->quantity = $data['detail'][$index]['quantity'];
@@ -42,6 +44,19 @@ class SaleRepository implements SaleInterface
                     $saleDetail->total = $data['detail'][$index]['total'];
                     $saleDetail->notes = $data['detail'][$index]['notes'];
                     $saleDetail->save();
+
+                    if ($data['detailAdditional']) {
+                        for ($indexAdditional = 0; $indexAdditional < count($data['detailAdditional']); $indexAdditional++) {
+                            if ($data['detailAdditional'][$indexAdditional]['index'] == $index) {
+                                $saleAdditionalDetail = new SaleAdditionalDetail();
+                                $saleAdditionalDetail->id = Uuid::uuid4();
+                                $saleAdditionalDetail->sale_detail_id = $saleDetailId;
+                                $saleAdditionalDetail->additional_id = $data['detailAdditional'][$indexAdditional]['additionalId'];
+                                $saleAdditionalDetail->price = $data['detailAdditional'][$indexAdditional]['price'];
+                                $saleAdditionalDetail->save();
+                            }
+                        }
+                    }
                 }
             }
             DB::commit();
@@ -67,9 +82,16 @@ class SaleRepository implements SaleInterface
     {
         DB::beginTransaction();
         try {
+            // Delete sale additional detail
+            $saleDetailId = SaleDetail::select('id')->where('sale_id', $id);
+            $saleAdditionalDetail = SaleAdditionalDetail::where('sale_detail_id', $saleDetailId);
+            $saleAdditionalDetail->delete();
+
+            // Delete sale detail
             $saleDetail = SaleDetail::where('sale_id', $id);
             $saleDetail->delete();
 
+            // Delete sale
             $sale = Sale::findOrFail($id);
             $sale->delete();
             DB::commit();
@@ -77,6 +99,7 @@ class SaleRepository implements SaleInterface
             return [
                 'sale' => $sale,
                 'saleDetail' => $saleDetail,
+                'saleAdditionalDetail' => $saleAdditionalDetail,
             ];
         } catch (Exception $exception) {
             DB::rollBack();
