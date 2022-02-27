@@ -11,9 +11,11 @@ use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
 use App\Http\Controllers\Transactions\Purchases\PurchaseController;
 use App\Http\Controllers\Transactions\Purchases\PurchaseUomController;
+use App\Http\Controllers\Transactions\Sales\SaleAdditionalDetailController;
 use App\Http\Controllers\Transactions\Sales\SaleController;
 use App\Http\Controllers\Transactions\Sales\SaleInventoryStockController;
 use App\Http\Controllers\Transactions\Sales\SalePriceController;
+use App\Http\Controllers\Transactions\Sales\SaleStockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -101,6 +103,10 @@ Route::prefix('sales')->group(function () {
     Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
     Route::get('/inventory-stock', [SaleInventoryStockController::class, '__invoke'])->name('sales.inventory_stocks');
     Route::get('/price/{id}', [SalePriceController::class, '__invoke'])->name('sales.price');
+    Route::get('/stock/{id}', [SaleStockController::class, '__invoke'])->name('sales.stock');
+
+    // Sale Additional Detail
+    Route::get('/additional-detail/data/{saleDetailId}', [SaleAdditionalDetailController::class, 'data'])->name('sales_additional_details.data');
 });
 
 // Stock
