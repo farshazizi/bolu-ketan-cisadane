@@ -56,7 +56,9 @@ class SaleRepository implements SaleInterface
 
     public function getSaleById($id)
     {
-        $sale = Sale::has('saleDetails')->with('saleDetails.inventoryStock')->findOrFail($id);
+        $sale = Sale::has('saleDetails')
+            ->with(['saleDetails.inventoryStock', 'saleDetails.saleAdditionalDetails.additional'])
+            ->findOrFail($id);
 
         return $sale;
     }
