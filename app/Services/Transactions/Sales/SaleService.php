@@ -71,4 +71,11 @@ class SaleService
             throw new Exception('Penjualan gagal dihapus.');
         }
     }
+
+    public function getGrandTotalDailySale()
+    {
+        $grandTotal = $this->saleRepository->getGrandTotalDailySale();
+
+        return $grandTotal;
+    }
 }

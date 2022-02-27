@@ -62,4 +62,11 @@ class PurchaseService
             throw new Exception('Pembelian gagal dihapus.');
         }
     }
+
+    public function getGrandTotalDailyPurchase()
+    {
+        $grandTotal = $this->purchaseRepository->getGrandTotalDailyPurchase();
+
+        return $grandTotal;
+    }
 }
