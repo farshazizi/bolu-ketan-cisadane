@@ -81,4 +81,11 @@ class PurchaseRepository implements PurchaseInterface
             throw new Exception('Pembelian gagal dihapus.');
         }
     }
+
+    public function getGrandTotalDailyPurchase()
+    {
+        $grandTotal = Purchase::sum('grand_total');
+
+        return $grandTotal;
+    }
 }

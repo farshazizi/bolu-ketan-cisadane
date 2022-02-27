@@ -8,4 +8,5 @@ interface PurchaseInterface
     public function storePurchase($data);
     public function getPurchaseById($id);
     public function destoryPurchaseById($id);
+    public function getGrandTotalDailyPurchase();
 }
