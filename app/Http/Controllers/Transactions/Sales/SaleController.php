@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Transactions\Sales;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transactions\Sales\StoreSaleRequest;
+use App\Services\Masters\Additionals\AdditionalService;
 use App\Services\Masters\InventoryStocks\InventoryStockService;
 use App\Services\Transactions\Sales\SaleService;
 use Carbon\Carbon;
@@ -12,11 +13,13 @@ use Illuminate\Support\Facades\Log;
 
 class SaleController extends Controller
 {
+    private $additionalService;
     private $inventoryStockService;
     private $saleService;
 
-    public function __construct(InventoryStockService $inventoryStockService, SaleService $saleService)
+    public function __construct(AdditionalService $additionalService, InventoryStockService $inventoryStockService, SaleService $saleService)
     {
+        $this->additionalService = $additionalService;
         $this->inventoryStockService = $inventoryStockService;
         $this->saleService = $saleService;
     }
@@ -53,9 +56,10 @@ class SaleController extends Controller
 
     public function create()
     {
+        $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
 
-        return view('contents.transactions.sales.create', compact('inventoryStocks'));
+        return view('contents.transactions.sales.create', compact('additionals', 'inventoryStocks'));
     }
 
     public function store(StoreSaleRequest $storeSaleRequest)
