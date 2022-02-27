@@ -47,6 +47,10 @@ mix
         "public/js/contents/transactions/sales/sale-create-vue.js"
     )
     .js(
+        "resources/js/contents/transactions/sales/sale-show.js",
+        "public/js/contents/transactions/sales/sale-show.js"
+    )
+    .js(
         "resources/js/contents/masters/stocks/stock.js",
         "public/js/contents/masters/stocks/stock.js"
     )
