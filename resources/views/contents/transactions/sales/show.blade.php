@@ -38,7 +38,9 @@
                                                     <th style="text-align: right">Harga</th>
                                                     <th style="text-align: right">Diskon</th>
                                                     <th style="text-align: right">Total</th>
+                                                    <th style="text-align: right">Total Tambahan</th>
                                                     <th>Notes</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
@@ -50,7 +52,16 @@
                                                         <td style="text-align: right">{{ $saleDetail->price }}</td>
                                                         <td style="text-align: right">{{ $saleDetail->discount }}</td>
                                                         <td style="text-align: right">{{ $saleDetail->total }}</td>
+                                                        <td style="text-align: right">{{ $saleDetail->totalAdditional }}
+                                                        </td>
                                                         <td>{{ $saleDetail->notes }}</td>
+                                                        <td>
+                                                            <button class="btn btn-success btn-sm" type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#additionalModal"
+                                                                data-sale-detail-id="{{ $saleDetail->id }}">
+                                                                <i class="fa fa-solid fa-list" aria-hidden="true"></i>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -75,4 +86,34 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade text-left" id="additionalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Tambahan</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="additionalList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('content-js')
+    <script type="text/javascript">
+        let getSaleAdditionalDetailRoute = "{{ route('sales_additional_details.data', ':salesDetail') }}";
+    </script>
+    <script type="text/javascript" src="{{ asset('js/contents/transactions/sales/sale-show.js') }}"></script>
 @endsection
