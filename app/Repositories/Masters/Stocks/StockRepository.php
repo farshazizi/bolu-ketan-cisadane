@@ -79,4 +79,28 @@ class StockRepository implements StockInterface
             throw new Exception('Stok gagal dihapus.');
         }
     }
+
+    public function getStockInByInventoryStockId($id)
+    {
+        $stockDetail = StockDetail::has('stock')
+            ->whereHas('stock', function ($query) {
+                $query->where('stock_type', 0);
+            })
+            ->where('inventory_stock_id', $id)
+            ->get();
+
+        return $stockDetail;
+    }
+
+    public function getStockOutByInventoryStockId($id)
+    {
+        $stockDetail = StockDetail::has('stock')
+            ->whereHas('stock', function ($query) {
+                $query->where('stock_type', 1);
+            })
+            ->where('inventory_stock_id', $id)
+            ->get();
+
+        return $stockDetail;
+    }
 }

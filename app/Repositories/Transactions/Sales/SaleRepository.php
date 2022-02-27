@@ -82,4 +82,11 @@ class SaleRepository implements SaleInterface
             throw new Exception('Penjualan gagal dihapus.');
         }
     }
+
+    public function getStockByInventoryStockId($id)
+    {
+        $stockDetail = SaleDetail::where('inventory_stock_id', $id)->get();
+
+        return $stockDetail;
+    }
 }

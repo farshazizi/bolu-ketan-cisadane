@@ -8,4 +8,5 @@ interface SaleInterface
     public function storeSale($data);
     public function getSaleById($id);
     public function destorySaleById($id);
+    public function getStockByInventoryStockId($id);
 }
