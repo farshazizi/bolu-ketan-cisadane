@@ -16,6 +16,7 @@ use App\Http\Controllers\Transactions\Sales\SaleAdditionalDetailController;
 use App\Http\Controllers\Transactions\Sales\SaleController;
 use App\Http\Controllers\Transactions\Sales\SaleInventoryStockController;
 use App\Http\Controllers\Transactions\Sales\SalePriceController;
+use App\Http\Controllers\Transactions\Sales\SalePrintController;
 use App\Http\Controllers\Transactions\Sales\SaleStockController;
 use Illuminate\Support\Facades\Route;
 
@@ -103,6 +104,7 @@ Route::prefix('sales')->group(function () {
     Route::get('/inventory-stock', [SaleInventoryStockController::class, '__invoke'])->name('sales.inventory_stocks');
     Route::get('/price/{id}', [SalePriceController::class, '__invoke'])->name('sales.price');
     Route::get('/stock/{id}', [SaleStockController::class, '__invoke'])->name('sales.stock');
+    Route::get('/print/{id}', [SalePrintController::class, '__invoke'])->name('sales.print');
 
     // Sale Additional Detail
     Route::get('/additional-detail/data/{saleDetailId}', [SaleAdditionalDetailController::class, 'data'])->name('sales_additional_details.data');
