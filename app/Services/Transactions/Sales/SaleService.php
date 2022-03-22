@@ -3,6 +3,8 @@
 namespace App\Services\Transactions\Sales;
 
 use App\Repositories\Transactions\Sales\SaleRepository;
+use Barryvdh\Snappy\Facades\SnappyPdf;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -49,7 +51,7 @@ class SaleService
 
                 $totalAdditional = 0;
                 $saleAdditionalDetails = $sale->saleDetails[$index]->saleAdditionalDetails;
-                for ($indexAdditional=0; $indexAdditional < count($saleAdditionalDetails); $indexAdditional++) {
+                for ($indexAdditional = 0; $indexAdditional < count($saleAdditionalDetails); $indexAdditional++) {
                     $totalAdditional += $saleAdditionalDetails[$indexAdditional]->price;
                     $saleAdditionalDetails[$indexAdditional]->price = number_format($saleAdditionalDetails[$indexAdditional]->price, 0);
                 }
@@ -77,5 +79,34 @@ class SaleService
         $grandTotal = $this->saleRepository->getGrandTotalDailySale();
 
         return $grandTotal;
+    }
+
+    public function print($id)
+    {
+        $data = $this->saleRepository->getSaleById($id);
+
+        // Formatting
+        if ($data) {
+            $data->date = Carbon::parse($data->date)->locale('id')->translatedFormat('d-m-Y');
+            $time = Carbon::parse($data->created_at)->locale('id')->translatedFormat('H:i:s');
+            $data->time = $time;
+        }
+
+        // Get image logo
+        $imageLogo = '';
+        $rootPathLogo = 'assets/images/logo/';
+        $pathLogo = public_path($rootPathLogo . 'Si_Hitam_Manis.png');
+        if (file_exists($pathLogo)) {
+            $imageLogo = base64_encode(file_get_contents($pathLogo));
+        }
+
+        $html = view('contents.pdfs.sale', compact('data', 'imageLogo'))->render();
+
+        $pdf = SnappyPdf::loadHTML($html);
+        $pdf->setPaper('a5');
+        $pdf->setOrientation('portrait');
+        $pdfString = $pdf->output();
+
+        return $pdfString;
     }
 }
