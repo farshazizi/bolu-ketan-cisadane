@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sale</title>
+    <title>Penjualan {{ $data->invoice_number }}</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="header">
-        <table style="width: 100%; border-collapse: collapse">
+        <table style="width: 100%">
             <tbody>
                 <tr>
                     <td>
@@ -95,9 +95,25 @@
         <table style="width: 100%">
             <tbody>
                 <tr>
-                    <td style="text-align: right">
-                        <p style="font-size: 24px">
-                            <b>Total Rp{{ number_format($data->grand_total, 0) }}</b>
+                    <td rowspan="2">
+                        <p style="color: #722C14; font-size: 24px">
+                            <i>
+                                Jl. Cisadane XV, No 73 <br />
+                                Adiarsa Barat, Karawang <br />
+                                No. Telepon: 0813-8993-3245
+                            </i>
+                        </p>
+                    </td>
+                    <td style="text-align: center">
+                        <p style="color: #722C14; font-size: 24px">
+                            Total<b> Rp{{ number_format($data->grand_total, 0) }}</b>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <p style="color: #722C14; font-size: 24px">
+                            <i> Hormat Kami,</i>
                         </p>
                     </td>
                 </tr>

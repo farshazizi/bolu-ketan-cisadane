@@ -85,7 +85,7 @@ class SaleService
     {
         $data = $this->saleRepository->getSaleById($id);
 
-        // Formatting
+        // Formatting and get time
         if ($data) {
             $data->date = Carbon::parse($data->date)->locale('id')->translatedFormat('d-m-Y');
             $time = Carbon::parse($data->created_at)->locale('id')->translatedFormat('H:i:s');
