@@ -41,7 +41,7 @@
                     </td>
                     <td style="width: 40%"></td>
                     <td>
-                        <h4>Karawang, {{ $data->date }} <br> Pukul {{ $data->time }}</h4>
+                        <h4 style="color: #722C14">Karawang, {{ $data->date }} <br> Pukul {{ $data->time }}</h4>
                     </td>
                 </tr>
             </tbody>
@@ -67,29 +67,29 @@
                     <tr>
                         <td
                             style="border-right: 1px #722C14 solid; padding-top: 12px; padding-bottom: 12px; text-align: center">
-                            <p>
+                            <p style="color: #722C14">
                                 {{ $key + 1 }}
                             </p>
                         </td>
                         <td style="border-right: 1px #722C14 solid; padding-top: 12px; padding-bottom: 12px">
-                            <p style="margin: 8px">
+                            <p style="color: #722C14; margin: 8px">
                                 {{ $item->inventoryStock->name }}
                             </p>
                         </td>
                         <td
                             style="border-right: 1px #722C14 solid; padding-top: 12px; padding-bottom: 12px; text-align: right">
-                            <p style="margin: 8px">
+                            <p style="color: #722C14; margin: 8px">
                                 {{ number_format($item->price, 0) }}
                             </p>
                         </td>
                         <td
                             style="border-right: 1px #722C14 solid; padding-top: 12px; padding-bottom: 12px; text-align: center">
-                            <p>
+                            <p style="color: #722C14">
                                 {{ $item->quantity }}
                             </p>
                         </td>
                         <td style="padding-top: 12px; padding-bottom: 12px; text-align: right">
-                            <p style="margin: 8px">
+                            <p style="color: #722C14; margin: 8px">
                                 {{ number_format($item->total, 0) }}
                             </p>
                         </td>
