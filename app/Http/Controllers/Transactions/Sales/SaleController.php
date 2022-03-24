@@ -47,7 +47,8 @@ class SaleController extends Controller
                 return ('
                 <div class="btn-group btn-group-sm" style="float: left">
                     <a class="btn nav-link" href="' . route('sales.show', ['id' => $sale->id]) . '"><i class="far fa-eye fa-lg"></i></a>
-                    <a class="btn nav-link" id="delete" data-id="' . $sale->id . '" href="#"><i class="far fa-trash-alt fa-lg"></i></a>
+                    <a class="btn nav-link" href="#" id="delete" data-id="' . $sale->id . '"><i class="far fa-trash-alt fa-lg"></i></a>
+                    <a class="btn nav-link" href="' . route('sales.print', ['id' => $sale->id]) . '" id="print" data-id="' . $sale->id . '"><i class="fa fa-solid fa-print fa-lg"></i></a>
                 </div>
                 ');
             })
