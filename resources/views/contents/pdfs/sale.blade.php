@@ -17,16 +17,8 @@
 </head>
 
 <body>
-    <div class="logo">
-        <table style="width: 100%">
-            <tbody>
-                <tr>
-                    <td style="text-align: center">
-                        <img src="data:image/png;base64, {{ $imageLogo }}" style="width: 200px" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="logo" style="text-align: center">
+        <img src="data:image/png;base64, {{ $imageLogo }}" style="width: 240px" />
     </div>
 
     <div class="header">

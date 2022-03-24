@@ -95,7 +95,7 @@ class SaleService
         // Get image logo
         $imageLogo = '';
         $rootPathLogo = 'assets/images/logo/';
-        $pathLogo = public_path($rootPathLogo . 'Si_Hitam_Manis.png');
+        $pathLogo = public_path($rootPathLogo . 'Si_Hitam_Manis_Panjang.png');
         if (file_exists($pathLogo)) {
             $imageLogo = base64_encode(file_get_contents($pathLogo));
         }
