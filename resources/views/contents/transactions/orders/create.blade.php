@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Penjualan</h3>
+    <h3>Pesanan</h3>
 @endsection
 
 @section('content-body')
@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ms-auto">
                         <div class="buttons">
-                            <a href="{{ route('sales.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('orders.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                     <div class="card-content" id="app">
@@ -33,48 +33,48 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="date">Tanggal</label>
+                                                <label for="date">Tanggal Pesanan</label>
                                                 <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date" disabled>
+                                                    id="date" name="date" v-model="date">
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group order" style="display: none">
+                                            <div class="form-group">
                                                 <label for="name">Nama</label>
                                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                    id="name" name="name" v-model="name" disabled>
+                                                    id="name" name="name" v-model="name">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group order" style="display: none">
+                                            <div class="form-group">
                                                 <label for="address">Alamat</label>
-                                                <input type="text"
-                                                    class="form-control @error('address') is-invalid @enderror" id="address"
-                                                    name="address" v-model="address" disabled>
+                                                <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                                    id="address" name="address" v-model="address">
                                                 @error('address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group order" style="display: none">
+                                            <div class="form-group">
                                                 <label for="phone">No. Telepon</label>
                                                 <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                                    id="phone" name="phone" v-model="phone" disabled>
+                                                    id="phone" name="phone" v-model="phone">
                                                 @error('phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
                                                 <label for="notes">Notes</label>
-                                                <textarea class="form-control" id="notes" name="notes" v-model="notes" rows="3"></textarea>
+                                                <textarea class="form-control" id="notes" name="notes" v-model="notes"
+                                                    rows="3"></textarea>
                                                 @error('notes')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group d-flex justify-content-end mt-5">
                                                 <button type="button" class="btn btn-primary" v-on:click="addSale">
-                                                    Tambah Penjualan
+                                                    Tambah Pesanan
                                                 </button>
                                             </div>
                                             <table class="table"
@@ -83,10 +83,8 @@
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Stok</th>
-                                                        <th>Jml Stok</th>
                                                         <th>Kuantitas</th>
                                                         <th>Harga</th>
-                                                        <th>Diskon</th>
                                                         <th>Total</th>
                                                         <th>Total Tambahan</th>
                                                         <th>Notes</th>
@@ -100,18 +98,13 @@
                                                             <select class="form-select" style="width: 150px"
                                                                 id="inventoryStock" name="inventoryStock"
                                                                 v-model="data.inventoryStock"
-                                                                v-on:change="getPrice(index); getStock(index)">
+                                                                v-on:change="getPrice(index)">
                                                                 <option value="">Pilih Stok</option>
-                                                                @foreach ($data->inventoryStocks as $inventoryStock)
+                                                                @foreach ($inventoryStocks as $inventoryStock)
                                                                     <option value="{{ $inventoryStock->id }}">
                                                                         {{ $inventoryStock->name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </td>
-                                                        <td>
-                                                            <input-currency type="text" class="form-control" id="stock"
-                                                                name="stock" v-model="data.stock" :index="index" disabled>
-                                                            </input-currency>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control" id="quantity"
@@ -121,11 +114,6 @@
                                                         <td>
                                                             <input-currency type="text" class="form-control"
                                                                 v-model="data.price" disabled></input-currency>
-                                                        </td>
-                                                        <td>
-                                                            <input-currency type="text" class="form-control" id="discount"
-                                                                name="discount" v-model="data.discount" :index="index">
-                                                            </input-currency>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control"
@@ -194,7 +182,7 @@
                             <div class="form-inline form-group">
                                 <select class="form-control" id="additional" name="additional" required>
                                     <option value="" selected disabled>Pilih Tambahan</option>
-                                    @foreach ($data->additionals as $additional)
+                                    @foreach ($additionals as $additional)
                                         <option value="{{ $additional->id }}" :price="{{ $additional->price }}">
                                             {{ $additional->name }}</option>
                                     @endforeach
@@ -248,11 +236,8 @@
 
 @section('content-js')
     <script type="text/javascript">
-        var getPriceRoute = "{{ route('sales.price', ':id') }}";
-        var getStockRoute = "{{ route('sales.stock', ':id') }}";
-        var indexRoute = "{{ route('sales.index') }}";
-        var storeRoute = "{{ route('sales.store') }}";
-        var dataOrder = <?php echo json_encode($data); ?>;
+        var getPriceRoute = "{{ route('orders.price', ':id') }}";
+        var storeRoute = "{{ route('orders.store') }}";
     </script>
-    <script type="text/javascript" src="{{ asset('js/contents/transactions/sales/sale-create-vue.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/contents/transactions/orders/order-create-vue.js') }}"></script>
 @endsection

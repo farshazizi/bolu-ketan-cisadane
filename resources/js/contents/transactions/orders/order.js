@@ -14,54 +14,6 @@ $(function () {
                 data: "date",
             },
             {
-                data: "invoice_number",
-            },
-            {
-                data: "type",
-                render: function (data) {
-                    if (data == "0") {
-                        return '<span class="badge bg-primary">Langsung</span>';
-                    } else if (data == "1") {
-                        return '<span class="badge bg-success">Pesanan</span>';
-                    } else {
-                        return "";
-                    }
-                },
-            },
-            {
-                data: "grand_total",
-                className: "text-right",
-            },
-            {
-                data: "notes",
-            },
-            {
-                data: "action",
-                orderable: false,
-                searchable: false,
-            },
-        ],
-        order: [[1, "asc"]],
-        language: {
-            emptyTable: "Tidak ada data",
-        },
-    });
-
-    var tableOrder = $("#datatableOrder").DataTable({
-        ajax: dataSaleOrdersRoute,
-        processing: true,
-        serverSide: true,
-        columns: [
-            {
-                data: "DT_RowIndex",
-                width: "10%",
-                orderable: false,
-                searchable: false,
-            },
-            {
-                data: "date",
-            },
-            {
                 data: "name",
             },
             {
@@ -71,6 +23,18 @@ $(function () {
                 data: "phone",
             },
             {
+                data: "status",
+                render: function (data) {
+                    if (data == "0") {
+                        return '<span class="badge bg-warning">Menunggu Diproses</span>';
+                    } else if (data == "1") {
+                        return '<span class="badge bg-success">Berhasil</span>';
+                    } else {
+                        return "";
+                    }
+                },
+            },
+            {
                 data: "action",
                 orderable: false,
                 searchable: false,
@@ -81,20 +45,6 @@ $(function () {
             emptyTable: "Tidak ada data",
         },
     });
-
-    $("#orderModal").on("show.bs.modal", function (event) {
-        tableOrder;
-    });
-
-    $("#btnChooseOrder").on("click", function (event) {
-        let value = $("#orderIdChoosed").val();
-        window.location.href = createSaleOrderRoute + "/" + value;
-    });
-});
-
-$(document).on("click", "#orderId", function (event) {
-    let value = $(event.target).val();
-    $("#orderIdChoosed").val(value);
 });
 
 function remove(t) {
@@ -132,7 +82,7 @@ $(document).on("click", "#delete", function (event) {
     event.preventDefault();
     Swal.fire({
         title: "Apakah kamu yakin?",
-        text: "Penjualan akan dihapus",
+        text: "Pesanan akan dihapus",
         showCancelButton: true,
         confirmButtonText: "Hapus",
         cancelButtonText: "Batal",

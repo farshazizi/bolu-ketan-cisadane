@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Transactions\Sales;
 
+use App\Models\Transactions\Orders\Order;
 use App\Models\Transactions\Sales\Sale;
 use App\Models\Transactions\Sales\SaleAdditionalDetail;
 use App\Models\Transactions\Sales\SaleDetail;
@@ -19,7 +20,7 @@ class SaleRepository implements SaleInterface
         return $sales;
     }
 
-    public function storeSale($data)
+    public function storeSale($data, $invoiceNumber)
     {
         DB::beginTransaction();
         try {
@@ -27,6 +28,9 @@ class SaleRepository implements SaleInterface
             $saleId = Uuid::uuid4();
             $sale->id = $saleId;
             $sale->date = $data['date'];
+            $sale->order_id = $data['orderId'];
+            $sale->invoice_number = $invoiceNumber;
+            $sale->type = $data['orderId'] ? '1' : '0';
             $sale->grand_total = $data['grandTotal'];
             $sale->notes = $data['notes'];
             $sale->save();
@@ -58,6 +62,10 @@ class SaleRepository implements SaleInterface
                         }
                     }
                 }
+            }
+
+            if ($data['orderId']) {
+                Order::where('id', $data['orderId'])->update(['status' => 1]);
             }
             DB::commit();
 
@@ -120,5 +128,12 @@ class SaleRepository implements SaleInterface
         $grandTotal = Sale::sum('grand_total');
 
         return $grandTotal;
+    }
+
+    public function getInvoiceNumbers()
+    {
+        $invoiceNumbers = Sale::select('invoice_number')->orderBy('invoice_number', 'desc')->get();
+
+        return $invoiceNumbers;
     }
 }

@@ -51,6 +51,18 @@ mix
         "public/js/contents/transactions/sales/sale-show.js"
     )
     .js(
+        "resources/js/contents/transactions/orders/order.js",
+        "public/js/contents/transactions/orders/order.js"
+    )
+    .js(
+        "resources/js/contents/transactions/orders/order-create-vue.js",
+        "public/js/contents/transactions/orders/order-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/transactions/orders/order-show.js",
+        "public/js/contents/transactions/orders/order-show.js"
+    )
+    .js(
         "resources/js/contents/masters/stocks/stock.js",
         "public/js/contents/masters/stocks/stock.js"
     )

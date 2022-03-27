@@ -2,6 +2,7 @@
 
 namespace App\Services\Transactions\Sales;
 
+use App\Models\Transactions\Sales\Sale;
 use App\Repositories\Transactions\Sales\SaleRepository;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Carbon\Carbon;
@@ -24,15 +25,17 @@ class SaleService
         return $sales;
     }
 
-    public function storeInventoryStock($data)
+    public function storeSale($data)
     {
         try {
-            $sale = $this->saleRepository->storeSale($data);
+            $date = $data['date'];
+            $invoiceNumber = $this->generateInvoiceNumber($date);
+            $sale = $this->saleRepository->storeSale($data, $invoiceNumber);
 
             return $sale;
         } catch (Exception $exception) {
             Log::error($exception);
-            throw new Exception('Penjualan gagal ditambahkan.');
+            throw $exception;
         }
     }
 
@@ -108,5 +111,40 @@ class SaleService
         $pdfString = $pdf->output();
 
         return $pdfString;
+    }
+
+    public function generateInvoiceNumber($date)
+    {
+        try {
+            $invoiceNumbers = $this->saleRepository->getInvoiceNumbers();
+
+            $date = str_replace('-', '', $date);
+            $invoiceNumber = '';
+            $sequenceNumber = '';
+
+            if ($invoiceNumbers->isNotEmpty()) {
+                $countInvoiceNumber = count($invoiceNumbers);
+                $sequenceNumber = $countInvoiceNumber + 1;
+                $lengthNumber = strlen($sequenceNumber);
+                if ($lengthNumber == 1) {
+                    $sequenceNumber = '00' . $sequenceNumber;
+                } elseif ($lengthNumber == 2) {
+                    $sequenceNumber = '0' . $sequenceNumber;
+                } elseif ($lengthNumber == 3) {
+                    $sequenceNumber = $sequenceNumber;
+                } else {
+                    throw new Exception('Tidak dapat menghasilkan Nomer Invoice.');
+                }
+            } else {
+                $sequenceNumber = '001';
+            }
+
+            $invoiceNumber = 'INV' . $date . $sequenceNumber;
+
+            return $invoiceNumber;
+        } catch (Exception $exception) {
+            Log::error($exception);
+            throw $exception;
+        }
     }
 }

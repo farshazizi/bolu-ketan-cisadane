@@ -10,11 +10,16 @@ use App\Http\Controllers\Masters\Stocks\StockInController;
 use App\Http\Controllers\Masters\Stocks\StockInventoryStockController;
 use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
+use App\Http\Controllers\Transactions\Orders\OrderAdditionalDetailController;
+use App\Http\Controllers\Transactions\Orders\OrderController;
+use App\Http\Controllers\Transactions\Orders\OrderInventoryStockController;
+use App\Http\Controllers\Transactions\Orders\OrderPriceController;
 use App\Http\Controllers\Transactions\Purchases\PurchaseController;
 use App\Http\Controllers\Transactions\Purchases\PurchaseUomController;
 use App\Http\Controllers\Transactions\Sales\SaleAdditionalDetailController;
 use App\Http\Controllers\Transactions\Sales\SaleController;
 use App\Http\Controllers\Transactions\Sales\SaleInventoryStockController;
+use App\Http\Controllers\Transactions\Sales\SaleOrderController;
 use App\Http\Controllers\Transactions\Sales\SalePriceController;
 use App\Http\Controllers\Transactions\Sales\SalePrintController;
 use App\Http\Controllers\Transactions\Sales\SaleStockController;
@@ -81,6 +86,21 @@ Route::prefix('/inventory-stocks')->group(function () {
     Route::delete('/{id}', [InventoryStockController::class, 'destroy'])->name('inventory_stocks.destroy');
 });
 
+// Order
+Route::prefix('orders')->group(function () {
+    Route::get('/', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/data', [OrderController::class, 'data'])->name('orders.data');
+    Route::get('/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::delete('/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/inventory-stock', [OrderInventoryStockController::class, '__invoke'])->name('orders.inventory_stocks');
+    Route::get('/price/{id}', [OrderPriceController::class, '__invoke'])->name('orders.price');
+
+    // Order Additional Detail
+    Route::get('/additional-detail/data/{orderDetailId}', [OrderAdditionalDetailController::class, 'data'])->name('orders_additional_details.data');
+});
+
 // Purchase
 Route::prefix('purchases')->group(function () {
     Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
@@ -97,7 +117,8 @@ Route::prefix('purchases')->group(function () {
 Route::prefix('sales')->group(function () {
     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/data', [SaleController::class, 'data'])->name('sales.data');
-    Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::get('/data-orders', [SaleOrderController::class, 'data'])->name('sales.data_orders');
+    Route::get('/create/{orderId?}', [SaleController::class, 'create'])->name('sales.create');
     Route::post('/', [SaleController::class, 'store'])->name('sales.store');
     Route::get('/{id}', [SaleController::class, 'show'])->name('sales.show');
     Route::delete('/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');

@@ -1,24 +1,24 @@
 $(function () {
     $("#additionalModal").on("show.bs.modal", function (event) {
         let button = $(event.relatedTarget);
-        let saleDetailId = button.data("sale-detail-id");
+        let orderDetailId = button.data("order-detail-id");
 
-        $("#saleDetailId").val(saleDetailId);
-        tableAdditional(saleDetailId);
+        $("#orderDetailId").val(orderDetailId);
+        tableAdditional(orderDetailId);
     });
 });
 
-function tableAdditional(saleDetailId) {
-    let url = getSaleAdditionalDetailRoute;
-    url = url.replace(":saleDetailId", saleDetailId);
+function tableAdditional(orderDetailId) {
+    let url = getOrderAdditionalDetailRoute;
+    url = url.replace(":orderDetailId", orderDetailId);
 
     $.ajax({
         url: url,
         data: {
-            saleDetailId,
+            orderDetailId,
         },
         success: function (response) {
-            const data = response.data.saleAdditionalDetails;
+            const data = response.data.orderAdditionalDetails;
             let additionalList = `<table class="table">
                     <thead>
                         <th>No</th>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Transactions\Sales\StoreSaleRequest;
 use App\Services\Masters\Additionals\AdditionalService;
 use App\Services\Masters\InventoryStocks\InventoryStockService;
+use App\Services\Transactions\Orders\OrderService;
 use App\Services\Transactions\Sales\SaleService;
 use Carbon\Carbon;
 use Exception;
@@ -15,12 +16,14 @@ class SaleController extends Controller
 {
     private $additionalService;
     private $inventoryStockService;
+    private $orderService;
     private $saleService;
 
-    public function __construct(AdditionalService $additionalService, InventoryStockService $inventoryStockService, SaleService $saleService)
+    public function __construct(AdditionalService $additionalService, InventoryStockService $inventoryStockService, OrderService $orderService, SaleService $saleService)
     {
         $this->additionalService = $additionalService;
         $this->inventoryStockService = $inventoryStockService;
+        $this->orderService = $orderService;
         $this->saleService = $saleService;
     }
 
@@ -55,12 +58,28 @@ class SaleController extends Controller
             ->toJson();
     }
 
-    public function create()
+    public function create($orderId = null)
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
 
-        return view('contents.transactions.sales.create', compact('additionals', 'inventoryStocks'));
+        if ($orderId) {
+            $formatting = false;
+            $order = $this->orderService->getOrderById($orderId, $formatting);
+            $data = [
+                'additionals' => $additionals,
+                'inventoryStocks' => $inventoryStocks,
+                'order' => $order
+            ];
+        } else {
+            $data = [
+                'additionals' => $additionals,
+                'inventoryStocks' => $inventoryStocks
+            ];
+        }
+        $data = (object) $data;
+
+        return view('contents.transactions.sales.create', compact('data'));
     }
 
     public function store(StoreSaleRequest $storeSaleRequest)
@@ -68,7 +87,7 @@ class SaleController extends Controller
         try {
             $request = $storeSaleRequest->safe()->collect();
 
-            $sale = $this->saleService->storeInventoryStock($request);
+            $sale = $this->saleService->storeSale($request);
 
             if ($sale) {
                 return response()->json([
@@ -92,7 +111,7 @@ class SaleController extends Controller
             return response()->json([
                 'status' => 'error',
                 'code' => 'store-sale-failed',
-                'message' => 'Penjualan gagal ditambahkan.',
+                'message' => $exception->getMessage(),
                 'data' => []
             ], 500);
         }
@@ -101,8 +120,12 @@ class SaleController extends Controller
     public function show($id)
     {
         $sale = $this->saleService->getSaleById($id);
+        $order = "";
+        if ($sale->order_id) {
+            $order = $this->orderService->getOrderById($sale->order_id);
+        }
 
-        return view('contents.transactions.sales.show', compact('sale'));
+        return view('contents.transactions.sales.show', compact('sale', 'order'));
     }
 
     public function destroy($id)

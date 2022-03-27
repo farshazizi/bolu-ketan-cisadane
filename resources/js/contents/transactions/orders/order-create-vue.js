@@ -3,14 +3,14 @@ var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
-        orderId: "",
         indexDetail: 0,
         date: new Date().toISOString().slice(0, 10),
         name: "",
         address: "",
         phone: "",
-        notes: "",
         grandTotal: 0,
+        notes: "",
+        status: "0",
         detail: [],
         detailAdditional: [],
         errors: [],
@@ -24,66 +24,6 @@ var app = new Vue({
     mounted: function () {
         const vm = this;
         vm.addSale();
-
-        if (Object.keys(dataOrder).length !== 0) {
-            if (dataOrder.order) {
-                let order = dataOrder.order;
-                // Set data header
-                vm.orderId = order.id;
-                vm.date = order.date;
-                vm.name = order.name;
-                vm.address = order.address;
-                vm.phone = order.phone;
-                vm.notes = order.notes;
-
-                // Set data detail
-                let orderDetails = order.order_details;
-                for (let index = 0; index < orderDetails.length; index++) {
-                    var objectDetail = {
-                        inventoryStock: orderDetails[index].inventory_stock_id,
-                        stock: 0,
-                        quantity: orderDetails[index].quantity,
-                        price: orderDetails[index].price,
-                        discount: 0,
-                        total: orderDetails[index].total,
-                        totalAdditional: orderDetails[index].total_additional,
-                        notes: orderDetails[index].notes,
-                    };
-                    vm.$set(vm.detail, index, objectDetail);
-                    vm.getStock(index);
-
-                    let orderAdditionalDetils =
-                        orderDetails[index].order_additional_details;
-                    let detailAdditionalLength = vm.detailAdditional.length;
-                    for (
-                        let indexAdditional = 0;
-                        indexAdditional < orderAdditionalDetils.length;
-                        indexAdditional++
-                    ) {
-                        var objectAdditionalDetail = {
-                            additionalId:
-                                orderAdditionalDetils[indexAdditional]
-                                    .additional.id,
-                            additionalName:
-                                orderAdditionalDetils[indexAdditional]
-                                    .additional.name,
-                            index: index,
-                            price: orderAdditionalDetils[indexAdditional].price,
-                        };
-
-                        vm.$set(
-                            vm.detailAdditional,
-                            detailAdditionalLength,
-                            objectAdditionalDetail
-                        );
-                        detailAdditionalLength++;
-                    }
-
-                    // Show field
-                    $(".order").show();
-                }
-            }
-        }
 
         $(function () {
             $("body").on("change", "#quantity", function (event) {
@@ -102,15 +42,6 @@ var app = new Vue({
                     let total = value * vm.detail[index].price;
                     vm.$set(vm.detail[index], "total", total);
                 }
-            });
-
-            $("body").on("change", "#discount", function (event) {
-                let index = $(event.target).attr("index");
-                let value = $(event.target).val();
-                let total = vm.detail[index].total;
-                let totalDiscount = total - value;
-
-                vm.$set(vm.detail[index], "total", totalDiscount);
             });
 
             $("body").on("hide.bs.modal", "#additionalModal", function (event) {
@@ -160,10 +91,8 @@ var app = new Vue({
         addSale: function () {
             let dataDetail = {
                 inventoryStock: "",
-                stock: 0,
                 quantity: 0,
                 price: 0,
-                discount: 0,
                 total: 0,
                 totalAdditional: 0,
                 notes: "",
@@ -185,36 +114,6 @@ var app = new Vue({
                 success: function (response) {
                     let price = response.data.price;
                     dataDetail.price = price;
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    Swal.fire({
-                        icon: xhr.responseJSON.status,
-                        text: xhr.responseJSON.message,
-                        showConfirmButton: false,
-                    });
-                },
-            });
-        },
-        getStock: function (index) {
-            let dataDetail = this.detail[index];
-            let inventoryId = dataDetail.inventoryStock;
-            let url = getStockRoute.replace(":id", inventoryId);
-
-            $.ajax({
-                url: url,
-                type: "GET",
-                dataType: "JSON",
-                success: function (response) {
-                    let stock = response.data.stock;
-                    dataDetail.stock = stock;
-
-                    if (stock == 0) {
-                        Swal.fire({
-                            icon: "warning",
-                            text: "Stok barang 0.",
-                            showConfirmButton: false,
-                        });
-                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     Swal.fire({
@@ -270,6 +169,11 @@ var app = new Vue({
             this.errors = [];
             event.preventDefault();
 
+            if (!this.date) this.errors.push("Tanggal wajib diisi.");
+            if (!this.name) this.errors.push("Nama wajib diisi.");
+            if (!this.address) this.errors.push("Alamat wajib diisi.");
+            if (!this.phone) this.errors.push("No. Telepon wajib diisi.");
+
             let dataDetail = this.detail;
 
             if (dataDetail.length > 0) {
@@ -279,13 +183,6 @@ var app = new Vue({
                             "Stok pada baris ke-" +
                                 (index + 1) +
                                 " wajib diisi."
-                        );
-                    }
-                    if (dataDetail[index].stock == 0) {
-                        this.errors.push(
-                            "Jumlah Stok pada baris ke-" +
-                                (index + 1) +
-                                " kosong."
                         );
                     }
                     if (!dataDetail[index].quantity) {
@@ -335,7 +232,7 @@ var app = new Vue({
                             showConfirmButton: false,
                         });
                     }
-                    window.location.href = indexRoute;
+                    window.location.reload(true);
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     Swal.fire({
