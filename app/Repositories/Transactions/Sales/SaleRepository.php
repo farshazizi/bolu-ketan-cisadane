@@ -102,6 +102,10 @@ class SaleRepository implements SaleInterface
 
             // Delete sale
             $sale = Sale::findOrFail($id);
+            // Change status order
+            if ($sale->type == "1") {
+                Order::where('id', $sale->order_id)->update(['status' => 0]);
+            }
             $sale->delete();
             DB::commit();
 
