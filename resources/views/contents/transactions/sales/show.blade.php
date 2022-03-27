@@ -24,6 +24,23 @@
                                             <input type="date" class="form-control" id="date" name="date"
                                                 value="{{ $sale->date }}" disabled>
                                         </div>
+                                        @if ($order)
+                                            <div class="form-group">
+                                                <label for="name">Nama</label>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    value="{{ $order->name }}" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address">Alamat</label>
+                                                <input type="text" class="form-control" id="address" name="address"
+                                                    value="{{ $order->address }}" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">No. Telepon</label>
+                                                <input type="text" class="form-control" id="phone" name="phone"
+                                                    value="{{ $order->phone }}" disabled>
+                                            </div>
+                                        @endif
                                         <div class="form-group">
                                             <label for="notes">Notes</label>
                                             <textarea class="form-control" id="notes" name="notes" rows="3"
@@ -113,7 +130,7 @@
 
 @section('content-js')
     <script type="text/javascript">
-        let getSaleAdditionalDetailRoute = "{{ route('sales_additional_details.data', ':salesDetail') }}";
+        var getSaleAdditionalDetailRoute = "{{ route('sales_additional_details.data', ':saleDetailId') }}";
     </script>
     <script type="text/javascript" src="{{ asset('js/contents/transactions/sales/sale-show.js') }}"></script>
 @endsection

@@ -40,10 +40,34 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                            <div class="form-group order" style="display: none">
+                                                <label for="name">Nama</label>
+                                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                                    id="name" name="name" v-model="name" disabled>
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group order" style="display: none">
+                                                <label for="address">Alamat</label>
+                                                <input type="text"
+                                                    class="form-control @error('address') is-invalid @enderror" id="address"
+                                                    name="address" v-model="address" disabled>
+                                                @error('address')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group order" style="display: none">
+                                                <label for="phone">No. Telepon</label>
+                                                <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                                    id="phone" name="phone" v-model="phone" disabled>
+                                                @error('phone')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                             <div class="form-group">
                                                 <label for="notes">Notes</label>
-                                                <textarea class="form-control" id="notes" name="notes" v-model="notes"
-                                                    rows="3"></textarea>
+                                                <textarea class="form-control" id="notes" name="notes" v-model="notes" rows="3"></textarea>
                                                 @error('notes')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -78,7 +102,7 @@
                                                                 v-model="data.inventoryStock"
                                                                 v-on:change="getPrice(index); getStock(index)">
                                                                 <option value="">Pilih Stok</option>
-                                                                @foreach ($inventoryStocks as $inventoryStock)
+                                                                @foreach ($data->inventoryStocks as $inventoryStock)
                                                                     <option value="{{ $inventoryStock->id }}">
                                                                         {{ $inventoryStock->name }}</option>
                                                                 @endforeach
@@ -170,7 +194,7 @@
                             <div class="form-inline form-group">
                                 <select class="form-control" id="additional" name="additional" required>
                                     <option value="" selected disabled>Pilih Tambahan</option>
-                                    @foreach ($additionals as $additional)
+                                    @foreach ($data->additionals as $additional)
                                         <option value="{{ $additional->id }}" :price="{{ $additional->price }}">
                                             {{ $additional->name }}</option>
                                     @endforeach
@@ -224,9 +248,11 @@
 
 @section('content-js')
     <script type="text/javascript">
-        let getPriceRoute = "{{ route('sales.price', ':id') }}";
-        let getStockRoute = "{{ route('sales.stock', ':id') }}";
-        let storeRoute = "{{ route('sales.store') }}";
+        var getPriceRoute = "{{ route('sales.price', ':id') }}";
+        var getStockRoute = "{{ route('sales.stock', ':id') }}";
+        var indexRoute = "{{ route('sales.index') }}";
+        var storeRoute = "{{ route('sales.store') }}";
+        var dataOrder = <?php echo json_encode($data); ?>;
     </script>
     <script type="text/javascript" src="{{ asset('js/contents/transactions/sales/sale-create-vue.js') }}"></script>
 @endsection
