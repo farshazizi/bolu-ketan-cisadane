@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +11,80 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
+mix
+    // JS
+    .js("resources/js/app.js", "public/js")
+    .js(
+        "resources/js/contents/masters/additionals/additional.js",
+        "public/js/contents/masters/additionals/additional.js"
+    )
+    .js(
+        "resources/js/contents/masters/categories/category.js",
+        "public/js/contents/masters/categories/category.js"
+    )
+    .js(
+        "resources/js/contents/masters/ingredients/ingredient.js",
+        "public/js/contents/masters/ingredients/ingredient.js"
+    )
+    .js(
+        "resources/js/contents/masters/inventoryStocks/inventoryStock.js",
+        "public/js/contents/masters/inventoryStocks/inventoryStock.js"
+    )
+    .js(
+        "resources/js/contents/transactions/purchases/purchase.js",
+        "public/js/contents/transactions/purchases/purchase.js"
+    )
+    .js(
+        "resources/js/contents/transactions/purchases/purchase-create-vue.js",
+        "public/js/contents/transactions/purchases/purchase-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/transactions/sales/sale.js",
+        "public/js/contents/transactions/sales/sale.js"
+    )
+    .js(
+        "resources/js/contents/transactions/sales/sale-create-vue.js",
+        "public/js/contents/transactions/sales/sale-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/transactions/sales/sale-show.js",
+        "public/js/contents/transactions/sales/sale-show.js"
+    )
+    .js(
+        "resources/js/contents/transactions/orders/order.js",
+        "public/js/contents/transactions/orders/order.js"
+    )
+    .js(
+        "resources/js/contents/transactions/orders/order-create-vue.js",
+        "public/js/contents/transactions/orders/order-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/transactions/orders/order-show.js",
+        "public/js/contents/transactions/orders/order-show.js"
+    )
+    .js(
+        "resources/js/contents/masters/stocks/stock.js",
+        "public/js/contents/masters/stocks/stock.js"
+    )
+    .js(
+        "resources/js/contents/masters/stocks/stock-in/stock-in-create-vue.js",
+        "public/js/contents/masters/stocks/stock-in/stock-in-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/masters/stocks/stock-out/stock-out-create-vue.js",
+        "public/js/contents/masters/stocks/stock-out/stock-out-create-vue.js"
+    )
+    .js(
+        "resources/js/contents/masters/uoms/uom.js",
+        "public/js/contents/masters/uoms/uom.js"
+    )
+
+    // CSS
+    .postCss("resources/css/app.css", "public/css", [
+        require("postcss-import"),
+        require("tailwindcss"),
     ]);
+
+if (mix.inProduction()) {
+    mix.version();
+}
