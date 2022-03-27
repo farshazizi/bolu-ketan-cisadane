@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transactions\Sales;
+namespace App\Http\Requests\Transactions\Orders;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSaleRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,13 @@ class StoreSaleRequest extends FormRequest
     public function rules()
     {
         return [
-            'orderId' => 'sometimes',
             'date' => 'required',
-            'notes' => 'nullable',
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'required|string',
             'grandTotal' => 'required',
+            'notes' => 'nullable|string',
+            'status' => 'required|string',
             'detail' => 'required|array',
             'detail.*.inventoryStock' => 'required|string',
             'detail.*.quantity' => 'required',
