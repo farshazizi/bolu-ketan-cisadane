@@ -2,6 +2,7 @@
 
 namespace App\Services\Transactions\Sales;
 
+use App\Models\Transactions\Sales\Sale;
 use App\Repositories\Transactions\Sales\SaleRepository;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -22,15 +23,17 @@ class SaleService
         return $sales;
     }
 
-    public function storeInventoryStock($data)
+    public function storeSale($data)
     {
         try {
-            $sale = $this->saleRepository->storeSale($data);
+            $date = $data['date'];
+            $invoiceNumber = $this->generateInvoiceNumber($date);
+            $sale = $this->saleRepository->storeSale($data, $invoiceNumber);
 
             return $sale;
         } catch (Exception $exception) {
             Log::error($exception);
-            throw new Exception('Penjualan gagal ditambahkan.');
+            throw $exception;
         }
     }
 
@@ -49,7 +52,7 @@ class SaleService
 
                 $totalAdditional = 0;
                 $saleAdditionalDetails = $sale->saleDetails[$index]->saleAdditionalDetails;
-                for ($indexAdditional=0; $indexAdditional < count($saleAdditionalDetails); $indexAdditional++) {
+                for ($indexAdditional = 0; $indexAdditional < count($saleAdditionalDetails); $indexAdditional++) {
                     $totalAdditional += $saleAdditionalDetails[$indexAdditional]->price;
                     $saleAdditionalDetails[$indexAdditional]->price = number_format($saleAdditionalDetails[$indexAdditional]->price, 0);
                 }
@@ -77,5 +80,40 @@ class SaleService
         $grandTotal = $this->saleRepository->getGrandTotalDailySale();
 
         return $grandTotal;
+    }
+
+    public function generateInvoiceNumber($date)
+    {
+        try {
+            $invoiceNumbers = $this->saleRepository->getInvoiceNumbers();
+
+            $date = str_replace('-', '', $date);
+            $invoiceNumber = '';
+            $sequenceNumber = '';
+
+            if ($invoiceNumbers->isNotEmpty()) {
+                $countInvoiceNumber = count($invoiceNumbers);
+                $sequenceNumber = $countInvoiceNumber + 1;
+                $lengthNumber = strlen($sequenceNumber);
+                if ($lengthNumber == 1) {
+                    $sequenceNumber = '00' . $sequenceNumber;
+                } elseif ($lengthNumber == 2) {
+                    $sequenceNumber = '0' . $sequenceNumber;
+                } elseif ($lengthNumber == 3) {
+                    $sequenceNumber = $sequenceNumber;
+                } else {
+                    throw new Exception('Tidak dapat menghasilkan Nomer Invoice.');
+                }
+            } else {
+                $sequenceNumber = '001';
+            }
+
+            $invoiceNumber = 'INV' . $date . $sequenceNumber;
+
+            return $invoiceNumber;
+        } catch (Exception $exception) {
+            Log::error($exception);
+            throw $exception;
+        }
     }
 }
