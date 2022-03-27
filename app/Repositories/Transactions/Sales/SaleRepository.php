@@ -91,7 +91,8 @@ class SaleRepository implements SaleInterface
         DB::beginTransaction();
         try {
             // Delete sale additional detail
-            $saleDetailId = SaleDetail::select('id')->where('sale_id', $id);
+            $saleDetail = SaleDetail::where('sale_id', $id)->first();
+            $saleDetailId = $saleDetail->id;
             $saleAdditionalDetail = SaleAdditionalDetail::where('sale_detail_id', $saleDetailId);
             $saleAdditionalDetail->delete();
 
