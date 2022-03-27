@@ -2,11 +2,11 @@
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
-                <div class="logo">
+                {{-- <div class="logo">
                     <a href="{{ route('/') }}">
                         <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Logo">
                     </a>
-                </div>
+                </div> --}}
                 <div class="toggler">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                 </div>
@@ -80,6 +80,13 @@
                     <a href="{{ route('sales.index') }}" class='sidebar-link'>
                         <i class="bi bi-basket3-fill"></i>
                         <span>Penjualan</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item {{ request()->is('orders*') ? 'active' : '' }}">
+                    <a href="{{ route('orders.index') }}" class='sidebar-link'>
+                        <i class="bi bi-book-fill"></i>
+                        <span>Pesanan</span>
                     </a>
                 </li>
             </ul>
