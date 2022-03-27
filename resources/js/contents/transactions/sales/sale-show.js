@@ -10,7 +10,7 @@ $(function () {
 
 function tableAdditional(saleDetailId) {
     let url = getSaleAdditionalDetailRoute;
-    url = url.replace(":salesDetail", saleDetailId);
+    url = url.replace(":saleDetailId", saleDetailId);
 
     $.ajax({
         url: url,
