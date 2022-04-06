@@ -54,7 +54,7 @@ class IngredientController extends Controller
         try {
             $request = $storeIngredientRequest->safe()->collect();
 
-            $ingredient = $this->ingredientService->store($request);
+            $ingredient = $this->ingredientService->storeIngredient($request);
 
             if ($ingredient) {
                 return back()->with([
@@ -96,7 +96,7 @@ class IngredientController extends Controller
         try {
             $request = $updateIngredientRequest->safe()->collect();
 
-            $ingredient = $this->ingredientService->update($request, $id);
+            $ingredient = $this->ingredientService->updateIngredientById($request, $id);
 
             if ($ingredient) {
                 return back()->with([
@@ -121,7 +121,7 @@ class IngredientController extends Controller
     public function destroy($id)
     {
         try {
-            $ingredient = $this->ingredientService->destroy($id);
+            $ingredient = $this->ingredientService->destroyIngredientById($id);
 
             if ($ingredient) {
                 return response()->json([

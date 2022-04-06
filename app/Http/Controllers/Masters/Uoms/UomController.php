@@ -49,7 +49,7 @@ class UomController extends Controller
         try {
             $request = $storeUomRequest->safe()->collect();
 
-            $uom = $this->uomService->store($request);
+            $uom = $this->uomService->storeUom($request);
             if ($uom) {
                 return back()->with([
                     'status' => 'success',
@@ -89,7 +89,7 @@ class UomController extends Controller
         try {
             $request = $updateUomRequest->safe()->collect();
 
-            $uom = $this->uomService->update($request, $id);
+            $uom = $this->uomService->updateUomById($request, $id);
 
             if ($uom) {
                 return back()->with([
@@ -114,7 +114,7 @@ class UomController extends Controller
     public function destroy($id)
     {
         try {
-            $uom = $this->uomService->destroy($id);
+            $uom = $this->uomService->destroyUomById($id);
 
             if ($uom) {
                 return response()->json([
