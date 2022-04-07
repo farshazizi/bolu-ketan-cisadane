@@ -4,6 +4,7 @@ namespace App\Repositories\Transactions\Purchases;
 
 use App\Models\Transactions\Purchases\Purchase;
 use App\Models\Transactions\Purchases\PurchaseDetail;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -84,7 +85,7 @@ class PurchaseRepository implements PurchaseInterface
 
     public function getGrandTotalDailyPurchase()
     {
-        $grandTotal = Purchase::sum('grand_total');
+        $grandTotal = Purchase::where('date', Carbon::now())->sum('grand_total');
 
         return $grandTotal;
     }
