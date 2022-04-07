@@ -6,6 +6,7 @@ use App\Models\Transactions\Orders\Order;
 use App\Models\Transactions\Sales\Sale;
 use App\Models\Transactions\Sales\SaleAdditionalDetail;
 use App\Models\Transactions\Sales\SaleDetail;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -130,7 +131,7 @@ class SaleRepository implements SaleInterface
 
     public function getGrandTotalDailySale()
     {
-        $grandTotal = Sale::sum('grand_total');
+        $grandTotal = Sale::where('date', Carbon::now())->sum('grand_total');
 
         return $grandTotal;
     }

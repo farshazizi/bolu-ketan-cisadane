@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DashboardService;
 use App\Services\Masters\Stocks\StockService;
 use App\Services\Transactions\Purchases\PurchaseService;
 use App\Services\Transactions\Sales\SaleService;
 
 class DashboardController extends Controller
 {
+    private $dashboardService;
     private $purchaseService;
     private $saleService;
     private $stockService;
 
-    public function __construct(PurchaseService $purchaseService, SaleService $saleService, StockService $stockService)
+    public function __construct(DashboardService $dashboardService, PurchaseService $purchaseService, SaleService $saleService, StockService $stockService)
     {
+        $this->dashboardService = $dashboardService;
         $this->purchaseService = $purchaseService;
         $this->saleService = $saleService;
         $this->stockService = $stockService;
@@ -32,6 +35,10 @@ class DashboardController extends Controller
         // Stock
         $stocks = $this->stockService->getStocks();
 
-        return view('layouts.dashboard', compact('grandTotalPurchase', 'grandTotalSale', 'stocks'));
+        // Daily balance
+        $dailyBalance = $this->dashboardService->calculateDailyBalance();
+        $dailyBalance = number_format($dailyBalance, 0);
+
+        return view('layouts.dashboard', compact('dailyBalance', 'grandTotalPurchase', 'grandTotalSale', 'stocks'));
     }
 }
