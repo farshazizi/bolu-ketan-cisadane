@@ -6,12 +6,13 @@ $(function () {
         columns: [
             {
                 data: "DT_RowIndex",
-                width: "10%",
+                width: "8%",
                 orderable: false,
                 searchable: false,
             },
             {
                 data: "date",
+                width: "15%",
             },
             {
                 data: "name",
@@ -21,9 +22,11 @@ $(function () {
             },
             {
                 data: "phone",
+                width: "15%",
             },
             {
                 data: "status",
+                width: "8%",
                 render: function (data) {
                     if (data == "0") {
                         return '<span class="badge bg-warning">Menunggu Diproses</span>';
@@ -40,7 +43,6 @@ $(function () {
                 searchable: false,
             },
         ],
-        order: [[1, "asc"]],
         language: {
             emptyTable: "Tidak ada data",
         },
