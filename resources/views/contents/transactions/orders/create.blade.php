@@ -73,12 +73,12 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group d-flex justify-content-end mt-5">
-                                                <button type="button" class="btn btn-primary" v-on:click="addSale">
+                                                <button type="button" class="btn btn-primary" v-on:click="addOrder">
                                                     Tambah Pesanan
                                                 </button>
                                             </div>
                                             <table class="table"
-                                                style="width: auto; text-align: center; overflow:auto" id="tableSaleDetail">
+                                                style="width: auto; text-align: center; overflow:auto" id="tableOrderDetail">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
@@ -133,7 +133,7 @@
                                                                 v-on:click="setIndexAdditional(index)">
                                                                 <i class="fa fa-solid fa-plus" aria-hidden="true"></i>
                                                             </button>
-                                                            <button v-on:click="deleteSale(index)"
+                                                            <button v-on:click="deleteOrder(index)"
                                                                 class="btn btn-danger btn-sm" type="button"
                                                                 style="margin: 4px">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                     <div id="additionalList">
-                        <table class="table" style="width: 100%; text-align: center" id="tableSaleDetail">
+                        <table class="table" style="width: 100%; text-align: center" id="tableOrderDetail">
                             <thead>
                                 <tr>
                                     <th>Nama</th>
