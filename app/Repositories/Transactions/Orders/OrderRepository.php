@@ -14,7 +14,7 @@ class OrderRepository implements OrderInterface
 {
     public function getOrders()
     {
-        $orders = Order::all();
+        $orders = Order::orderBy('date', 'desc')->get();
 
         return $orders;
     }
@@ -128,7 +128,7 @@ class OrderRepository implements OrderInterface
 
     public function getOrdersWaiting()
     {
-        $orders = Order::where('status', 0)->get();
+        $orders = Order::where('status', 0)->orderBy('date', 'desc')->get();
 
         return $orders;
     }
