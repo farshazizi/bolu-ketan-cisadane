@@ -23,7 +23,61 @@ var app = new Vue({
     },
     mounted: function () {
         const vm = this;
-        vm.addOrder();
+        vm.addSale();
+
+        if (Object.keys(order).length !== 0) {
+            // Set data header
+            vm.orderId = order.id;
+            vm.date = order.date;
+            vm.name = order.name;
+            vm.address = order.address;
+            vm.phone = order.phone;
+            vm.notes = order.notes;
+
+            // Set data detail
+            let orderDetails = order.order_details;
+            for (let index = 0; index < orderDetails.length; index++) {
+                var objectDetail = {
+                    inventoryStock: orderDetails[index].inventory_stock_id,
+                    quantity: orderDetails[index].quantity,
+                    price: orderDetails[index].price,
+                    total: orderDetails[index].total,
+                    totalAdditional: orderDetails[index].total_additional,
+                    notes: orderDetails[index].notes,
+                };
+                vm.$set(vm.detail, index, objectDetail);
+
+                let orderAdditionalDetils =
+                    orderDetails[index].order_additional_details;
+                let detailAdditionalLength = vm.detailAdditional.length;
+                for (
+                    let indexAdditional = 0;
+                    indexAdditional < orderAdditionalDetils.length;
+                    indexAdditional++
+                ) {
+                    var objectAdditionalDetail = {
+                        additionalId:
+                            orderAdditionalDetils[indexAdditional].additional
+                                .id,
+                        additionalName:
+                            orderAdditionalDetils[indexAdditional].additional
+                                .name,
+                        index: index,
+                        price: orderAdditionalDetils[indexAdditional].price,
+                    };
+
+                    vm.$set(
+                        vm.detailAdditional,
+                        detailAdditionalLength,
+                        objectAdditionalDetail
+                    );
+                    detailAdditionalLength++;
+                }
+
+                // Show field
+                $(".order").show();
+            }
+        }
 
         $(function () {
             $("body").on("change", "#quantity", function (event) {
@@ -88,7 +142,7 @@ var app = new Vue({
         },
     },
     methods: {
-        addOrder: function () {
+        addSale: function () {
             let dataDetail = {
                 inventoryStock: "",
                 quantity: 0,
@@ -99,7 +153,7 @@ var app = new Vue({
             };
             this.detail.push(dataDetail);
         },
-        deleteOrder: function (index) {
+        deleteSale: function (index) {
             this.detail.splice(index, 1);
         },
         getPrice: function (index) {
@@ -202,6 +256,8 @@ var app = new Vue({
             }
 
             var data = JSON.parse(JSON.stringify(this.$data));
+            var orderId = $("#id").val();
+            var url = updateRoute.replace(":id", orderId);
 
             $.ajaxSetup({
                 headers: {
@@ -213,12 +269,12 @@ var app = new Vue({
             $.ajax({
                 data: JSON.stringify(data),
                 contentType: "application/json",
-                type: "POST",
-                url: storeRoute,
+                type: "PATCH",
+                url: url,
                 success: function (response) {
                     if (
                         response.status === "success" &&
-                        response.code === "store-order-success"
+                        response.code === "update-order-success"
                     ) {
                         Swal.fire({
                             icon: response.status,
@@ -232,7 +288,7 @@ var app = new Vue({
                             showConfirmButton: false,
                         });
                     }
-                    window.location.reload(true);
+                    // window.location.reload(true);
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     Swal.fire({

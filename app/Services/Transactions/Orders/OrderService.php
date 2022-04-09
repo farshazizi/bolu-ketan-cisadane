@@ -59,6 +59,18 @@ class OrderService
         return $order;
     }
 
+    public function updateOrder($data, $id)
+    {
+        try {
+            $order = $this->orderRepository->updateOrder($data, $id);
+
+            return $order;
+        } catch (Exception $exception) {
+            Log::error($exception);
+            throw new Exception('Pesanan gagal diperbaharui.');
+        }
+    }
+
     public function destroyInventoryStockById($id)
     {
         try {
@@ -78,7 +90,7 @@ class OrderService
         return $grandTotal;
     }
 
-    public function dataOrdersWaiting ()
+    public function dataOrdersWaiting()
     {
         $orders = $this->orderRepository->getOrdersWaiting();
 

@@ -42,8 +42,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="notes">Notes</label>
-                                                <textarea class="form-control" id="notes" name="notes" v-model="notes"
-                                                    rows="3"></textarea>
+                                                <textarea class="form-control" id="notes" name="notes" v-model="notes" rows="3"></textarea>
                                                 @error('notes')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -54,7 +53,7 @@
                                                 </button>
                                             </div>
                                             <table class="table" style="width: 100%; text-align: center"
-                                                id="tableSaleDetail">
+                                                id="tablePurchaseDetail">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>

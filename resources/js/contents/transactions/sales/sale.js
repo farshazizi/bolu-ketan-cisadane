@@ -76,7 +76,6 @@ $(function () {
                 searchable: false,
             },
         ],
-        order: [[1, "asc"]],
         language: {
             emptyTable: "Tidak ada data",
         },

@@ -93,6 +93,8 @@ Route::prefix('orders')->group(function () {
     Route::get('/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::patch('/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::get('/inventory-stock', [OrderInventoryStockController::class, '__invoke'])->name('orders.inventory_stocks');
     Route::get('/price/{id}', [OrderPriceController::class, '__invoke'])->name('orders.price');

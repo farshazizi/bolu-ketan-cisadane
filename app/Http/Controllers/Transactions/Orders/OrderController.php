@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Transactions\Orders;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transactions\Orders\StoreOrderRequest;
+use App\Http\Requests\Transactions\Orders\UpdateOrderRequest;
 use App\Services\Masters\Additionals\AdditionalService;
 use App\Services\Masters\InventoryStocks\InventoryStockService;
 use App\Services\Transactions\Orders\OrderService;
@@ -47,6 +48,7 @@ class OrderController extends Controller
                 return ('
                 <div class="btn-group btn-group-sm" style="float: left">
                     <a class="btn nav-link" href="' . route('orders.show', ['id' => $order->id]) . '"><i class="far fa-eye fa-lg"></i></a>
+                    <a class="btn nav-link" href="' . route('orders.edit', ['id' => $order->id]) . '"><i class="far fa-edit fa-lg"></i></a>
                     <a class="btn nav-link" id="delete" data-id="' . $order->id . '" href="#"><i class="far fa-trash-alt fa-lg"></i></a>
                 </div>
                 ');
@@ -102,6 +104,51 @@ class OrderController extends Controller
         $order = $this->orderService->getOrderById($id);
 
         return view('contents.transactions.orders.show', compact('order'));
+    }
+
+    public function edit($id)
+    {
+        $additionals = $this->additionalService->data();
+        $inventoryStocks = $this->inventoryStockService->data();
+        $formatting = false;
+        $order = $this->orderService->getOrderById($id, $formatting);
+
+        return view('contents.transactions.orders.edit', compact('additionals', 'inventoryStocks', 'order'));
+    }
+
+    public function update(UpdateOrderRequest $updateOrderRequest, $id)
+    {
+        try {
+            $request = $updateOrderRequest->safe()->collect();
+
+            $order = $this->orderService->updateOrder($request, $id);
+
+            if ($order) {
+                return response()->json([
+                    'status' => 'success',
+                    'code' => 'update-order-success',
+                    'message' => 'Pesanan berhasil diperbaharui.',
+                    'data' => [
+                        'order' => $order
+                    ]
+                ], 200);
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'code' => 'update-order-failed',
+                'message' => 'Pesanan gagal diperbaharui.',
+                'data' => []
+            ], 200);
+        } catch (Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'status' => 'error',
+                'code' => 'update-order-failed',
+                'message' => 'Pesanan gagal diperbaharui.',
+                'data' => []
+            ], 500);
+        }
     }
 
     public function destroy($id)

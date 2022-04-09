@@ -28,6 +28,7 @@
                             </div>
                             <form class="form form-vertical" method="POST" v-on:submit="submitForm">
                                 @csrf
+                                <input type="hidden" id="id" name="id" value="{{ $order->id }}" />
                                 <input type="hidden" name="stockType" value="0" />
                                 <div class="form-body">
                                     <div class="row">
@@ -73,7 +74,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group d-flex justify-content-end mt-5">
-                                                <button type="button" class="btn btn-primary" v-on:click="addOrder">
+                                                <button type="button" class="btn btn-primary" v-on:click="addSale">
                                                     Tambah Pesanan
                                                 </button>
                                             </div>
@@ -133,7 +134,7 @@
                                                                 v-on:click="setIndexAdditional(index)">
                                                                 <i class="fa fa-solid fa-plus" aria-hidden="true"></i>
                                                             </button>
-                                                            <button v-on:click="deleteOrder(index)"
+                                                            <button v-on:click="deleteSale(index)"
                                                                 class="btn btn-danger btn-sm" type="button"
                                                                 style="margin: 4px">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -237,7 +238,8 @@
 @section('content-js')
     <script type="text/javascript">
         var getPriceRoute = "{{ route('orders.price', ':id') }}";
-        var storeRoute = "{{ route('orders.store') }}";
+        var updateRoute = "{{ route('orders.update', ':id') }}";
+        var order = <?php echo json_encode($order); ?>;
     </script>
-    <script type="text/javascript" src="{{ asset('js/contents/transactions/orders/order-create-vue.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/contents/transactions/orders/order-edit-vue.js') }}"></script>
 @endsection
