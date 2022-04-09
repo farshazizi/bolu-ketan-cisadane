@@ -77,9 +77,73 @@ class OrderRepository implements OrderInterface
     {
         $order = Order::has('orderDetails')
             ->with(['orderDetails.inventoryStock', 'orderDetails.orderAdditionalDetails.additional'])
-            ->findOrFail($id);
+            ->where('id', $id)
+            ->first();
 
         return $order;
+    }
+
+    public function updateOrder($data, $id)
+    {
+        DB::beginTransaction();
+        try {
+            // Delete order additional detail
+            $orderDetail = OrderDetail::select('id')->where('order_id', $id)->first();
+            $orderDetailId = $orderDetail->id;
+            $orderAdditionalDetail = OrderAdditionalDetail::where('order_detail_id', $orderDetailId);
+            $orderAdditionalDetail->delete();
+
+            // Delete order detail
+            $orderDetail = OrderDetail::where('order_id', $id);
+            $orderDetail->delete();
+
+            $order = Order::where('id', $id)->first();
+            $order->date = $data['date'];
+            $order->name = $data['name'];
+            $order->address = $data['address'];
+            $order->phone = $data['phone'];
+            $order->grand_total = $data['grandTotal'];
+            $order->notes = $data['notes'];
+            $order->status = $data['status'];
+            $order->save();
+
+            if ($data['detail']) {
+                for ($index = 0; $index < count($data['detail']); $index++) {
+                    $orderDetail = new OrderDetail();
+                    $orderDetailId = Uuid::uuid4();
+                    $orderDetail->id = $orderDetailId;
+                    $orderDetail->order_id = $order->id;
+                    $orderDetail->inventory_stock_id = $data['detail'][$index]['inventoryStock'];
+                    $orderDetail->quantity = $data['detail'][$index]['quantity'];
+                    $orderDetail->price = $data['detail'][$index]['price'];
+                    $orderDetail->total = $data['detail'][$index]['total'];
+                    $orderDetail->total_additional = $data['detail'][$index]['totalAdditional'];
+                    $orderDetail->notes = $data['detail'][$index]['notes'];
+                    $orderDetail->save();
+
+                    if ($data['detailAdditional']) {
+                        for ($indexAdditional = 0; $indexAdditional < count($data['detailAdditional']); $indexAdditional++) {
+                            if ($data['detailAdditional'][$indexAdditional]['index'] == $index) {
+                                $orderAdditionalDetail = new OrderAdditionalDetail();
+                                $orderAdditionalDetailId = Uuid::uuid4();
+                                $orderAdditionalDetail->id = $orderAdditionalDetailId;
+                                $orderAdditionalDetail->order_detail_id = $orderDetailId;
+                                $orderAdditionalDetail->additional_id = $data['detailAdditional'][$indexAdditional]['additionalId'];
+                                $orderAdditionalDetail->price = $data['detailAdditional'][$indexAdditional]['price'];
+                                $orderAdditionalDetail->save();
+                            }
+                        }
+                    }
+                }
+            }
+            DB::commit();
+
+            return $order;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            throw new Exception('Penjualan gagal ditambahkan.');
+        }
     }
 
     public function destoryOrderById($id)

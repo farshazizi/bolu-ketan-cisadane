@@ -7,6 +7,7 @@ interface OrderInterface
     public function getOrders();
     public function storeOrder($data);
     public function getOrderById($id);
+    public function updateOrder($data, $id);
     public function destoryOrderById($id);
     public function getStockByInventoryStockId($id);
     public function getGrandTotalDailyOrder();
