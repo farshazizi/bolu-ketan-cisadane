@@ -12,6 +12,7 @@
     "/js/contents/transactions/orders/order.js": "/js/contents/transactions/orders/order.js",
     "/js/contents/transactions/orders/order-create-vue.js": "/js/contents/transactions/orders/order-create-vue.js",
     "/js/contents/transactions/orders/order-show.js": "/js/contents/transactions/orders/order-show.js",
+    "/js/contents/transactions/orders/order-edit-vue.js": "/js/contents/transactions/orders/order-edit-vue.js",
     "/js/contents/masters/stocks/stock.js": "/js/contents/masters/stocks/stock.js",
     "/js/contents/masters/stocks/stock-in/stock-in-create-vue.js": "/js/contents/masters/stocks/stock-in/stock-in-create-vue.js",
     "/js/contents/masters/stocks/stock-out/stock-out-create-vue.js": "/js/contents/masters/stocks/stock-out/stock-out-create-vue.js",
