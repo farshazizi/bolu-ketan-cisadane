@@ -23,7 +23,7 @@ var app = new Vue({
     },
     mounted: function () {
         const vm = this;
-        vm.addSale();
+        vm.addOrder();
 
         $(function () {
             $("body").on("change", "#quantity", function (event) {
@@ -88,7 +88,7 @@ var app = new Vue({
         },
     },
     methods: {
-        addSale: function () {
+        addOrder: function () {
             let dataDetail = {
                 inventoryStock: "",
                 quantity: 0,
@@ -99,7 +99,7 @@ var app = new Vue({
             };
             this.detail.push(dataDetail);
         },
-        deleteSale: function (index) {
+        deleteOrder: function (index) {
             this.detail.splice(index, 1);
         },
         getPrice: function (index) {
@@ -218,7 +218,7 @@ var app = new Vue({
                 success: function (response) {
                     if (
                         response.status === "success" &&
-                        response.code === "store-sale-success"
+                        response.code === "store-order-success"
                     ) {
                         Swal.fire({
                             icon: response.status,
