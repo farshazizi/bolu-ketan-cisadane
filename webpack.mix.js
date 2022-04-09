@@ -63,6 +63,10 @@ mix
         "public/js/contents/transactions/orders/order-show.js"
     )
     .js(
+        "resources/js/contents/transactions/orders/order-edit-vue.js",
+        "public/js/contents/transactions/orders/order-edit-vue.js"
+    )
+    .js(
         "resources/js/contents/masters/stocks/stock.js",
         "public/js/contents/masters/stocks/stock.js"
     )
