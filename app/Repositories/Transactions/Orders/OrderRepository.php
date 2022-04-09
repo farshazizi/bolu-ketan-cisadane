@@ -151,7 +151,8 @@ class OrderRepository implements OrderInterface
         DB::beginTransaction();
         try {
             // Delete order additional detail
-            $orderDetailId = OrderDetail::select('id')->where('order_id', $id);
+            $orderDetail = OrderDetail::select('id')->where('order_id', $id)->first();
+            $orderDetailId = $orderDetail->id;
             $orderAdditionalDetail = OrderAdditionalDetail::where('order_detail_id', $orderDetailId);
             $orderAdditionalDetail->delete();
 
