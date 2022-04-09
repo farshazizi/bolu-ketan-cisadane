@@ -76,6 +76,8 @@
 
     <script src="{{ asset('assets/vendors/fontawesome/all.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/mazer.js') }}"></script>
+
     <!-- Jquery Datatable -->
     <script src="{{ asset('assets/vendors/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.min.js') }}"></script>
