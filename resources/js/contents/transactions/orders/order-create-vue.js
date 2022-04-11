@@ -99,7 +99,7 @@ var app = new Vue({
             };
             this.detail.push(dataDetail);
         },
-        deleteOrder: function (index) {
+        deleteDetail: function (index) {
             this.detail.splice(index, 1);
         },
         getPrice: function (index) {
