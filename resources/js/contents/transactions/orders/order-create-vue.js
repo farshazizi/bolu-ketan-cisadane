@@ -101,6 +101,21 @@ var app = new Vue({
         },
         deleteDetail: function (index) {
             this.detail.splice(index, 1);
+            this.deleteAllDetailAdditional();
+        },
+        deleteAllDetailAdditional: function () {
+            let dataDetailAdditional = [];
+            let index = 0;
+            for (let key = 0; key < this.detailAdditional.length; key++) {
+                if (this.detailAdditional[key].index === this.indexDetail) {
+                    dataDetailAdditional[index] = this.detailAdditional[key];
+                    index++;
+                }
+            }
+            this.detailAdditional = [];
+            for (let key = 0; key < dataDetailAdditional.length; key++) {
+                this.detailAdditional[key] = dataDetailAdditional[key];
+            }
         },
         getPrice: function (index) {
             let dataDetail = this.detail[index];
