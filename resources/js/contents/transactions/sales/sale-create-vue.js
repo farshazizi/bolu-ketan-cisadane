@@ -101,6 +101,8 @@ var app = new Vue({
                 } else {
                     let total = value * vm.detail[index].price;
                     vm.$set(vm.detail[index], "total", total);
+                    vm.setIndexAdditional(index);
+                    vm.calculateTotalAdditional();
                 }
             });
 
@@ -272,7 +274,10 @@ var app = new Vue({
             for (let key = 0; key < this.detailAdditional.length; key++) {
                 let detailIndex = this.detailAdditional[key].index;
                 if (detailIndex == this.indexDetail) {
-                    totalPrice += parseInt(this.detailAdditional[key].price);
+                    totalPrice += parseInt(
+                        this.detailAdditional[key].price *
+                            this.detail[this.indexDetail].quantity
+                    );
                 }
             }
 
