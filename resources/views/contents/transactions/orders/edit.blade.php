@@ -134,7 +134,7 @@
                                                                 v-on:click="setIndexAdditional(index)">
                                                                 <i class="fa fa-solid fa-plus" aria-hidden="true"></i>
                                                             </button>
-                                                            <button v-on:click="deleteSale(index)"
+                                                            <button v-on:click="deleteDetail(index)"
                                                                 class="btn btn-danger btn-sm" type="button"
                                                                 style="margin: 4px">
                                                                 <i class="fa fa-trash" aria-hidden="true"></i>

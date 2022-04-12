@@ -95,6 +95,8 @@ var app = new Vue({
                 } else {
                     let total = value * vm.detail[index].price;
                     vm.$set(vm.detail[index], "total", total);
+                    vm.setIndexAdditional(index);
+                    vm.calculateTotalAdditional();
                 }
             });
 
@@ -153,8 +155,23 @@ var app = new Vue({
             };
             this.detail.push(dataDetail);
         },
-        deleteSale: function (index) {
+        deleteDetail: function (index) {
             this.detail.splice(index, 1);
+            this.deleteAllDetailAdditional();
+        },
+        deleteAllDetailAdditional: function () {
+            let dataDetailAdditional = [];
+            let index = 0;
+            for (let key = 0; key < this.detailAdditional.length; key++) {
+                if (this.detailAdditional[key].index === this.indexDetail) {
+                    dataDetailAdditional[index] = this.detailAdditional[key];
+                    index++;
+                }
+            }
+            this.detailAdditional = [];
+            for (let key = 0; key < dataDetailAdditional.length; key++) {
+                this.detailAdditional[key] = dataDetailAdditional[key];
+            }
         },
         getPrice: function (index) {
             let dataDetail = this.detail[index];
@@ -210,7 +227,10 @@ var app = new Vue({
             for (let key = 0; key < this.detailAdditional.length; key++) {
                 let detailIndex = this.detailAdditional[key].index;
                 if (detailIndex == this.indexDetail) {
-                    totalPrice += parseInt(this.detailAdditional[key].price);
+                    totalPrice += parseInt(
+                        this.detailAdditional[key].price *
+                            this.detail[this.indexDetail].quantity
+                    );
                 }
             }
 
