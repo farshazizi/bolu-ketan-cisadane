@@ -127,12 +127,13 @@ var app = new Vue({
 
             if (this.detailAdditional.length > 0) {
                 for (
-                    let indexAdditinoal = 0;
-                    indexAdditinoal < this.detailAdditional.length;
-                    indexAdditinoal++
+                    let indexAdditional = 0;
+                    indexAdditional < this.detailAdditional.length;
+                    indexAdditional++
                 ) {
                     grandTotalAdditional += parseFloat(
-                        this.detailAdditional[indexAdditinoal].price
+                        this.detailAdditional[indexAdditional].price *
+                            this.detail[this.indexDetail].quantity
                     );
                 }
             }
