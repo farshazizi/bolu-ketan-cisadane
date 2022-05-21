@@ -10,6 +10,7 @@ use App\Http\Controllers\Masters\Stocks\StockInController;
 use App\Http\Controllers\Masters\Stocks\StockInventoryStockController;
 use App\Http\Controllers\Masters\Stocks\StockOutController;
 use App\Http\Controllers\Masters\Uoms\UomController;
+use App\Http\Controllers\Reports\ReportController;
 use App\Http\Controllers\Transactions\Orders\OrderAdditionalDetailController;
 use App\Http\Controllers\Transactions\Orders\OrderController;
 use App\Http\Controllers\Transactions\Orders\OrderInventoryStockController;
@@ -113,6 +114,13 @@ Route::prefix('purchases')->group(function () {
     Route::delete('/{id}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
     Route::get('/inventory-stock', [PurchaseInventoryStockController::class, '__invoke'])->name('purchases.inventory_stocks');
     Route::get('/uom/{id}', [PurchaseUomController::class, '__invoke'])->name('purchases.uom');
+});
+
+// Report
+Route::prefix('reports')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('/daily-report', [ReportController::class, 'dailyReport'])->name('reports.daily_report');
+    Route::post('/order-report', [ReportController::class, 'orderReport'])->name('reports.order_report');
 });
 
 // Sale
