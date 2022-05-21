@@ -84,6 +84,15 @@
                         <span>Pesanan</span>
                     </a>
                 </li>
+
+                <li class="sidebar-title">Laporan</li>
+
+                <li class="sidebar-item {{ request()->is('reports*') ? 'active' : '' }}">
+                    <a href="{{ route('reports.index') }}" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-fill"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
