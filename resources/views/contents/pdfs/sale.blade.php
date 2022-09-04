@@ -12,7 +12,6 @@
             font-family: 'Myriad', sans-serif;
             font-weight: normal;
         }
-
     </style>
 </head>
 
@@ -71,7 +70,7 @@
                         <td
                             style="border-right: 1px #722C14 solid; padding-top: 12px; padding-bottom: 12px; text-align: right">
                             <p style="color: #722C14; margin: 8px">
-                                {{ number_format($item->price, 0) }}
+                                {{ number_format($item->price + $item->total_additional, 0) }}
                             </p>
                         </td>
                         <td
@@ -82,7 +81,7 @@
                         </td>
                         <td style="padding-top: 12px; padding-bottom: 12px; text-align: right">
                             <p style="color: #722C14; margin: 8px">
-                                {{ number_format($item->total, 0) }}
+                                {{ number_format($item->total  + $item->total_additional, 0) }}
                             </p>
                         </td>
                     </tr>
@@ -95,7 +94,7 @@
         <table style="width: 100%">
             <tbody>
                 <tr>
-                    <td rowspan="2">
+                    <td rowspan="3">
                         <p style="color: #722C14; font-size: 24px">
                             <i>
                                 Jl. Cisadane XV, No 73 <br />
@@ -104,13 +103,45 @@
                             </i>
                         </p>
                     </td>
-                    <td style="text-align: center">
-                        <p style="color: #722C14; font-size: 24px">
-                            Total<b> Rp{{ number_format($data->grand_total, 0) }}</b>
-                        </p>
+                    <td style="width: 8px"></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td style="width: 100px">
+                                    <p style="color: #722C14; font-size: 24px; text-align: left">
+                                        Total Diskon
+                                    </p>
+                                </td>
+                                <td style="text-align: right; width: 150px">
+                                    <p style="color: #722C14; font-size: 24px">
+                                        <b>Rp{{ number_format($totalDiscount, 0) }}</b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 <tr>
+                    <td style="width: 8px"></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td style="width: 100px">
+                                    <p style="color: #722C14; font-size: 24px; text-align: left">
+                                        Total
+                                    </p>
+                                </td>
+                                <td style="text-align: right; width: 150px">
+                                    <p style="color: #722C14; font-size: 24px">
+                                        <b>Rp{{ number_format($data->grand_total, 0) }}</b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 8px"></td>
                     <td style="text-align: center">
                         <p style="color: #722C14; font-size: 24px">
                             <i> Hormat Kami,</i>
