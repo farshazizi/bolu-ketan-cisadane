@@ -67,7 +67,7 @@ var app = new Vue({
                             additionalName:
                                 orderAdditionalDetils[indexAdditional]
                                     .additional.name,
-                            index: index,
+                            keyDetail: index,
                             price: orderAdditionalDetils[indexAdditional].price,
                         };
 
@@ -258,8 +258,8 @@ var app = new Vue({
                 let dataDetailAdditional = {
                     additionalId: additionalId,
                     additionalName: additionalName,
-                    price: price,
-                    index: index,
+                    price: parseFloat(price),
+                    keyDetail: index,
                 };
                 this.detailAdditional.push(dataDetailAdditional);
                 this.calculateTotalAdditional();
@@ -273,7 +273,7 @@ var app = new Vue({
             let totalPrice = 0;
 
             for (let key = 0; key < this.detailAdditional.length; key++) {
-                let detailIndex = this.detailAdditional[key].index;
+                let detailIndex = this.detailAdditional[key].keyDetail;
                 if (detailIndex == this.indexDetail) {
                     totalPrice += parseInt(
                         this.detailAdditional[key].price *

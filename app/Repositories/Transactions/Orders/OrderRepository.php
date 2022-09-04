@@ -51,7 +51,7 @@ class OrderRepository implements OrderInterface
 
                     if ($data['detailAdditional']) {
                         for ($indexAdditional = 0; $indexAdditional < count($data['detailAdditional']); $indexAdditional++) {
-                            if ($data['detailAdditional'][$indexAdditional]['index'] == $index) {
+                            if ($data['detailAdditional'][$indexAdditional]['keyDetail'] == $index) {
                                 $orderAdditionalDetail = new OrderAdditionalDetail();
                                 $orderAdditionalDetail->id = Uuid::uuid4();
                                 $orderAdditionalDetail->order_detail_id = $orderDetailId;

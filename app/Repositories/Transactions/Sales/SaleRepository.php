@@ -52,7 +52,7 @@ class SaleRepository implements SaleInterface
 
                     if ($data['detailAdditional']) {
                         for ($indexAdditional = 0; $indexAdditional < count($data['detailAdditional']); $indexAdditional++) {
-                            if ($data['detailAdditional'][$indexAdditional]['index'] == $index) {
+                            if ($data['detailAdditional'][$indexAdditional]['keyDetail'] == $index) {
                                 $saleAdditionalDetail = new SaleAdditionalDetail();
                                 $saleAdditionalDetail->id = Uuid::uuid4();
                                 $saleAdditionalDetail->sale_detail_id = $saleDetailId;
