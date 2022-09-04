@@ -47,12 +47,13 @@ class SaleRepository implements SaleInterface
                     $saleDetail->price = $data['detail'][$index]['price'];
                     $saleDetail->discount = $data['detail'][$index]['discount'];
                     $saleDetail->total = $data['detail'][$index]['total'];
+                    $saleDetail->total_additional = $data['detail'][$index]['totalAdditional'];
                     $saleDetail->notes = $data['detail'][$index]['notes'];
                     $saleDetail->save();
 
                     if ($data['detailAdditional']) {
                         for ($indexAdditional = 0; $indexAdditional < count($data['detailAdditional']); $indexAdditional++) {
-                            if ($data['detailAdditional'][$indexAdditional]['index'] == $index) {
+                            if ($data['detailAdditional'][$indexAdditional]['keyDetail'] == $index) {
                                 $saleAdditionalDetail = new SaleAdditionalDetail();
                                 $saleAdditionalDetail->id = Uuid::uuid4();
                                 $saleAdditionalDetail->sale_detail_id = $saleDetailId;

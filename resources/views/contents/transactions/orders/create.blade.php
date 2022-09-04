@@ -210,9 +210,9 @@
                             </thead>
                             <tbody id="tbody">
                                 <tr class="bg-grey" v-cloak v-for="(data, index) in detailAdditional">
-                                    <td v-if="indexDetail == data.index">{> data.additionalName <} </td>
-                                    <td v-if="indexDetail == data.index">{> data.price | numberFormat <} </td>
-                                    <td class="text-center" v-if="indexDetail == data.index">
+                                    <td v-if="indexDetail == data.keyDetail">{> data.additionalName <} </td>
+                                    <td v-if="indexDetail == data.keyDetail">{> data.price | numberFormat <} </td>
+                                    <td class="text-center" v-if="indexDetail == data.keyDetail">
                                         <button v-on:click="deleteAdditional(index)" class="btn btn-danger btn-sm"
                                             type="button">
                                             <i class="fa fa-trash" aria-hidden="true"></i>

@@ -51,14 +51,7 @@ class SaleService
                 $saleDetails[$index]->price = number_format($saleDetails[$index]->price, 0);
                 $saleDetails[$index]->discount = number_format($saleDetails[$index]->discount, 0);
                 $saleDetails[$index]->total = number_format($saleDetails[$index]->total, 0);
-
-                $totalAdditional = 0;
-                $saleAdditionalDetails = $sale->saleDetails[$index]->saleAdditionalDetails;
-                for ($indexAdditional = 0; $indexAdditional < count($saleAdditionalDetails); $indexAdditional++) {
-                    $totalAdditional += $saleAdditionalDetails[$indexAdditional]->price;
-                    $saleAdditionalDetails[$indexAdditional]->price = number_format($saleAdditionalDetails[$indexAdditional]->price, 0);
-                }
-                $saleDetails[$index]->totalAdditional = number_format($totalAdditional, 0);
+                $saleDetails[$index]->total_additional = number_format($saleDetails[$index]->total_additional, 0);
             }
         }
 
@@ -103,7 +96,13 @@ class SaleService
             $imageLogo = base64_encode(file_get_contents($pathLogo));
         }
 
-        $html = view('contents.pdfs.sale', compact('data', 'imageLogo'))->render();
+        // Calculate total discount
+        $totalDiscount = 0;
+        foreach ($data->saleDetails as $value) {
+            $totalDiscount += $value->discount;
+        }
+
+        $html = view('contents.pdfs.sale', compact('data', 'imageLogo', 'totalDiscount'))->render();
 
         $pdf = SnappyPdf::loadHTML($html);
         $pdf->setPaper('a5');
