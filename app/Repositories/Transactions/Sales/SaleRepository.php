@@ -47,6 +47,7 @@ class SaleRepository implements SaleInterface
                     $saleDetail->price = $data['detail'][$index]['price'];
                     $saleDetail->discount = $data['detail'][$index]['discount'];
                     $saleDetail->total = $data['detail'][$index]['total'];
+                    $saleDetail->total_additional = $data['detail'][$index]['totalAdditional'];
                     $saleDetail->notes = $data['detail'][$index]['notes'];
                     $saleDetail->save();
 
