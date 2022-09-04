@@ -40,6 +40,7 @@ var app = new Vue({
                 let orderDetails = order.order_details;
                 for (let index = 0; index < orderDetails.length; index++) {
                     var objectDetail = {
+                        keyDetail: index,
                         inventoryStock: orderDetails[index].inventory_stock_id,
                         stock: 0,
                         quantity: orderDetails[index].quantity,
@@ -109,10 +110,11 @@ var app = new Vue({
             $("body").on("change", "#discount", function (event) {
                 let index = $(event.target).attr("index");
                 let value = $(event.target).val();
-                let total = vm.detail[index].total;
-                let totalDiscount = total - value;
+                let quantity = vm.detail[index].quantity;
+                let price = vm.detail[index].price;
+                let total = quantity * price - value;
 
-                vm.$set(vm.detail[index], "total", totalDiscount);
+                vm.$set(vm.detail[index], "total", total);
             });
 
             $("body").on("hide.bs.modal", "#additionalModal", function (event) {
@@ -131,29 +133,16 @@ var app = new Vue({
     computed: {
         calculateGrandTotal: function () {
             let grandTotal = 0;
-            let grandTotalDetail = 0;
-            let grandTotalAdditional = 0;
 
             if (this.detail.length > 0) {
                 for (let index = 0; index < this.detail.length; index++) {
-                    grandTotalDetail += parseFloat(this.detail[index].total);
-                }
-            }
-
-            if (this.detailAdditional.length > 0) {
-                for (
-                    let indexAdditional = 0;
-                    indexAdditional < this.detailAdditional.length;
-                    indexAdditional++
-                ) {
-                    grandTotalAdditional += parseFloat(
-                        this.detailAdditional[indexAdditional].price *
-                            this.detail[this.indexDetail].quantity
+                    grandTotal += parseFloat(
+                        this.detail[index].total +
+                            this.detail[index].totalAdditional
                     );
                 }
             }
 
-            grandTotal = grandTotalDetail + grandTotalAdditional;
             this.grandTotal = grandTotal;
 
             return grandTotal;
@@ -161,34 +150,64 @@ var app = new Vue({
     },
     methods: {
         addSale: function () {
-            let dataDetail = {
-                inventoryStock: "",
-                stock: 0,
-                quantity: 0,
-                price: 0,
-                discount: 0,
-                total: 0,
-                totalAdditional: 0,
-                notes: "",
-            };
-            this.detail.push(dataDetail);
+            if (this.detail.length > 0) {
+                let dataDetail = {
+                    keyDetail: this.detail.length,
+                    inventoryStock: "",
+                    stock: 0,
+                    quantity: 0,
+                    price: 0,
+                    discount: 0,
+                    total: 0,
+                    totalAdditional: 0,
+                    notes: "",
+                };
+                this.detail.push(dataDetail);
+            } else {
+                let dataDetail = {
+                    keyDetail: 0,
+                    inventoryStock: "",
+                    stock: 0,
+                    quantity: 0,
+                    price: 0,
+                    discount: 0,
+                    total: 0,
+                    totalAdditional: 0,
+                    notes: "",
+                };
+                this.detail.push(dataDetail);
+            }
         },
         deleteDetail: function (index) {
+            let keyDetail = this.detail[index].keyDetail;
             this.detail.splice(index, 1);
-            this.deleteAllDetailAdditional();
+            this.deleteAllDetailAdditional(keyDetail);
         },
-        deleteAllDetailAdditional: function () {
+        deleteAllDetailAdditional: function (keyDetail) {
             let dataDetailAdditional = [];
-            let index = 0;
-            for (let key = 0; key < this.detailAdditional.length; key++) {
-                if (this.detailAdditional[key].index === this.indexDetail) {
-                    dataDetailAdditional[index] = this.detailAdditional[key];
-                    index++;
+            let newIndex = 0;
+
+            if (this.detail.length > 0) {
+                for (let key = 0; key < this.detailAdditional.length; key++) {
+                    if (this.detailAdditional[key].keyDetail !== keyDetail) {
+                        dataDetailAdditional[newIndex] =
+                            this.detailAdditional[key];
+                        newIndex++;
+                    }
                 }
-            }
-            this.detailAdditional = [];
-            for (let key = 0; key < dataDetailAdditional.length; key++) {
-                this.detailAdditional[key] = dataDetailAdditional[key];
+
+                if (dataDetailAdditional.length > 0) {
+                    this.detailAdditional = [];
+                    for (
+                        let key = 0;
+                        key < dataDetailAdditional.length;
+                        key++
+                    ) {
+                        this.detailAdditional[key] = dataDetailAdditional[key];
+                    }
+                }
+            } else {
+                this.detailAdditional = [];
             }
         },
         getPrice: function (index) {
