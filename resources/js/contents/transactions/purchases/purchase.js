@@ -26,7 +26,7 @@ $(function () {
                 searchable: false,
             },
         ],
-        order: [[1, "asc"]],
+        order: [[1, "desc"]],
         language: {
             emptyTable: "Tidak ada data",
         },

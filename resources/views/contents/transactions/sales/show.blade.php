@@ -69,7 +69,7 @@
                                                         <td style="text-align: right">{{ $saleDetail->price }}</td>
                                                         <td style="text-align: right">{{ $saleDetail->discount }}</td>
                                                         <td style="text-align: right">{{ $saleDetail->total }}</td>
-                                                        <td style="text-align: right">{{ $saleDetail->totalAdditional }}
+                                                        <td style="text-align: right">{{ $saleDetail->total_additional }}
                                                         </td>
                                                         <td>{{ $saleDetail->notes }}</td>
                                                         <td>

@@ -62,29 +62,16 @@ var app = new Vue({
     computed: {
         calculateGrandTotal: function () {
             let grandTotal = 0;
-            let grandTotalDetail = 0;
-            let grandTotalAdditional = 0;
 
             if (this.detail.length > 0) {
                 for (let index = 0; index < this.detail.length; index++) {
-                    grandTotalDetail += parseFloat(this.detail[index].total);
-                }
-            }
-
-            if (this.detailAdditional.length > 0) {
-                for (
-                    let indexAdditional = 0;
-                    indexAdditional < this.detailAdditional.length;
-                    indexAdditional++
-                ) {
-                    grandTotalAdditional += parseFloat(
-                        this.detailAdditional[indexAdditional].price *
-                            this.detail[this.indexDetail].quantity
+                    grandTotal += parseFloat(
+                        this.detail[index].total +
+                            this.detail[index].totalAdditional
                     );
                 }
             }
 
-            grandTotal = grandTotalDetail + grandTotalAdditional;
             this.grandTotal = grandTotal;
 
             return grandTotal;
@@ -92,32 +79,64 @@ var app = new Vue({
     },
     methods: {
         addOrder: function () {
-            let dataDetail = {
-                inventoryStock: "",
-                quantity: 0,
-                price: 0,
-                total: 0,
-                totalAdditional: 0,
-                notes: "",
-            };
-            this.detail.push(dataDetail);
+            if (this.detail.length > 0) {
+                let dataDetail = {
+                    keyDetail: this.detail.length,
+                    inventoryStock: "",
+                    stock: 0,
+                    quantity: 0,
+                    price: 0,
+                    discount: 0,
+                    total: 0,
+                    totalAdditional: 0,
+                    notes: "",
+                };
+                this.detail.push(dataDetail);
+            } else {
+                let dataDetail = {
+                    keyDetail: 0,
+                    inventoryStock: "",
+                    stock: 0,
+                    quantity: 0,
+                    price: 0,
+                    discount: 0,
+                    total: 0,
+                    totalAdditional: 0,
+                    notes: "",
+                };
+                this.detail.push(dataDetail);
+            }
         },
         deleteDetail: function (index) {
+            let keyDetail = this.detail[index].keyDetail;
             this.detail.splice(index, 1);
-            this.deleteAllDetailAdditional();
+            this.deleteAllDetailAdditional(keyDetail);
         },
-        deleteAllDetailAdditional: function () {
+        deleteAllDetailAdditional: function (keyDetail) {
             let dataDetailAdditional = [];
-            let index = 0;
-            for (let key = 0; key < this.detailAdditional.length; key++) {
-                if (this.detailAdditional[key].index === this.indexDetail) {
-                    dataDetailAdditional[index] = this.detailAdditional[key];
-                    index++;
+            let newIndex = 0;
+
+            if (this.detail.length > 0) {
+                for (let key = 0; key < this.detailAdditional.length; key++) {
+                    if (this.detailAdditional[key].keyDetail !== keyDetail) {
+                        dataDetailAdditional[newIndex] =
+                            this.detailAdditional[key];
+                        newIndex++;
+                    }
                 }
-            }
-            this.detailAdditional = [];
-            for (let key = 0; key < dataDetailAdditional.length; key++) {
-                this.detailAdditional[key] = dataDetailAdditional[key];
+
+                if (dataDetailAdditional.length > 0) {
+                    this.detailAdditional = [];
+                    for (
+                        let key = 0;
+                        key < dataDetailAdditional.length;
+                        key++
+                    ) {
+                        this.detailAdditional[key] = dataDetailAdditional[key];
+                    }
+                }
+            } else {
+                this.detailAdditional = [];
             }
         },
         getPrice: function (index) {
@@ -157,8 +176,8 @@ var app = new Vue({
                 let dataDetailAdditional = {
                     additionalId: additionalId,
                     additionalName: additionalName,
-                    price: price,
-                    index: index,
+                    price: parseFloat(price),
+                    keyDetail: index,
                 };
                 this.detailAdditional.push(dataDetailAdditional);
                 this.calculateTotalAdditional();
@@ -172,7 +191,7 @@ var app = new Vue({
             let totalPrice = 0;
 
             for (let key = 0; key < this.detailAdditional.length; key++) {
-                let detailIndex = this.detailAdditional[key].index;
+                let detailIndex = this.detailAdditional[key].keyDetail;
                 if (detailIndex == this.indexDetail) {
                     totalPrice += parseInt(
                         this.detailAdditional[key].price *
