@@ -15,6 +15,10 @@ mix
     // JS
     .js("resources/js/app.js", "public/js")
     .js(
+        "resources/js/layouts/dashboard.js",
+        "public/js/layouts/dashboard.js"
+    )
+    .js(
         "resources/js/contents/masters/additionals/additional.js",
         "public/js/contents/masters/additionals/additional.js"
     )
