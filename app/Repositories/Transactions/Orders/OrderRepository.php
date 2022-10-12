@@ -193,7 +193,7 @@ class OrderRepository implements OrderInterface
 
     public function getOrdersWaiting()
     {
-        $orders = Order::where('status', 0)->orderBy('date', 'desc')->get();
+        $orders = Order::with('orderDetails')->where('status', 0);
 
         return $orders;
     }
