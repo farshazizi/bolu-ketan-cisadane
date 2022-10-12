@@ -13,6 +13,7 @@ use App\Http\Controllers\Masters\Uoms\UomController;
 use App\Http\Controllers\Reports\ReportController;
 use App\Http\Controllers\Transactions\Orders\OrderAdditionalDetailController;
 use App\Http\Controllers\Transactions\Orders\OrderController;
+use App\Http\Controllers\Transactions\Orders\OrderDetailController;
 use App\Http\Controllers\Transactions\Orders\OrderInventoryStockController;
 use App\Http\Controllers\Transactions\Orders\OrderPriceController;
 use App\Http\Controllers\Transactions\Purchases\PurchaseController;
@@ -38,6 +39,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [DashboardController::class, 'index'])->name('/');
+Route::get('/data', [DashboardController::class, 'data'])->name('dashboards.data');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -99,6 +101,11 @@ Route::prefix('orders')->group(function () {
     Route::delete('/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::get('/inventory-stock', [OrderInventoryStockController::class, '__invoke'])->name('orders.inventory_stocks');
     Route::get('/price/{id}', [OrderPriceController::class, '__invoke'])->name('orders.price');
+
+    // Order Detail
+    Route::prefix('/details')->group(function () {
+        Route::get('/data', [OrderDetailController::class, 'data'])->name('orders.details.data');
+    });
 
     // Order Additional Detail
     Route::get('/additional-detail/data/{orderDetailId}', [OrderAdditionalDetailController::class, 'data'])->name('orders_additional_details.data');
