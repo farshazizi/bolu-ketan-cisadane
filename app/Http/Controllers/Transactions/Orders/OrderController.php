@@ -67,7 +67,7 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $storeOrderRequest)
     {
         try {
-            $request = $storeOrderRequest->safe()->collect();
+            $request = $storeOrderRequest->validated();
 
             $order = $this->orderService->storeOrder($request);
 
@@ -119,7 +119,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $updateOrderRequest, $id)
     {
         try {
-            $request = $updateOrderRequest->safe()->collect();
+            $request = $updateOrderRequest->validated();
 
             $order = $this->orderService->updateOrder($request, $id);
 

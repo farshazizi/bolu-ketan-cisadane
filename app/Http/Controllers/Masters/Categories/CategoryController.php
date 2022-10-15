@@ -47,7 +47,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $storeCategoryRequest)
     {
         try {
-            $request = $storeCategoryRequest->safe()->collect();
+            $request = $storeCategoryRequest->validated();
 
             $category = $this->categoryService->store($request);
 
@@ -88,7 +88,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $updateCategoryRequest, $id)
     {
         try {
-            $request = $updateCategoryRequest->safe()->collect();
+            $request = $updateCategoryRequest->validated();
 
             $category = $this->categoryService->update($request, $id);
 

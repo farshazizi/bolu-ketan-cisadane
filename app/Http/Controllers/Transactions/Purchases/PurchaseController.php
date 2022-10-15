@@ -65,7 +65,7 @@ class PurchaseController extends Controller
     public function store(StorePurchaseRequest $storePurchaseRequest)
     {
         try {
-            $request = $storePurchaseRequest->safe()->collect();
+            $request = $storePurchaseRequest->validated();
 
             $purchase = $this->purchaseService->storePurchase($request);
 

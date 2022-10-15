@@ -47,7 +47,7 @@ class UomController extends Controller
     public function store(StoreUomRequest $storeUomRequest)
     {
         try {
-            $request = $storeUomRequest->safe()->collect();
+            $request = $storeUomRequest->validated();
 
             $uom = $this->uomService->storeUom($request);
             if ($uom) {
@@ -87,7 +87,7 @@ class UomController extends Controller
     public function update(UpdateUomRequest $updateUomRequest, $id)
     {
         try {
-            $request = $updateUomRequest->safe()->collect();
+            $request = $updateUomRequest->validated();
 
             $uom = $this->uomService->updateUomById($request, $id);
 

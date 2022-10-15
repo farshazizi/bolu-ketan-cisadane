@@ -30,7 +30,7 @@ class StockInController extends Controller
     public function store(StoreStockInRequest $storeStockInRequest)
     {
         try {
-            $request = $storeStockInRequest->safe()->collect();
+            $request = $storeStockInRequest->validated();
 
             $stockIn = $this->stockService->store($request);
 

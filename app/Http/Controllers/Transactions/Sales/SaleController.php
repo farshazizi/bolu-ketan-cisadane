@@ -85,7 +85,7 @@ class SaleController extends Controller
     public function store(StoreSaleRequest $storeSaleRequest)
     {
         try {
-            $request = $storeSaleRequest->safe()->collect();
+            $request = $storeSaleRequest->validated();
 
             $sale = $this->saleService->storeSale($request);
 

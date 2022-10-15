@@ -30,7 +30,7 @@ class StockOutController extends Controller
     public function store(StoreStockOutRequest $storeStockOutRequest)
     {
         try {
-            $request = $storeStockOutRequest->safe()->collect();
+            $request = $storeStockOutRequest->validated();
 
             $stockOut = $this->stockService->store($request);
 
