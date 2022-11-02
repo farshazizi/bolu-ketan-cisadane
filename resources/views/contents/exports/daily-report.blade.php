@@ -1,47 +1,81 @@
 <table>
     <thead>
         <tr>
-            <th colspan="6" style="text-align: center"><b>LAPORAN PENJUALAN HARIAN</b></th>
+            <th><b>LAPORAN PENJUALAN HARIAN</b></th>
+        </tr>
+        <tr>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>Jam Transaksi</b></th>
+            <th colspan="{{ count($inventoryStocks) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+        </tr>
+        <tr>
+            @foreach ($inventoryStocks as $item)
+                <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
+            @endforeach
+            <th style="width: 150px; text-align: center">Debit</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td style="text-align: center"><b>No</b></td>
-            <td style="text-align: center"><b>Nama Item</b></td>
-            <td style="text-align: center"><b>Jumlah Item</b></td>
-            <td style="text-align: center"><b>Price</b></td>
-            <td style="text-align: center"><b>Debit</b></td>
-            <td style="text-align: center"><b>Kredit</b></td>
-        </tr>
-        <tr>
-            <td colspan="6" style="text-align: center">Penjualan</td>
-        </tr>
-        @foreach ($sales as $key => $item)
+        @foreach ($sales as $key => $sale)
             <tr>
-                <td style="width: 50px; text-align: center">{{ $key + 1 }}</td>
-                <td style="width: 150px">{{ $item['name'] }}</td>
-                <td style="width: 100px; text-align: center">{{ $item['quantity'] }}</td>
-                <td style="width: 150px; text-align: right">{{ number_format($item['price'], 0) }}</td>
-                <td style="width: 150px; text-align: right">Rp{{ number_format($item['debit'], 0) }}</td>
-                <td style="width: 150px; text-align: right"></td>
+                <td style="text-align: center">{{ $key + 1 }}</td>
+                <td style="text-align: right">{{ $sale['createdAt'] }}</td>
+                @foreach ($sale['saleDetails'] as $saleDetail)
+                    <td style="text-align: right">{{ $saleDetail['quantity'] }}</td>
+                @endforeach
+                <td style="text-align: right">{{ number_format($sale['grandTotal'], 0) }}</td>
             </tr>
         @endforeach
-        <tr>
-            <td colspan="6" style="text-align: center">Pembelian</td>
-        </tr>
-        @foreach ($purchases as $key => $item)
-            <tr>
-                <td style="width: 50px; text-align: center">{{ $key + 1 }}</td>
-                <td style="width: 150px">{{ $item['name'] }}</td>
-                <td style="width: 100px; text-align: center">{{ $item['quantity'] }}</td>
-                <td style="width: 150px; text-align: right">{{ number_format($item['price'], 0) }}</td>
-                <td style="width: 150px; text-align: right"></td>
-                <td style="width: 150px; text-align: right">Rp{{ number_format($item['kredit'], 0) }}</td>
-            </tr>
-        @endforeach
-        <tr>
-            <td colspan="4" style="text-align: center"><b>Saldo Akhir</b></td>
-            <td colspan="2" style="text-align: center"><b>Rp{{ number_format($balance, 0) }}</b></td>
-        </tr>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2" style="text-align: center"><b>Jumlah</b></td>
+            @foreach ($totalSale as $sale)
+                <td>{{ $sale['quantity'] }}</td>
+            @endforeach
+            <td style="text-align: right">{{ number_format($sumGrandTotalSale, 0) }}</td>
+        </tr>
+    </tfoot>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <thead>
+        <tr>
+            <th><b>LAPORAN PEMBELIAN HARIAN</b></th>
+        </tr>
+        <tr>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>Jam Transaksi</b></th>
+            <th colspan="{{ count($ingredients) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+        </tr>
+        <tr>
+            @foreach ($ingredients as $item)
+                <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
+            @endforeach
+            <th style="width: 150px; text-align: center">Debit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($purchases as $key => $purchase)
+            <tr>
+                <td style="text-align: center">{{ $key + 1 }}</td>
+                <td style="text-align: right">{{ $purchase['createdAt'] }}</td>
+                @foreach ($purchase['purchaseDetails'] as $purchaseDetail)
+                    <td style="text-align: right">{{ $purchaseDetail['quantity'] }}</td>
+                @endforeach
+                <td style="text-align: right">{{ number_format($purchase['grandTotal'], 0) }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2" style="text-align: center"><b>Jumlah</b></td>
+            @foreach ($totalPurchase as $purchase)
+                <td>{{ $purchase['quantity'] }}</td>
+            @endforeach
+            <td style="text-align: right">{{ number_format($sumGrandTotalPurchase, 0) }}</td>
+        </tr>
+    </tfoot>
 </table>
