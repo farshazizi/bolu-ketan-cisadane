@@ -2,65 +2,112 @@
 
 namespace App\Exports;
 
-use App\Models\Transactions\Purchases\Purchase;
-use App\Models\Transactions\Sales\Sale;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class DailyReportExport implements FromView
+class DailyReportExport implements FromView, WithEvents
 {
-    protected $date;
+    protected $dataDailyReport;
 
-    public function __construct($date)
+    public function __construct($dataDailyReport)
     {
-        $this->date = $date;
+        $this->dataDailyReport = $dataDailyReport;
+    }
+
+    public function registerEvents(): array
+    {
+        // Set initial value
+        $alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        //* Styling Sale Daily Report *//
+        // Set variable and initial value
+        $sales = $this->dataDailyReport['sales'];
+        $inventoryStocks = $this->dataDailyReport['inventoryStocks'];
+        $numberOfStaticColumnSale = 3;
+
+        // Calculate end of column sale
+        $totalInventoryStocks = count($inventoryStocks);
+        $totalColumnSale = ($numberOfStaticColumnSale + $totalInventoryStocks) - 1;
+        $endOfColumnSale = $alphabet[$totalColumnSale];
+
+        $startColumnSale = $alphabet[0];
+        $endColumnSale = $endOfColumnSale;
+        $startRowHeaderSale = 1;
+        $startRowContentSale = 3;
+        $cellInitialSale = $startColumnSale . $startRowHeaderSale . ':' . $endColumnSale;
+
+        $dataLengthSale = count($sales);
+        $endRowSale = ($startRowContentSale + $dataLengthSale) + 1;
+        $cellRangeSale = $cellInitialSale . $endRowSale;
+
+        //* Styling Purchase Daily Report *//
+        // Set variable and initial value
+        $purchases = $this->dataDailyReport['purchases'];
+        $ingredients = $this->dataDailyReport['ingredients'];
+
+        // Calculate end of column sale
+        $totalIngredients = count($ingredients);
+        $totalColumnPurchase = ($numberOfStaticColumnSale + $totalIngredients) - 1;
+        $endOfColumnPurchase = $alphabet[$totalColumnPurchase];
+
+        $startColumnPurchase = $alphabet[0];
+        $endColumnPurchase = $endOfColumnPurchase;
+        $startRowHeaderPurchase = $endRowSale + 6;
+        $startRowContentPurchase = $startRowHeaderPurchase + 2;
+        $cellInitialPurchase = $startColumnPurchase . $startRowHeaderPurchase . ':' . $endColumnPurchase;
+
+        $dataLengthPurchase = count($purchases);
+        $endRowPurchase = ($startRowContentPurchase + $dataLengthPurchase) + 1;
+        $cellRangePurchase = $cellInitialPurchase . $endRowPurchase;
+
+        return [
+            AfterSheet::class => function (AfterSheet $event) use ($cellRangeSale, $cellRangePurchase) {
+                $event->getSheet()->getDelegate()->getStyle($cellRangeSale)->applyFromArray(
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                'color' => ['argb' => '000000'],
+                            ]
+                        ]
+                    ]
+                );
+                $event->getSheet()->getDelegate()->getStyle($cellRangePurchase)->applyFromArray(
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                'color' => ['argb' => '000000'],
+                            ]
+                        ]
+                    ]
+                );
+            }
+        ];
     }
 
     public function view(): View
     {
-        // Get data sale
-        $sales = Sale::with('saleDetails.inventoryStock')->where('date', $this->date)->get();
-
-        // Mapping sale
-        $dataSales = [];
-        $totalDebit = 0;
-        foreach ($sales as $key => $sale) {
-            foreach ($sale->saleDetails as $salesDetail) {
-                $dataSales[$key] = [
-                    "name" => $salesDetail->inventoryStock->name,
-                    "quantity" => $salesDetail->quantity,
-                    "price" => $salesDetail->price,
-                    "debit" => $salesDetail->quantity * $salesDetail->price,
-                ];
-                $totalDebit += $salesDetail->quantity * $salesDetail->price;
-            }
-        }
-
-        // Get data purchase
-        $purchases = Purchase::with('purchaseDetails.ingredient')->where('date', $this->date)->get();
-
-        // Mapping purchase
-        $dataPurchases = [];
-        $totalKredit = 0;
-        foreach ($purchases as $key => $purchase) {
-            foreach ($purchase->purchaseDetails as $purchasesDetail) {
-                $dataPurchases[$key] = [
-                    "name" => $purchasesDetail->ingredient->name,
-                    "quantity" => $purchasesDetail->quantity,
-                    "price" => $purchasesDetail->price,
-                    "kredit" => $purchasesDetail->quantity * $purchasesDetail->price,
-                ];
-                $totalKredit += $purchasesDetail->quantity * $purchasesDetail->price;
-            }
-        }
-
-        // Calculate balance
-        $balance = $totalDebit - $totalKredit;
+        $inventoryStocks = $this->dataDailyReport['inventoryStocks'];
+        $sales = $this->dataDailyReport['sales'];
+        $totalSale = $this->dataDailyReport['totalSale'];
+        $sumGrandTotalSale = $this->dataDailyReport['sumGrandTotalSale'];
+        $ingredients = $this->dataDailyReport['ingredients'];
+        $purchases = $this->dataDailyReport['purchases'];
+        $totalPurchase = $this->dataDailyReport['totalPurchase'];
+        $sumGrandTotalPurchase = $this->dataDailyReport['sumGrandTotalPurchase'];
 
         return view('contents.exports.daily-report', [
-            'sales' => $dataSales,
-            'purchases' => $dataPurchases,
-            'balance' => $balance
+            'inventoryStocks' => $inventoryStocks,
+            'sales' => $sales,
+            'totalSale' => $totalSale,
+            'sumGrandTotalSale' => $sumGrandTotalSale,
+            'ingredients' => $ingredients,
+            'purchases' => $purchases,
+            'totalPurchase' => $totalPurchase,
+            'sumGrandTotalPurchase' => $sumGrandTotalPurchase
         ]);
     }
 }
