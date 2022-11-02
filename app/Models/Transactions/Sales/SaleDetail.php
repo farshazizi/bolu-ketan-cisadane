@@ -16,7 +16,7 @@ class SaleDetail extends Model
 
     public function inventoryStock()
     {
-        return $this->belongsTo(InventoryStock::class);
+        return $this->belongsTo(InventoryStock::class)->orderBy('name');
     }
 
     public function saleAdditionalDetails()

@@ -15,6 +15,6 @@ class PurchaseDetail extends Model
 
     public function ingredient()
     {
-        return $this->belongsTo(Ingredient::class);
+        return $this->belongsTo(Ingredient::class)->orderBy('name');
     }
 }
