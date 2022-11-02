@@ -11,4 +11,6 @@ interface SaleInterface
     public function getStockByInventoryStockId($id);
     public function getGrandTotalDailySale();
     public function getInvoiceNumbers();
+    public function getSalesByDate($date);
+    public function getTotalSaleByDate($date);
 }
