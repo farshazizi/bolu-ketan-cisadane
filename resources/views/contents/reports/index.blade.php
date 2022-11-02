@@ -26,10 +26,10 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="date">Tanggal</label>
-                                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date">
-                                                @error('date')
+                                                <label for="dailyReportDate">Tanggal</label>
+                                                <input type="date" class="form-control @error('dailyReportDate') is-invalid @enderror"
+                                                    id="dailyReportDate" name="dailyReportDate">
+                                                @error('dailyReportDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -57,17 +57,17 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="date">Tanggal</label>
-                                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" value="{{ old('date') }}">
-                                                @error('date')
+                                                <label for="orderReportDate">Tanggal</label>
+                                                <input type="date" class="form-control @error('orderReportDate') is-invalid @enderror"
+                                                    id="orderReportDate" name="orderReportDate" value="{{ old('orderReportDate') }}">
+                                                @error('orderReportDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="date">Status</label>
+                                                <label for="status">Status</label>
                                                 <select class="form-select @error('status') is-invalid @enderror"
                                                     id="status" name="status" value="{{ old('status') }}">
                                                     <option value="">Pilih Status</option>
@@ -95,14 +95,4 @@
             </div>
         </div>
     </section>
-@endsection
-
-@section('content-js')
-    <script type="text/javascript">
-        var dataRoute = "{{ route('sales.data') }}";
-        var destroyRoute = "{{ route('sales.destroy', ':id') }}";
-        var dataSaleOrdersRoute = "{{ route('sales.data_orders') }}";
-        var createSaleOrderRoute = "{{ route('sales.create') }}";
-    </script>
-    <script src="{{ asset(mix('js/contents/transactions/sales/sale.js')) }}"></script>
 @endsection
