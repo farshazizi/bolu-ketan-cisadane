@@ -23,6 +23,7 @@ class StockOutController extends Controller
     public function create()
     {
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $$inventoryStocks->get();
 
         return view('contents.masters.stocks.stock-out.create', compact('inventoryStocks'));
     }

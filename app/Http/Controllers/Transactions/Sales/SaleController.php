@@ -62,6 +62,7 @@ class SaleController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         if ($orderId) {
             $formatting = false;

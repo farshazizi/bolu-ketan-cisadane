@@ -17,6 +17,7 @@ class SaleInventoryStockController extends Controller
     public function __invoke()
     {
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         return response()->json([
             'status' => 'success',

@@ -60,6 +60,7 @@ class OrderController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         return view('contents.transactions.orders.create', compact('additionals', 'inventoryStocks'));
     }
@@ -110,6 +111,8 @@ class OrderController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
+
         $formatting = false;
         $order = $this->orderService->getOrderById($id, $formatting);
 
