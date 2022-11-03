@@ -13,6 +13,7 @@
                 <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
             @endforeach
             <th style="width: 150px; text-align: center">Debit</th>
+            <th style="width: 150px; text-align: center">Total Tambahan</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
                     <td style="text-align: right">{{ $saleDetail['quantity'] }}</td>
                 @endforeach
                 <td style="text-align: right">{{ number_format($sale['grandTotal'], 0) }}</td>
+                <td style="text-align: right">{{ number_format($sale['totalAdditional'], 0) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -34,7 +36,7 @@
                 <td>{{ $totalSale['quantity'] }}</td>
             @endforeach
             <td style="text-align: right">{{ number_format($sumGrandTotalSales, 0) }}</td>
-            <td style="text-align: right">{{ number_format($sumGrandTotalSale, 0) }}</td>
+            <td style="text-align: right">{{ number_format($sumTotalAdditionalSales, 0) }}</td>
         </tr>
     </tfoot>
     <tr></tr>

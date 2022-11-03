@@ -25,7 +25,7 @@ class DailyReportExport implements FromView, WithEvents
         // Set variable and initial value
         $sales = $this->dataDailyReport['sales'];
         $inventoryStocks = $this->dataDailyReport['inventoryStocks'];
-        $numberOfStaticColumnSale = 3;
+        $numberOfStaticColumnSale = 4;
 
         // Calculate end of column sale
         $totalInventoryStocks = count($inventoryStocks);
@@ -46,10 +46,11 @@ class DailyReportExport implements FromView, WithEvents
         // Set variable and initial value
         $purchases = $this->dataDailyReport['purchases'];
         $ingredients = $this->dataDailyReport['ingredients'];
+        $numberOfStaticColumnPurchase = 3;
 
         // Calculate end of column sale
         $totalIngredients = count($ingredients);
-        $totalColumnPurchase = ($numberOfStaticColumnSale + $totalIngredients) - 1;
+        $totalColumnPurchase = ($numberOfStaticColumnPurchase + $totalIngredients) - 1;
         $endOfColumnPurchase = $alphabet[$totalColumnPurchase];
 
         $startColumnPurchase = $alphabet[0];
