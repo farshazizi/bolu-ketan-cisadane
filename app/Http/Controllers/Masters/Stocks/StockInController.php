@@ -23,6 +23,7 @@ class StockInController extends Controller
     public function create()
     {
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         return view('contents.masters.stocks.stock-in.create', compact('inventoryStocks'));
     }
@@ -30,7 +31,7 @@ class StockInController extends Controller
     public function store(StoreStockInRequest $storeStockInRequest)
     {
         try {
-            $request = $storeStockInRequest->safe()->collect();
+            $request = $storeStockInRequest->validated();
 
             $stockIn = $this->stockService->store($request);
 

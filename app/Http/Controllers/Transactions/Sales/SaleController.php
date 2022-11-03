@@ -62,6 +62,7 @@ class SaleController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         if ($orderId) {
             $formatting = false;
@@ -85,7 +86,7 @@ class SaleController extends Controller
     public function store(StoreSaleRequest $storeSaleRequest)
     {
         try {
-            $request = $storeSaleRequest->safe()->collect();
+            $request = $storeSaleRequest->validated();
 
             $sale = $this->saleService->storeSale($request);
 

@@ -9,4 +9,6 @@ interface PurchaseInterface
     public function getPurchaseById($id);
     public function destoryPurchaseById($id);
     public function getGrandTotalDailyPurchase();
+    public function getPurchasesByDate($date);
+    public function getTotalPurchasesByDate($date);
 }

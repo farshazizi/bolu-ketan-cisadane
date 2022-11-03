@@ -24,7 +24,7 @@ class DailyReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required'
+            'dailyReportDate' => 'required'
         ];
     }
 
@@ -36,7 +36,7 @@ class DailyReportRequest extends FormRequest
     public function messages()
     {
         return [
-            'date.required' => 'Tanggal wajib diisi.',
+            'dailyReportDate.required' => 'Tanggal wajib diisi.',
         ];
     }
 }

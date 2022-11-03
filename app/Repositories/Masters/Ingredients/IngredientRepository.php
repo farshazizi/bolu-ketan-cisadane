@@ -11,7 +11,7 @@ class IngredientRepository implements IngredientInterface
 {
     public function getIngredients()
     {
-        $ingredients = Ingredient::with('uom')->get();
+        $ingredients = Ingredient::with('uom');
 
         return $ingredients;
     }

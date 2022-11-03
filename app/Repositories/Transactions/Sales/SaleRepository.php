@@ -143,4 +143,27 @@ class SaleRepository implements SaleInterface
 
         return $invoiceNumbers;
     }
+
+    public function getSalesByDate($date)
+    {
+        $sales = Sale::with('saleDetails.inventoryStock')->where('date', $date)->orderBy('created_at')->get();
+
+        return $sales;
+    }
+
+    public function getTotalSalesByDate($date)
+    {
+        $totalSales = DB::table('sales as s')
+            ->join('sale_details as sd', 'sd.sale_id', '=', 's.id')
+            ->leftJoin('inventory_stocks as is', 'is.id', '=', 'sd.inventory_stock_id')
+            ->groupBy('is.id')
+            ->where('s.date', $date)
+            ->whereNull('s.deleted_at')
+            ->whereNull('sd.deleted_at')
+            ->orderBy('is.name')
+            ->select('is.id', 'is.name', DB::raw('SUM(sd.quantity) as quantity'))
+            ->get();
+
+        return $totalSales;
+    }
 }

@@ -52,7 +52,7 @@ class AdditionalController extends Controller
     public function store(StoreAdditionalRequest $storeAdditionalRequest)
     {
         try {
-            $request = $storeAdditionalRequest->safe()->collect();
+            $request = $storeAdditionalRequest->validated();
 
             $additional = $this->additionalService->storeAdditional($request);
 
@@ -86,7 +86,7 @@ class AdditionalController extends Controller
     public function update(UpdateAdditionalRequest $updateAdditionalRequest, $id)
     {
         try {
-            $request = $updateAdditionalRequest->safe()->collect();
+            $request = $updateAdditionalRequest->validated();
 
             $additional = $this->additionalService->updateAdditionalById($request, $id);
 

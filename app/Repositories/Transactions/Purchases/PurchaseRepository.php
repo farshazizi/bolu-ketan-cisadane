@@ -89,4 +89,27 @@ class PurchaseRepository implements PurchaseInterface
 
         return $grandTotal;
     }
+
+    public function getPurchasesByDate($date)
+    {
+        $purchases = Purchase::with('purchaseDetails.ingredient')->where('date', $date)->orderBy('created_at')->get();
+
+        return $purchases;
+    }
+
+    public function getTotalPurchasesByDate($date)
+    {
+        $totalPurchases = DB::table('purchases as p')
+            ->join('purchase_details as pd', 'pd.purchase_id', '=', 'p.id')
+            ->leftJoin('ingredients as i', 'i.id', '=', 'pd.ingredient_id')
+            ->groupBy('i.id')
+            ->where('p.date', $date)
+            ->whereNull('p.deleted_at')
+            ->whereNull('pd.deleted_at')
+            ->orderBy('i.name')
+            ->select('i.id', 'i.name', DB::raw('SUM(pd.quantity) as quantity'))
+            ->get();
+
+        return $totalPurchases;
+    }
 }
