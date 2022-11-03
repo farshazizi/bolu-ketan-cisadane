@@ -57,6 +57,7 @@ class PurchaseController extends Controller
     public function create()
     {
         $ingredients = $this->ingredientService->data();
+        $ingredients = $ingredients->get();
         $uoms = $this->uomService->data();
 
         return view('contents.transactions.purchases.create', compact('ingredients', 'uoms'));
@@ -65,7 +66,7 @@ class PurchaseController extends Controller
     public function store(StorePurchaseRequest $storePurchaseRequest)
     {
         try {
-            $request = $storePurchaseRequest->safe()->collect();
+            $request = $storePurchaseRequest->validated();
 
             $purchase = $this->purchaseService->storePurchase($request);
 

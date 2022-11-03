@@ -60,6 +60,7 @@ class OrderController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
 
         return view('contents.transactions.orders.create', compact('additionals', 'inventoryStocks'));
     }
@@ -67,7 +68,7 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $storeOrderRequest)
     {
         try {
-            $request = $storeOrderRequest->safe()->collect();
+            $request = $storeOrderRequest->validated();
 
             $order = $this->orderService->storeOrder($request);
 
@@ -110,6 +111,8 @@ class OrderController extends Controller
     {
         $additionals = $this->additionalService->data();
         $inventoryStocks = $this->inventoryStockService->data();
+        $inventoryStocks = $inventoryStocks->get();
+
         $formatting = false;
         $order = $this->orderService->getOrderById($id, $formatting);
 
@@ -119,7 +122,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $updateOrderRequest, $id)
     {
         try {
-            $request = $updateOrderRequest->safe()->collect();
+            $request = $updateOrderRequest->validated();
 
             $order = $this->orderService->updateOrder($request, $id);
 

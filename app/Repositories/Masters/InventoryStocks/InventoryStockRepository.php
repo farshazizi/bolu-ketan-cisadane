@@ -9,7 +9,7 @@ class InventoryStockRepository implements InventoryStockInterface
 {
     public function getInventoryStocks()
     {
-        $inventoryStocks = InventoryStock::with('category')->get();
+        $inventoryStocks = InventoryStock::with('category');
 
         return $inventoryStocks;
     }

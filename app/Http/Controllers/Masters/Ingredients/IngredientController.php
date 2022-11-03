@@ -52,7 +52,7 @@ class IngredientController extends Controller
     public function store(StoreIngredientRequest $storeIngredientRequest)
     {
         try {
-            $request = $storeIngredientRequest->safe()->collect();
+            $request = $storeIngredientRequest->validated();
 
             $ingredient = $this->ingredientService->storeIngredient($request);
 
@@ -94,7 +94,7 @@ class IngredientController extends Controller
     public function update(UpdateIngredientRequest $updateIngredientRequest, $id)
     {
         try {
-            $request = $updateIngredientRequest->safe()->collect();
+            $request = $updateIngredientRequest->validated();
 
             $ingredient = $this->ingredientService->updateIngredientById($request, $id);
 

@@ -61,7 +61,7 @@ class InventoryStockController extends Controller
     public function store(StoreInventoryStockRequest $storeInventoryStockRequest)
     {
         try {
-            $request = $storeInventoryStockRequest->safe()->collect();
+            $request = $storeInventoryStockRequest->validated();
 
             $inventoryStock = $this->inventoryStockService->storeInventoryStock($request);
 
@@ -104,7 +104,7 @@ class InventoryStockController extends Controller
     public function update(UpdateInventoryStockRequest $updateInventoryStockRequest, $id)
     {
         try {
-            $request = $updateInventoryStockRequest->safe()->collect();
+            $request = $updateInventoryStockRequest->validated();
 
             $inventoryStock = $this->inventoryStockService->updateInventoryStockById($request, $id);
 

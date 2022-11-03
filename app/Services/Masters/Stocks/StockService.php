@@ -108,6 +108,7 @@ class StockService
     public function getStocks()
     {
         $stocks = $this->inventoryStockRepository->getInventoryStocks();
+        $stocks = $stocks->get();
 
         $dataStocks = [];
         foreach ($stocks as $key => $stock) {

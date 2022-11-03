@@ -24,7 +24,7 @@ class OrderReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required',
+            'orderReportDate' => 'required',
             'status' => 'required'
         ];
     }
@@ -37,7 +37,7 @@ class OrderReportRequest extends FormRequest
     public function messages()
     {
         return [
-            'date.required' => 'Tanggal wajib diisi.',
+            'orderReportDate.required' => 'Tanggal wajib diisi.',
             'status.required' => 'Status wajib dipilih.',
         ];
     }
