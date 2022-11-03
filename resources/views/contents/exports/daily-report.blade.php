@@ -35,8 +35,8 @@
             @foreach ($totalSales as $totalSale)
                 <td>{{ $totalSale['quantity'] }}</td>
             @endforeach
-            <td style="text-align: right">{{ number_format($sumGrandTotalSales, 0) }}</td>
             <td style="text-align: right">{{ number_format($sumTotalAdditionalSales, 0) }}</td>
+            <td style="text-align: right">{{ number_format($sumGrandTotalSales, 0) }}</td>
         </tr>
     </tfoot>
     <tr></tr>
@@ -81,4 +81,21 @@
             <td style="text-align: right">{{ number_format($sumGrandTotalPurchases, 0) }}</td>
         </tr>
     </tfoot>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <thead>
+        <tr>
+            <th style="width: 150px; text-align: center"><b>PENJUALAN</b></th>
+            <th style="width: 150px; text-align: center"><b>PEMBELIAN</b></th>
+            <th style="width: 150px; text-align: center"><b>SALDO</b></th>
+        </tr>
+        <tr>
+            <th style="width: 150px; text-align: right">{{ number_format($sumGrandTotalSales, 0) }}</th>
+            <th style="width: 150px; text-align: right">{{ number_format($sumGrandTotalPurchases, 0) }}</th>
+            <th style="width: 150px; text-align: right">{{ number_format(($sumGrandTotalSales - $sumGrandTotalPurchases), 0) }}</th>
+        </tr>
+    </thead>
 </table>
