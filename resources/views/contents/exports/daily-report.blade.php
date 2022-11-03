@@ -12,8 +12,8 @@
             @foreach ($inventoryStocks as $item)
                 <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
             @endforeach
-            <th style="width: 150px; text-align: center">Debit</th>
             <th style="width: 150px; text-align: center">Total Tambahan</th>
+            <th style="width: 150px; text-align: center">Debit</th>
         </tr>
     </thead>
     <tbody>
@@ -24,8 +24,8 @@
                 @foreach ($sale['saleDetails'] as $saleDetail)
                     <td style="text-align: right">{{ $saleDetail['quantity'] }}</td>
                 @endforeach
-                <td style="text-align: right">{{ number_format($sale['grandTotal'], 0) }}</td>
                 <td style="text-align: right">{{ number_format($sale['totalAdditional'], 0) }}</td>
+                <td style="text-align: right">{{ number_format($sale['grandTotal'], 0) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -51,7 +51,7 @@
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
             <th rowspan="2" style="width: 150px; text-align: center"><b>Jam Transaksi</b></th>
-            <th colspan="{{ count($ingredients) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+            <th colspan="{{ count($ingredients) }}" style="width: 150px; text-align: center"><b>Stock</b></th>
         </tr>
         <tr>
             @foreach ($ingredients as $item)
