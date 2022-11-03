@@ -48,7 +48,7 @@ class DailyReportExport implements FromView, WithEvents
         $ingredients = $this->dataDailyReport['ingredients'];
         $numberOfStaticColumnPurchase = 3;
 
-        // Calculate end of column sale
+        // Calculate end of column purchase
         $totalIngredients = count($ingredients);
         $totalColumnPurchase = ($numberOfStaticColumnPurchase + $totalIngredients) - 1;
         $endOfColumnPurchase = $alphabet[$totalColumnPurchase];
@@ -63,8 +63,26 @@ class DailyReportExport implements FromView, WithEvents
         $endRowPurchase = ($startRowContentPurchase + $dataLengthPurchase) + 1;
         $cellRangePurchase = $cellInitialPurchase . $endRowPurchase;
 
+        //* Styling Balance Daily Report *//
+        // Set variable and initial value
+        $numberOfStaticColumnBalance = 3;
+
+        // Calculate end of column balance
+        $totalColumnBalance = $numberOfStaticColumnBalance - 1;
+        $endOfColumnBalance = $alphabet[$totalColumnBalance];
+
+        $startColumnBalance = $alphabet[0];
+        $endColumnBalance = $endOfColumnBalance;
+        $startRowHeaderBalance = $endRowPurchase + 6;
+        $startRowContentBalance = $startRowHeaderBalance;
+        $cellInitialBalance = $startColumnBalance . $startRowHeaderBalance . ':' . $endColumnBalance;
+
+        $dataLengthBalance = 1;
+        $endRowBalance = ($startRowContentBalance + $dataLengthBalance);
+        $cellRangeBalance = $cellInitialBalance . $endRowBalance;
+
         return [
-            AfterSheet::class => function (AfterSheet $event) use ($cellRangeSale, $cellRangePurchase) {
+            AfterSheet::class => function (AfterSheet $event) use ($cellRangeSale, $cellRangePurchase, $cellRangeBalance) {
                 $event->getSheet()->getDelegate()->getStyle($cellRangeSale)->applyFromArray(
                     [
                         'borders' => [
@@ -76,6 +94,16 @@ class DailyReportExport implements FromView, WithEvents
                     ]
                 );
                 $event->getSheet()->getDelegate()->getStyle($cellRangePurchase)->applyFromArray(
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                'color' => ['argb' => '000000'],
+                            ]
+                        ]
+                    ]
+                );
+                $event->getSheet()->getDelegate()->getStyle($cellRangeBalance)->applyFromArray(
                     [
                         'borders' => [
                             'allBorders' => [
