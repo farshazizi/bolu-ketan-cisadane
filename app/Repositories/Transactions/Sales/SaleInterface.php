@@ -12,5 +12,5 @@ interface SaleInterface
     public function getGrandTotalDailySale();
     public function getInvoiceNumbers();
     public function getSalesByDate($date);
-    public function getTotalSaleByDate($date);
+    public function getTotalSalesByDate($date);
 }

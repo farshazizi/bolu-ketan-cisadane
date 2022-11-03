@@ -35,8 +35,60 @@ class ReportService
         // Get data sales
         $sales = $this->saleRepository->getSalesByDate($dailyReportDate);
 
+        // Grouping sales
+        $dataGroupingSales = $this->groupingSales($inventoryStocks, $sales);
+        $groupingSales = $dataGroupingSales['groupingSales'];
+        $sumGrandTotalSales = $dataGroupingSales['sumGrandTotalSales'];
+
+        // Calculate total additional sales
+        $sumTotalAdditionalSales = $this->calculateTotalAdditionalSales($groupingSales);
+
+        // Get total sales
+        $totalSales = $this->saleRepository->getTotalSalesByDate($dailyReportDate);
+
+        // Calculate total sales
+        $dataTotalSales = $this->calculateTotalSales($inventoryStocks, $totalSales);
+
+        // Get ingredients
+        $ingredients = $this->ingredientRepository->getIngredients();
+        $ingredients = $ingredients->orderBy('name')->get();
+
+        // Get data purchases
+        $purchases = $this->purchaseRepository->getPurchasesByDate($dailyReportDate);
+
+        // Grouping purchases
+        $dataGroupingPurchases = $this->groupingPurchases($ingredients, $purchases);
+        $groupingPurchases = $dataGroupingPurchases['groupingPurchases'];
+        $sumGrandTotalPurchases = $dataGroupingPurchases['sumGrandTotalPurchases'];
+
+        // Get total purchases
+        $totalPurchases = $this->purchaseRepository->getTotalPurchasesByDate($dailyReportDate);
+
+        // Calculate total purchase
+        $dataTotalPurchases = $this->calculateTotalPurchases($ingredients, $totalPurchases);
+
+        $data = [
+            'inventoryStocks' => $inventoryStocks,
+            'sales' => $groupingSales,
+            'sumTotalAdditionalSales' => $sumTotalAdditionalSales,
+            'totalSales' => $dataTotalSales,
+            'sumGrandTotalSales' => $sumGrandTotalSales,
+            'ingredients' => $ingredients,
+            'purchases' => $groupingPurchases,
+            'totalPurchases' => $dataTotalPurchases,
+            'sumGrandTotalPurchases' => $sumGrandTotalPurchases
+        ];
+
+        return $data;
+    }
+
+    public function groupingSales($inventoryStocks, $sales)
+    {
+        // Set initial value
+        $data = [];
         $groupingSales = [];
-        $sumGrandTotalSale = 0;
+        $sumGrandTotalSales = 0;
+
         foreach ($sales as $keySale => $sale) {
             $totalItemInventorySale = 0;
 
@@ -52,11 +104,12 @@ class ReportService
             $groupingSales[$keySale]['grandTotal'] = $grandTotal;
             $groupingSales[$keySale]['createdAt'] = $createdAt;
 
-            $sumGrandTotalSale += $grandTotal;
+            $sumGrandTotalSales += $grandTotal;
 
             foreach ($inventoryStocks as $keyInventoryStock => $inventoryStock) {
                 // Set initial value
                 $totalQuantity = 0;
+                $sumTotalAdditionalSales = 0;
 
                 // Mapping key object
                 $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] = $inventoryStock->id;
@@ -67,6 +120,10 @@ class ReportService
                     // Set variable
                     $inventoryStockId = $saleDetail->inventory_stock_id;
                     $quantity = $saleDetail->quantity;
+                    $totalAdditional = $saleDetail->total_additional;
+
+                    // Get total additional
+                    $sumTotalAdditionalSales += $totalAdditional;
 
                     if ($groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] == $inventoryStockId) {
                         $totalQuantity += $quantity;
@@ -76,36 +133,62 @@ class ReportService
 
                 $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['quantity'] = $totalQuantity;
             }
+
+            $groupingSales[$keySale]['totalAdditional'] = $sumTotalAdditionalSales;
         }
 
-        // Get total sale
-        $totalSale = $this->saleRepository->getTotalSaleByDate($dailyReportDate);
+        $data = [
+            'groupingSales' => $groupingSales,
+            'sumGrandTotalSales' => $sumGrandTotalSales
+        ];
 
-        $dataTotalSale = [];
+        return $data;
+    }
+
+    public function calculateTotalAdditionalSales($groupingSales)
+    {
+        // Set initial value
+        $sumTotalAdditionalSales = 0;
+
+        foreach ($groupingSales as $groupingSale) {
+            $totalAdditional = $groupingSale['totalAdditional'];
+
+            $sumTotalAdditionalSales += $totalAdditional;
+        }
+
+        return $sumTotalAdditionalSales;
+    }
+
+    public function calculateTotalSales($inventoryStocks, $totalSales)
+    {
+        // Set initial value
+        $dataTotalSales = [];
+
         foreach ($inventoryStocks as $keyInventoryStock => $inventoryStock) {
-            $dataTotalSale[$keyInventoryStock]['id'] = $inventoryStock->id;
-            $dataTotalSale[$keyInventoryStock]['name'] = $inventoryStock->name;
-            $dataTotalSale[$keyInventoryStock]['quantity'] = 0;
+            $dataTotalSales[$keyInventoryStock]['id'] = $inventoryStock->id;
+            $dataTotalSales[$keyInventoryStock]['name'] = $inventoryStock->name;
+            $dataTotalSales[$keyInventoryStock]['quantity'] = 0;
 
-            foreach ($totalSale as $sale) {
+            foreach ($totalSales as $totalSale) {
                 // Set variable
-                $inventoryStockId = $sale->id;
+                $inventoryStockId = $totalSale->id;
 
-                if ($dataTotalSale[$keyInventoryStock]['id'] === $inventoryStockId) {
-                    $dataTotalSale[$keyInventoryStock]['quantity'] = $sale->quantity;
+                if ($dataTotalSales[$keyInventoryStock]['id'] === $inventoryStockId) {
+                    $dataTotalSales[$keyInventoryStock]['quantity'] = $totalSale->quantity;
                 }
             }
         }
 
-        // Get ingredients
-        $ingredients = $this->ingredientRepository->getIngredients();
-        $ingredients = $ingredients->orderBy('name')->get();
+        return $dataTotalSales;
+    }
 
-        // Get data purchases
-        $purchases = $this->purchaseRepository->getPurchasesByDate($dailyReportDate);
-
+    public function groupingPurchases($ingredients, $purchases)
+    {
+        // Set initial value
+        $data = [];
         $groupingPurchases = [];
-        $sumGrandTotalPurchase = 0;
+        $sumGrandTotalPurchases = 0;
+
         foreach ($purchases as $keyPurchase => $purchase) {
             // Set variable
             $purchaseId = $purchase->id;
@@ -119,7 +202,7 @@ class ReportService
             $groupingPurchases[$keyPurchase]['grandTotal'] = $grandTotal;
             $groupingPurchases[$keyPurchase]['createdAt'] = $createdAt;
 
-            $sumGrandTotalPurchase += $grandTotal;
+            $sumGrandTotalPurchases += $grandTotal;
 
             foreach ($ingredients as $keyIngredient => $ingredient) {
                 // Set initial value
@@ -144,36 +227,34 @@ class ReportService
             }
         }
 
-        // Get total purchase
-        $totalPurchase = $this->purchaseRepository->getTotalPurchaseByDate($dailyReportDate);
+        $data = [
+            'groupingPurchases' => $groupingPurchases,
+            'sumGrandTotalPurchases' => $sumGrandTotalPurchases
+        ];
 
-        $dataTotalPurchase = [];
+        return $data;
+    }
+
+    public function calculateTotalPurchases($ingredients, $totalPurchases)
+    {
+        // Set initial value
+        $dataTotalPurchases = [];
+
         foreach ($ingredients as $keyIngredient => $ingredient) {
-            $dataTotalPurchase[$keyIngredient]['id'] = $ingredient->id;
-            $dataTotalPurchase[$keyIngredient]['name'] = $ingredient->name;
-            $dataTotalPurchase[$keyIngredient]['quantity'] = 0;
+            $dataTotalPurchases[$keyIngredient]['id'] = $ingredient->id;
+            $dataTotalPurchases[$keyIngredient]['name'] = $ingredient->name;
+            $dataTotalPurchases[$keyIngredient]['quantity'] = 0;
 
-            foreach ($totalPurchase as $purchase) {
+            foreach ($totalPurchases as $totalPurchase) {
                 // Set variable
-                $ingredientId = $purchase->id;
+                $ingredientId = $totalPurchase->id;
 
-                if ($dataTotalPurchase[$keyIngredient]['id'] === $ingredientId) {
-                    $dataTotalPurchase[$keyIngredient]['quantity'] = $purchase->quantity;
+                if ($dataTotalPurchases[$keyIngredient]['id'] === $ingredientId) {
+                    $dataTotalPurchases[$keyIngredient]['quantity'] = $totalPurchase->quantity;
                 }
             }
         }
 
-        $data = [
-            'inventoryStocks' => $inventoryStocks,
-            'sales' => $groupingSales,
-            'totalSale' => $dataTotalSale,
-            'sumGrandTotalSale' => $sumGrandTotalSale,
-            'ingredients' => $ingredients,
-            'purchases' => $groupingPurchases,
-            'totalPurchase' => $dataTotalPurchase,
-            'sumGrandTotalPurchase' => $sumGrandTotalPurchase
-        ];
-
-        return $data;
+        return $dataTotalPurchases;
     }
 }

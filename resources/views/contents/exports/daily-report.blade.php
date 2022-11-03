@@ -30,9 +30,10 @@
     <tfoot>
         <tr>
             <td colspan="2" style="text-align: center"><b>Jumlah</b></td>
-            @foreach ($totalSale as $sale)
-                <td>{{ $sale['quantity'] }}</td>
+            @foreach ($totalSales as $totalSale)
+                <td>{{ $totalSale['quantity'] }}</td>
             @endforeach
+            <td style="text-align: right">{{ number_format($sumGrandTotalSales, 0) }}</td>
             <td style="text-align: right">{{ number_format($sumGrandTotalSale, 0) }}</td>
         </tr>
     </tfoot>
@@ -72,10 +73,10 @@
     <tfoot>
         <tr>
             <td colspan="2" style="text-align: center"><b>Jumlah</b></td>
-            @foreach ($totalPurchase as $purchase)
-                <td>{{ $purchase['quantity'] }}</td>
+            @foreach ($totalPurchases as $totalPurchase)
+                <td>{{ $totalPurchase['quantity'] }}</td>
             @endforeach
-            <td style="text-align: right">{{ number_format($sumGrandTotalPurchase, 0) }}</td>
+            <td style="text-align: right">{{ number_format($sumGrandTotalPurchases, 0) }}</td>
         </tr>
     </tfoot>
 </table>

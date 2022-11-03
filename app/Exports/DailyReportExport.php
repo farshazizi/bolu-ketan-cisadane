@@ -92,22 +92,24 @@ class DailyReportExport implements FromView, WithEvents
     {
         $inventoryStocks = $this->dataDailyReport['inventoryStocks'];
         $sales = $this->dataDailyReport['sales'];
-        $totalSale = $this->dataDailyReport['totalSale'];
-        $sumGrandTotalSale = $this->dataDailyReport['sumGrandTotalSale'];
+        $sumTotalAdditionalSales = $this->dataDailyReport['sumTotalAdditionalSales'];
+        $totalSales = $this->dataDailyReport['totalSales'];
+        $sumGrandTotalSales = $this->dataDailyReport['sumGrandTotalSales'];
         $ingredients = $this->dataDailyReport['ingredients'];
         $purchases = $this->dataDailyReport['purchases'];
-        $totalPurchase = $this->dataDailyReport['totalPurchase'];
-        $sumGrandTotalPurchase = $this->dataDailyReport['sumGrandTotalPurchase'];
+        $totalPurchases = $this->dataDailyReport['totalPurchases'];
+        $sumGrandTotalPurchases = $this->dataDailyReport['sumGrandTotalPurchases'];
 
         return view('contents.exports.daily-report', [
             'inventoryStocks' => $inventoryStocks,
             'sales' => $sales,
-            'totalSale' => $totalSale,
-            'sumGrandTotalSale' => $sumGrandTotalSale,
+            'sumTotalAdditionalSales' => $sumTotalAdditionalSales,
+            'totalSales' => $totalSales,
+            'sumGrandTotalSales' => $sumGrandTotalSales,
             'ingredients' => $ingredients,
             'purchases' => $purchases,
-            'totalPurchase' => $totalPurchase,
-            'sumGrandTotalPurchase' => $sumGrandTotalPurchase
+            'totalPurchases' => $totalPurchases,
+            'sumGrandTotalPurchases' => $sumGrandTotalPurchases
         ]);
     }
 }

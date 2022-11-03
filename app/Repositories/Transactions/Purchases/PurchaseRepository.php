@@ -97,9 +97,9 @@ class PurchaseRepository implements PurchaseInterface
         return $purchases;
     }
 
-    public function getTotalPurchaseByDate($date)
+    public function getTotalPurchasesByDate($date)
     {
-        $totalPurchase = DB::table('purchases as p')
+        $totalPurchases = DB::table('purchases as p')
             ->join('purchase_details as pd', 'pd.purchase_id', '=', 'p.id')
             ->leftJoin('ingredients as i', 'i.id', '=', 'pd.ingredient_id')
             ->groupBy('i.id')
@@ -110,6 +110,6 @@ class PurchaseRepository implements PurchaseInterface
             ->select('i.id', 'i.name', DB::raw('SUM(pd.quantity) as quantity'))
             ->get();
 
-        return $totalPurchase;
+        return $totalPurchases;
     }
 }
