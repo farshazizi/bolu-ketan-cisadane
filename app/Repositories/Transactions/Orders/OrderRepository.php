@@ -197,4 +197,27 @@ class OrderRepository implements OrderInterface
 
         return $orders;
     }
+
+    public function getOrdersByDateAndStatus($date, $status)
+    {
+        $orders = Order::where('date', $date)->where('status', $status)->get();
+
+        return $orders;
+    }
+
+    public function getTotalOrdersByDate($date)
+    {
+        $totalOrders = DB::table('orders as o')
+            ->join('order_details as od', 'od.order_id', '=', 'o.id')
+            ->leftJoin('inventory_stocks as is', 'is.id', '=', 'od.inventory_stock_id')
+            ->groupBy('is.id')
+            ->where('o.date', $date)
+            ->whereNull('o.deleted_at')
+            ->whereNull('od.deleted_at')
+            ->orderBy('is.name')
+            ->select('is.id', 'is.name', DB::raw('SUM(od.quantity) as quantity'))
+            ->get();
+
+        return $totalOrders;
+    }
 }

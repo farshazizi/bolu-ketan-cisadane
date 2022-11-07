@@ -12,4 +12,6 @@ interface OrderInterface
     public function getStockByInventoryStockId($id);
     public function getGrandTotalDailyOrder();
     public function getOrdersWaiting();
+    public function getOrdersByDateAndStatus($date, $status);
+    public function getTotalOrdersByDate($date);
 }
