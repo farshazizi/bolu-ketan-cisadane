@@ -2,27 +2,71 @@
 
 namespace App\Exports;
 
-use App\Models\Transactions\Orders\Order;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class OrderReportExport implements FromView
+class OrderReportExport implements FromView, WithEvents
 {
-    protected $date;
-    protected $status;
+    protected $dataOrderReport;
 
-    public function __construct($date, $status)
+    public function __construct($dataOrderReport)
     {
-        $this->date = $date;
-        $this->status = $status;
+        $this->dataOrderReport = $dataOrderReport;
+    }
+
+    public function registerEvents(): array
+    {
+        // Set initial value
+        $alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        // Set variable and initial value
+        $orders = $this->dataOrderReport['orders'];
+        $inventoryStocks = $this->dataOrderReport['inventoryStocks'];
+        $numberOfStaticColumnOrder = 2;
+
+        // Calculate end of column order
+        $totalInventoryStocks = count($inventoryStocks);
+        $totalColumnOrder = ($numberOfStaticColumnOrder + $totalInventoryStocks) - 1;
+        $endOfColumnOrder = $alphabet[$totalColumnOrder];
+
+        $startColumnOrder = $alphabet[0];
+        $endColumnOrder = $endOfColumnOrder;
+        $startRowHeaderOrder = 1;
+        $startRowContentOrder = 3;
+        $cellInitialSale = $startColumnOrder . $startRowHeaderOrder . ':' . $endColumnOrder;
+
+        $dataLengthOrder = count($orders);
+        $endRowOrder = ($startRowContentOrder + $dataLengthOrder) + 1;
+        $cellRangeOrder = $cellInitialSale . $endRowOrder;
+
+        return [
+            AfterSheet::class => function (AfterSheet $event) use ($cellRangeOrder) {
+                $event->getSheet()->getDelegate()->getStyle($cellRangeOrder)->applyFromArray(
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                'color' => ['argb' => '000000'],
+                            ]
+                        ]
+                    ]
+                );
+            }
+        ];
     }
 
     public function view(): View
     {
-        $orders = Order::with('orderDetails.inventoryStock')->where('date', $this->date)->get();
-        
+        $inventoryStocks = $this->dataOrderReport['inventoryStocks'];
+        $orders = $this->dataOrderReport['orders'];
+        $totalOrders = $this->dataOrderReport['totalOrders'];
+
         return view('contents.exports.order-report', [
-            'data' => $orders
+            'inventoryStocks' => $inventoryStocks,
+            'orders' => $orders,
+            'totalOrders' => $totalOrders,
         ]);
     }
 }
