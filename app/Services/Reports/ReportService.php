@@ -90,8 +90,6 @@ class ReportService
         $sumGrandTotalSales = 0;
 
         foreach ($sales as $keySale => $sale) {
-            $totalItemInventorySale = 0;
-
             // Set variable
             $saleId = $sale->id;
             $date = Carbon::parse($sale->date)->format('d-m-Y');
@@ -111,9 +109,13 @@ class ReportService
                 $totalQuantity = 0;
                 $sumTotalAdditionalSales = 0;
 
+                // Set variable
+                $inventoryStockId = $inventoryStock->id;
+                $name = $inventoryStock->name;
+
                 // Mapping key object
-                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] = $inventoryStock->id;
-                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['name'] = $inventoryStock->name;
+                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] = $inventoryStockId;
+                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['name'] = $name;
                 $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['quantity'] = 0;
 
                 foreach ($sale->saleDetails as $saleDetail) {
@@ -127,7 +129,6 @@ class ReportService
 
                     if ($groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] == $inventoryStockId) {
                         $totalQuantity += $quantity;
-                        $totalItemInventorySale += $quantity;
                     }
                 }
 
@@ -165,16 +166,21 @@ class ReportService
         $dataTotalSales = [];
 
         foreach ($inventoryStocks as $keyInventoryStock => $inventoryStock) {
-            $dataTotalSales[$keyInventoryStock]['id'] = $inventoryStock->id;
-            $dataTotalSales[$keyInventoryStock]['name'] = $inventoryStock->name;
+            // Set variable
+            $inventoryStockId = $inventoryStock->id;
+            $name = $inventoryStock->name;
+
+            $dataTotalSales[$keyInventoryStock]['id'] = $inventoryStockId;
+            $dataTotalSales[$keyInventoryStock]['name'] = $name;
             $dataTotalSales[$keyInventoryStock]['quantity'] = 0;
 
             foreach ($totalSales as $totalSale) {
                 // Set variable
                 $inventoryStockId = $totalSale->id;
+                $quantity = $totalSale->quantity;
 
                 if ($dataTotalSales[$keyInventoryStock]['id'] === $inventoryStockId) {
-                    $dataTotalSales[$keyInventoryStock]['quantity'] = $totalSale->quantity;
+                    $dataTotalSales[$keyInventoryStock]['quantity'] = $quantity;
                 }
             }
         }
@@ -208,9 +214,13 @@ class ReportService
                 // Set initial value
                 $totalQuantity = 0;
 
+                // Set variable
+                $ingredientId = $ingredient->id;
+                $name = $ingredient->name;
+
                 // Mapping key object
-                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['id'] = $ingredient->id;
-                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['name'] = $ingredient->name;
+                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['id'] = $ingredientId;
+                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['name'] = $name;
                 $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['quantity'] = 0;
 
                 foreach ($purchase->purchaseDetails as $purchaseDetail) {
@@ -241,16 +251,21 @@ class ReportService
         $dataTotalPurchases = [];
 
         foreach ($ingredients as $keyIngredient => $ingredient) {
-            $dataTotalPurchases[$keyIngredient]['id'] = $ingredient->id;
-            $dataTotalPurchases[$keyIngredient]['name'] = $ingredient->name;
+            // Set variable
+            $ingredientId = $ingredient->id;
+            $name = $ingredient->name;
+
+            $dataTotalPurchases[$keyIngredient]['id'] = $ingredientId;
+            $dataTotalPurchases[$keyIngredient]['name'] = $name;
             $dataTotalPurchases[$keyIngredient]['quantity'] = 0;
 
             foreach ($totalPurchases as $totalPurchase) {
                 // Set variable
                 $ingredientId = $totalPurchase->id;
+                $quantity = $totalPurchase->quantity;
 
                 if ($dataTotalPurchases[$keyIngredient]['id'] === $ingredientId) {
-                    $dataTotalPurchases[$keyIngredient]['quantity'] = $totalPurchase->quantity;
+                    $dataTotalPurchases[$keyIngredient]['quantity'] = $quantity;
                 }
             }
         }

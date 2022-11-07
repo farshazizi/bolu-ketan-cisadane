@@ -7,15 +7,18 @@ use App\Exports\OrderReportExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reports\DailyReportRequest;
 use App\Http\Requests\Reports\OrderReportRequest;
+use App\Services\Reports\OrderService;
 use App\Services\Reports\ReportService;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+    private $orderService;
     private $reportService;
 
-    public function __construct(ReportService $reportService)
+    public function __construct(OrderService $orderService, ReportService $reportService)
     {
+        $this->orderService = $orderService;
         $this->reportService = $reportService;
     }
 
@@ -44,8 +47,9 @@ class ReportController extends Controller
 
         // Set variabl from request
         $date = $request['orderReportDate'];
-        $status = $request['status'];
 
-        return Excel::download(new OrderReportExport($date, $status), "Laporan-Pesanan_$date.xlsx");
+        $dataOrderReport = $this->orderService->orderReport($request);
+
+        return Excel::download(new OrderReportExport($dataOrderReport), "Laporan-Pesanan_$date.xlsx");
     }
 }

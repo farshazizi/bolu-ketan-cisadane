@@ -9,8 +9,8 @@
             <th colspan="{{ count($inventoryStocks) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
         </tr>
         <tr>
-            @foreach ($inventoryStocks as $item)
-                <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
+            @foreach ($inventoryStocks as $inventoryStock)
+                <th style="width: 150px; text-align: center">{{ $inventoryStock['name'] }}</th>
             @endforeach
             <th style="width: 150px; text-align: center">Total Tambahan</th>
             <th style="width: 150px; text-align: center">Debit</th>
@@ -54,8 +54,8 @@
             <th colspan="{{ count($ingredients) }}" style="width: 150px; text-align: center"><b>Stock</b></th>
         </tr>
         <tr>
-            @foreach ($ingredients as $item)
-                <th style="width: 150px; text-align: center">{{ $item['name'] }}</th>
+            @foreach ($ingredients as $ingredient)
+                <th style="width: 150px; text-align: center">{{ $ingredient['name'] }}</th>
             @endforeach
             <th style="width: 150px; text-align: center">Debit</th>
         </tr>
