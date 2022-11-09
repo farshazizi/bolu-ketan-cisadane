@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->integer('grand_total');
             $table->longText('notes')->nullable();
-            $table->string('status')->comment('0 = Pesanan gagal | 1 = Pesanan berhasil');;
+            $table->string('status')->comment('0 = Pesanan gagal | 1 = Pesanan berhasil');
             $table->timestamps();
             $table->softDeletes();
         });

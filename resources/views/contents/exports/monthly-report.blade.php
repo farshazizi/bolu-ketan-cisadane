@@ -1,11 +1,11 @@
 <table>
     <thead>
         <tr>
-            <th><b>LAPORAN PENJUALAN HARIAN</b></th>
+            <th><b>LAPORAN PENJUALAN BULANAN</b></th>
         </tr>
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
-            <th rowspan="2" style="width: 150px; text-align: center"><b>Jam Transaksi</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>Tanggal Transaksi</b></th>
             <th colspan="{{ count($inventoryStocks) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
         </tr>
         <tr>
@@ -20,7 +20,7 @@
         @foreach ($sales as $key => $sale)
             <tr>
                 <td style="text-align: center">{{ $key + 1 }}</td>
-                <td style="text-align: right">{{ $sale['createdAt'] }}</td>
+                <td style="text-align: right">{{ $sale['date'] }}</td>
                 @foreach ($sale['saleDetails'] as $saleDetail)
                     <td style="text-align: right">{{ $saleDetail['quantity'] }}</td>
                 @endforeach
@@ -46,11 +46,11 @@
     <tr></tr>
     <thead>
         <tr>
-            <th><b>LAPORAN PEMBELIAN HARIAN</b></th>
+            <th><b>LAPORAN PEMBELIAN BULANAN</b></th>
         </tr>
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
-            <th rowspan="2" style="width: 150px; text-align: center"><b>Jam Transaksi</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>Tanggal Transaksi</b></th>
             <th colspan="{{ count($ingredients) }}" style="width: 150px; text-align: center"><b>Stock</b></th>
         </tr>
         <tr>
@@ -64,7 +64,7 @@
         @foreach ($purchases as $key => $purchase)
             <tr>
                 <td style="text-align: center">{{ $key + 1 }}</td>
-                <td style="text-align: right">{{ $purchase['createdAt'] }}</td>
+                <td style="text-align: right">{{ $purchase['date'] }}</td>
                 @foreach ($purchase['purchaseDetails'] as $purchaseDetail)
                     <td style="text-align: right">{{ $purchaseDetail['quantity'] }}</td>
                 @endforeach

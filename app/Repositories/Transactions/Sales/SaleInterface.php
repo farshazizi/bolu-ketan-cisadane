@@ -13,4 +13,6 @@ interface SaleInterface
     public function getInvoiceNumbers();
     public function getSalesByDate($date);
     public function getTotalSalesByDate($date);
+    public function getSalesByMonth($month);
+    public function getTotalSalesByMonth($month);
 }

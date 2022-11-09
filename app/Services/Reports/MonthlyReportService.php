@@ -8,7 +8,7 @@ use App\Repositories\Transactions\Purchases\PurchaseRepository;
 use App\Repositories\Transactions\Sales\SaleRepository;
 use Carbon\Carbon;
 
-class ReportService
+class MonthlyReportService
 {
     private $ingredientRepository;
     private $inventoryStockRepository;
@@ -23,17 +23,20 @@ class ReportService
         $this->saleRepository = $saleRepository;
     }
 
-    public function dailyReport($dailyReportDate)
+    public function monthlyReport($monthlyReportDate)
     {
         // Set initial value
         $data = [];
+
+        // Set variable
+        $month = Carbon::parse($monthlyReportDate)->format('m');
 
         // Get inventory stocks
         $inventoryStocks = $this->inventoryStockRepository->getInventoryStocks();
         $inventoryStocks = $inventoryStocks->orderBy('name')->get();
 
         // Get data sales
-        $sales = $this->saleRepository->getSalesByDate($dailyReportDate);
+        $sales = $this->saleRepository->getSalesByMonth($month);
 
         // Grouping sales
         $dataGroupingSales = $this->groupingSales($inventoryStocks, $sales);
@@ -44,7 +47,7 @@ class ReportService
         $sumTotalAdditionalSales = $this->calculateTotalAdditionalSales($groupingSales);
 
         // Get total sales
-        $totalSales = $this->saleRepository->getTotalSalesByDate($dailyReportDate);
+        $totalSales = $this->saleRepository->getTotalSalesByMonth($month);
 
         // Calculate total sales
         $dataTotalSales = $this->calculateTotalSales($inventoryStocks, $totalSales);
@@ -54,7 +57,7 @@ class ReportService
         $ingredients = $ingredients->orderBy('name')->get();
 
         // Get data purchases
-        $purchases = $this->purchaseRepository->getPurchasesByDate($dailyReportDate);
+        $purchases = $this->purchaseRepository->getPurchasesByMonth($month);
 
         // Grouping purchases
         $dataGroupingPurchases = $this->groupingPurchases($ingredients, $purchases);
@@ -62,7 +65,7 @@ class ReportService
         $sumGrandTotalPurchases = $dataGroupingPurchases['sumGrandTotalPurchases'];
 
         // Get total purchases
-        $totalPurchases = $this->purchaseRepository->getTotalPurchasesByDate($dailyReportDate);
+        $totalPurchases = $this->purchaseRepository->getTotalPurchasesByMonth($month);
 
         // Calculate total purchase
         $dataTotalPurchases = $this->calculateTotalPurchases($ingredients, $totalPurchases);
@@ -90,8 +93,6 @@ class ReportService
         $sumGrandTotalSales = 0;
 
         foreach ($sales as $keySale => $sale) {
-            $totalItemInventorySale = 0;
-
             // Set variable
             $saleId = $sale->id;
             $date = Carbon::parse($sale->date)->format('d-m-Y');
@@ -111,9 +112,13 @@ class ReportService
                 $totalQuantity = 0;
                 $sumTotalAdditionalSales = 0;
 
+                // Set variable
+                $inventoryStockId = $inventoryStock->id;
+                $name = $inventoryStock->name;
+
                 // Mapping key object
-                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] = $inventoryStock->id;
-                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['name'] = $inventoryStock->name;
+                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] = $inventoryStockId;
+                $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['name'] = $name;
                 $groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['quantity'] = 0;
 
                 foreach ($sale->saleDetails as $saleDetail) {
@@ -127,7 +132,6 @@ class ReportService
 
                     if ($groupingSales[$keySale]['saleDetails'][$keyInventoryStock]['id'] == $inventoryStockId) {
                         $totalQuantity += $quantity;
-                        $totalItemInventorySale += $quantity;
                     }
                 }
 
@@ -165,16 +169,21 @@ class ReportService
         $dataTotalSales = [];
 
         foreach ($inventoryStocks as $keyInventoryStock => $inventoryStock) {
-            $dataTotalSales[$keyInventoryStock]['id'] = $inventoryStock->id;
-            $dataTotalSales[$keyInventoryStock]['name'] = $inventoryStock->name;
+            // Set variable
+            $inventoryStockId = $inventoryStock->id;
+            $name = $inventoryStock->name;
+
+            $dataTotalSales[$keyInventoryStock]['id'] = $inventoryStockId;
+            $dataTotalSales[$keyInventoryStock]['name'] = $name;
             $dataTotalSales[$keyInventoryStock]['quantity'] = 0;
 
             foreach ($totalSales as $totalSale) {
                 // Set variable
                 $inventoryStockId = $totalSale->id;
+                $quantity = $totalSale->quantity;
 
                 if ($dataTotalSales[$keyInventoryStock]['id'] === $inventoryStockId) {
-                    $dataTotalSales[$keyInventoryStock]['quantity'] = $totalSale->quantity;
+                    $dataTotalSales[$keyInventoryStock]['quantity'] = $quantity;
                 }
             }
         }
@@ -208,9 +217,13 @@ class ReportService
                 // Set initial value
                 $totalQuantity = 0;
 
+                // Set variable
+                $ingredientId = $ingredient->id;
+                $name = $ingredient->name;
+
                 // Mapping key object
-                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['id'] = $ingredient->id;
-                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['name'] = $ingredient->name;
+                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['id'] = $ingredientId;
+                $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['name'] = $name;
                 $groupingPurchases[$keyPurchase]['purchaseDetails'][$keyIngredient]['quantity'] = 0;
 
                 foreach ($purchase->purchaseDetails as $purchaseDetail) {
@@ -241,16 +254,21 @@ class ReportService
         $dataTotalPurchases = [];
 
         foreach ($ingredients as $keyIngredient => $ingredient) {
-            $dataTotalPurchases[$keyIngredient]['id'] = $ingredient->id;
-            $dataTotalPurchases[$keyIngredient]['name'] = $ingredient->name;
+            // Set variable
+            $ingredientId = $ingredient->id;
+            $name = $ingredient->name;
+
+            $dataTotalPurchases[$keyIngredient]['id'] = $ingredientId;
+            $dataTotalPurchases[$keyIngredient]['name'] = $name;
             $dataTotalPurchases[$keyIngredient]['quantity'] = 0;
 
             foreach ($totalPurchases as $totalPurchase) {
                 // Set variable
                 $ingredientId = $totalPurchase->id;
+                $quantity = $totalPurchase->quantity;
 
                 if ($dataTotalPurchases[$keyIngredient]['id'] === $ingredientId) {
-                    $dataTotalPurchases[$keyIngredient]['quantity'] = $totalPurchase->quantity;
+                    $dataTotalPurchases[$keyIngredient]['quantity'] = $quantity;
                 }
             }
         }
