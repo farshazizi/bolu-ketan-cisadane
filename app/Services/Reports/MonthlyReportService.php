@@ -8,7 +8,7 @@ use App\Repositories\Transactions\Purchases\PurchaseRepository;
 use App\Repositories\Transactions\Sales\SaleRepository;
 use Carbon\Carbon;
 
-class ReportService
+class MonthlyReportService
 {
     private $ingredientRepository;
     private $inventoryStockRepository;
@@ -23,17 +23,20 @@ class ReportService
         $this->saleRepository = $saleRepository;
     }
 
-    public function dailyReport($dailyReportDate)
+    public function monthlyReport($monthlyReportDate)
     {
         // Set initial value
         $data = [];
+
+        // Set variable
+        $month = Carbon::parse($monthlyReportDate)->format('m');
 
         // Get inventory stocks
         $inventoryStocks = $this->inventoryStockRepository->getInventoryStocks();
         $inventoryStocks = $inventoryStocks->orderBy('name')->get();
 
         // Get data sales
-        $sales = $this->saleRepository->getSalesByDate($dailyReportDate);
+        $sales = $this->saleRepository->getSalesByMonth($month);
 
         // Grouping sales
         $dataGroupingSales = $this->groupingSales($inventoryStocks, $sales);
@@ -44,7 +47,7 @@ class ReportService
         $sumTotalAdditionalSales = $this->calculateTotalAdditionalSales($groupingSales);
 
         // Get total sales
-        $totalSales = $this->saleRepository->getTotalSalesByDate($dailyReportDate);
+        $totalSales = $this->saleRepository->getTotalSalesByMonth($month);
 
         // Calculate total sales
         $dataTotalSales = $this->calculateTotalSales($inventoryStocks, $totalSales);
@@ -54,7 +57,7 @@ class ReportService
         $ingredients = $ingredients->orderBy('name')->get();
 
         // Get data purchases
-        $purchases = $this->purchaseRepository->getPurchasesByDate($dailyReportDate);
+        $purchases = $this->purchaseRepository->getPurchasesByMonth($month);
 
         // Grouping purchases
         $dataGroupingPurchases = $this->groupingPurchases($ingredients, $purchases);
@@ -62,7 +65,7 @@ class ReportService
         $sumGrandTotalPurchases = $dataGroupingPurchases['sumGrandTotalPurchases'];
 
         // Get total purchases
-        $totalPurchases = $this->purchaseRepository->getTotalPurchasesByDate($dailyReportDate);
+        $totalPurchases = $this->purchaseRepository->getTotalPurchasesByMonth($month);
 
         // Calculate total purchase
         $dataTotalPurchases = $this->calculateTotalPurchases($ingredients, $totalPurchases);
