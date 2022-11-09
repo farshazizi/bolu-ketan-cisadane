@@ -87,6 +87,37 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Laporan Bulanan</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form class="form form-vertical" method="POST" action="{{ route('reports.monthly_report') }}">
+                                @csrf
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="monthlyReportDate">Tanggal</label>
+                                                <input type="month" class="form-control @error('monthlyReportDate') is-invalid @enderror"
+                                                    id="monthlyReportDate" name="monthlyReportDate">
+                                                @error('monthlyReportDate')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 @endsection
