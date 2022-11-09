@@ -128,6 +128,7 @@ Route::prefix('reports')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('reports.index');
     Route::post('/daily-report', [ReportController::class, 'dailyReport'])->name('reports.daily_report');
     Route::post('/order-report', [ReportController::class, 'orderReport'])->name('reports.order_report');
+    Route::post('/monthly-report', [ReportController::class, 'monthlyReport'])->name('reports.monthly_report');
 });
 
 // Sale

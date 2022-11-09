@@ -6,7 +6,7 @@ use App\Repositories\Masters\InventoryStocks\InventoryStockRepository;
 use App\Repositories\Transactions\Orders\OrderRepository;
 use Carbon\Carbon;
 
-class OrderService
+class OrderReportService
 {
     private $inventoryStockRepository;
     private $orderRepository;
