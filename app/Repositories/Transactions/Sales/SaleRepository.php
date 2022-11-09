@@ -166,4 +166,27 @@ class SaleRepository implements SaleInterface
 
         return $totalSales;
     }
+
+    public function getSalesByMonth($month)
+    {
+        $sales = Sale::with('saleDetails.inventoryStock')->whereMonth('date', $month)->orderBy('created_at')->get();
+
+        return $sales;
+    }
+
+    public function getTotalSalesByMonth($month)
+    {
+        $totalSales = DB::table('sales as s')
+            ->join('sale_details as sd', 'sd.sale_id', '=', 's.id')
+            ->leftJoin('inventory_stocks as is', 'is.id', '=', 'sd.inventory_stock_id')
+            ->groupBy('is.id')
+            ->whereMonth('s.date', $month)
+            ->whereNull('s.deleted_at')
+            ->whereNull('sd.deleted_at')
+            ->orderBy('is.name')
+            ->select('is.id', 'is.name', DB::raw('SUM(sd.quantity) as quantity'))
+            ->get();
+
+        return $totalSales;
+    }
 }
