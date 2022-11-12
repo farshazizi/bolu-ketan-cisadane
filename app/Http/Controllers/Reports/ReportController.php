@@ -68,6 +68,6 @@ class ReportController extends Controller
 
         $dataMonthlyReport = $this->monthlyReportService->monthlyReport($date);
 
-        return Excel::download(new MonthlyReportExport($dataMonthlyReport), "Laporan-Harian_$date.xlsx");
+        return Excel::download(new MonthlyReportExport($dataMonthlyReport), "Laporan-Bulanan_$date.xlsx");
     }
 }
