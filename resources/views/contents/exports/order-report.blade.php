@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <th><b>LAPORAN PENJUALAN HARIAN</b></th>
+            <th><b>LAPORAN HARIAN PESANAN</b></th>
         </tr>
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>

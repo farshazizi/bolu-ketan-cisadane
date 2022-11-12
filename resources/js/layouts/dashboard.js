@@ -57,7 +57,6 @@ function tableOrderDetail(orderId) {
                     <tbody>`;
 
             $.each(data, (index, value) => {
-                console.log(value, "value");
                 orderDetailList += `<tr>
                         <td>
                             ${index + 1}
