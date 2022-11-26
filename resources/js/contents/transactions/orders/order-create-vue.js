@@ -30,20 +30,10 @@ var app = new Vue({
                 let index = $(event.target).attr("index");
                 let value = $(event.target).val();
 
-                if (value > vm.detail[index].stock) {
-                    Swal.fire({
-                        icon: "warning",
-                        text: "Kuantitas melebihi stok.",
-                        showConfirmButton: false,
-                    });
-
-                    vm.$set(vm.detail[index], "quantity", 0);
-                } else {
-                    let total = value * vm.detail[index].price;
-                    vm.$set(vm.detail[index], "total", total);
-                    vm.setIndexAdditional(index);
-                    vm.calculateTotalAdditional();
-                }
+                let total = value * vm.detail[index].price;
+                vm.$set(vm.detail[index], "total", total);
+                vm.setIndexAdditional(index);
+                vm.calculateTotalAdditional();
             });
 
             $("body").on("hide.bs.modal", "#additionalModal", function (event) {
