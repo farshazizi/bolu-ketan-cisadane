@@ -115,24 +115,21 @@ class SaleService
     public function generateInvoiceNumber($date)
     {
         try {
-            $invoiceNumbers = $this->saleRepository->getInvoiceNumbers();
+            $sale = $this->saleRepository->getLastInvoiceNumber();
 
             $date = str_replace('-', '', $date);
             $invoiceNumber = '';
             $sequenceNumber = '';
 
-            if ($invoiceNumbers->isNotEmpty()) {
-                $countInvoiceNumber = count($invoiceNumbers);
-                $sequenceNumber = $countInvoiceNumber + 1;
-                $lengthNumber = strlen($sequenceNumber);
-                if ($lengthNumber == 1) {
-                    $sequenceNumber = '00' . $sequenceNumber;
-                } elseif ($lengthNumber == 2) {
-                    $sequenceNumber = '0' . $sequenceNumber;
-                } elseif ($lengthNumber == 3) {
-                    $sequenceNumber = $sequenceNumber;
+            if ($sale) {
+                $lastInvoiceNumber = $sale->invoice_number;
+                $lastSequenceNumber = (int) substr($lastInvoiceNumber, -3);
+                if ($lastSequenceNumber < 10) {
+                    $sequenceNumber = '00' . $lastSequenceNumber + 1;
+                } elseif ($lastSequenceNumber < 100) {
+                    $sequenceNumber = '0' . $lastSequenceNumber + 1;
                 } else {
-                    throw new Exception('Tidak dapat menghasilkan Nomer Invoice.');
+                    throw new Exception('Nomer Invoice sudah melebihi limit');
                 }
             } else {
                 $sequenceNumber = '001';
