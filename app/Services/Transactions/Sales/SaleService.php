@@ -115,7 +115,7 @@ class SaleService
     public function generateInvoiceNumber($date)
     {
         try {
-            $sale = $this->saleRepository->getLastInvoiceNumber();
+            $sale = $this->saleRepository->getLastInvoiceNumber($date);
 
             $date = str_replace('-', '', $date);
             $invoiceNumber = '';

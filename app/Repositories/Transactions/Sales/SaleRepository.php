@@ -137,9 +137,9 @@ class SaleRepository implements SaleInterface
         return $grandTotal;
     }
 
-    public function getLastInvoiceNumber()
+    public function getLastInvoiceNumber($date)
     {
-        $invoiceNumber = Sale::select('invoice_number')->orderByDesc('created_at')->first();
+        $invoiceNumber = Sale::select('invoice_number')->where('date', $date)->orderByDesc('created_at')->first();
 
         return $invoiceNumber;
     }

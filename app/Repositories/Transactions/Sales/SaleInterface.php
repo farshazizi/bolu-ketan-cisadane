@@ -10,7 +10,7 @@ interface SaleInterface
     public function destorySaleById($id);
     public function getStockByInventoryStockId($id);
     public function getGrandTotalDailySale();
-    public function getLastInvoiceNumber();
+    public function getLastInvoiceNumber($date);
     public function getSalesByDate($date);
     public function getTotalSalesByDate($date);
     public function getSalesByMonth($month);
