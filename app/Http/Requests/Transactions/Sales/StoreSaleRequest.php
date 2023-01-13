@@ -24,7 +24,7 @@ class StoreSaleRequest extends FormRequest
     public function rules()
     {
         return [
-            'orderId' => 'sometimes',
+            'orderId' => 'sometimes|nullable|uuid',
             'date' => 'required',
             'notes' => 'nullable',
             'grandTotal' => 'required',

@@ -13,20 +13,30 @@ $(function () {
             {
                 data: "date",
                 width: "15%",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "name",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "address",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "phone",
                 width: "15%",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "status",
                 width: "8%",
+                orderable: false,
+                searchable: false,
                 render: function (data) {
                     if (data == "0") {
                         return '<span class="badge bg-warning">Menunggu Diproses</span>';
@@ -46,6 +56,22 @@ $(function () {
         language: {
             emptyTable: "Tidak ada data",
         },
+    });
+});
+
+$(document).on("click", "#delete", function (event) {
+    var t = $(this);
+    event.preventDefault();
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Pesanan akan dihapus",
+        showCancelButton: true,
+        confirmButtonText: "Hapus",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.value) {
+            remove(t);
+        }
     });
 });
 
@@ -78,19 +104,3 @@ function remove(t) {
         },
     });
 }
-
-$(document).on("click", "#delete", function (event) {
-    var t = $(this);
-    event.preventDefault();
-    Swal.fire({
-        title: "Apakah kamu yakin?",
-        text: "Pesanan akan dihapus",
-        showCancelButton: true,
-        confirmButtonText: "Hapus",
-        cancelButtonText: "Batal",
-    }).then((result) => {
-        if (result.value) {
-            remove(t);
-        }
-    });
-});

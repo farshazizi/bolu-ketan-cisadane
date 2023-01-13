@@ -19,6 +19,11 @@ class SaleDetail extends Model
         return $this->belongsTo(InventoryStock::class)->orderBy('name');
     }
 
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
+
     public function saleAdditionalDetails()
     {
         return $this->hasMany(SaleAdditionalDetail::class);

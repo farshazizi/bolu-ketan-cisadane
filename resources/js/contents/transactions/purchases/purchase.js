@@ -12,13 +12,19 @@ $(function () {
             },
             {
                 data: "date",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "grand_total",
                 className: "text-right",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "notes",
+                orderable: false,
+                searchable: false,
             },
             {
                 data: "action",
@@ -30,6 +36,22 @@ $(function () {
         language: {
             emptyTable: "Tidak ada data",
         },
+    });
+});
+
+$(document).on("click", "#delete", function (event) {
+    var t = $(this);
+    event.preventDefault();
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Pembelian akan dihapus",
+        showCancelButton: true,
+        confirmButtonText: "Hapus",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.value) {
+            remove(t);
+        }
     });
 });
 
@@ -62,19 +84,3 @@ function remove(t) {
         },
     });
 }
-
-$(document).on("click", "#delete", function (event) {
-    var t = $(this);
-    event.preventDefault();
-    Swal.fire({
-        title: "Apakah kamu yakin?",
-        text: "Pembelian akan dihapus",
-        showCancelButton: true,
-        confirmButtonText: "Hapus",
-        cancelButtonText: "Batal",
-    }).then((result) => {
-        if (result.value) {
-            remove(t);
-        }
-    });
-});

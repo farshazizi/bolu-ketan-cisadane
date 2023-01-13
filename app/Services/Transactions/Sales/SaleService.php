@@ -2,19 +2,26 @@
 
 namespace App\Services\Transactions\Sales;
 
-use App\Models\Transactions\Sales\Sale;
+use App\Repositories\Transactions\Orders\OrderRepository;
+use App\Repositories\Transactions\Sales\SaleAdditionalDetailRepository;
+use App\Repositories\Transactions\Sales\SaleDetailRepository;
 use App\Repositories\Transactions\Sales\SaleRepository;
-use Barryvdh\Snappy\Facades\SnappyPdf;
-use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SaleService
 {
+    private $orderRepository;
+    private $saleAdditionalDetailRepository;
+    private $saleDetailRepository;
     private $saleRepository;
 
-    public function __construct(SaleRepository $saleRepository)
+    public function __construct(OrderRepository $orderRepository, SaleAdditionalDetailRepository $saleAdditionalDetailRepository, SaleDetailRepository $saleDetailRepository, SaleRepository $saleRepository)
     {
+        $this->orderRepository = $orderRepository;
+        $this->saleAdditionalDetailRepository = $saleAdditionalDetailRepository;
+        $this->saleDetailRepository = $saleDetailRepository;
         $this->saleRepository = $saleRepository;
     }
 
@@ -27,13 +34,26 @@ class SaleService
 
     public function storeSale($data)
     {
+        DB::beginTransaction();
         try {
-            $date = $data['date'];
-            $invoiceNumber = $this->generateInvoiceNumber($date);
+            $invoiceNumber = $this->generateInvoiceNumber($data['date']);
+
+            // Add Sale
             $sale = $this->saleRepository->storeSale($data, $invoiceNumber);
+
+            // Add Sale Detail (include Sale Additional Detail)
+            $this->saleDetailRepository->storeSaleDetail($data, $sale->id);
+
+            // Update Status Order
+            if ($data['orderId']) {
+                $this->orderRepository->setOrderStatusSuccessById($data['orderId']);
+            }
+
+            DB::commit();
 
             return $sale;
         } catch (Exception $exception) {
+            DB::rollBack();
             Log::error($exception);
             throw $exception;
         }
@@ -58,15 +78,31 @@ class SaleService
         return $sale;
     }
 
-    public function destroyInventoryStockById($id)
+    public function destroySale($id)
     {
+        DB::beginTransaction();
         try {
+            // Delete Sale Additional Detail
+            $this->saleAdditionalDetailRepository->destorySaleAdditionalDetailsBySaleId($id);
+
+            // Delete Sale Detail
+            $this->saleDetailRepository->destorySaleDetailBySaleId($id);
+
+            // Delete Sale
             $sale = $this->saleRepository->destorySaleById($id);
+
+            // Update Status Order
+            if ($sale->type == "1") {
+                $this->orderRepository->setOrderStatusFailedById($sale->order_id);
+            }
+
+            DB::commit();
 
             return $sale;
         } catch (Exception $exception) {
+            DB::rollBack();
             Log::error($exception);
-            throw new Exception('Penjualan gagal dihapus.');
+            throw $exception;
         }
     }
 
@@ -77,45 +113,10 @@ class SaleService
         return $grandTotal;
     }
 
-    public function print($id)
-    {
-        $data = $this->saleRepository->getSaleById($id);
-
-        // Formatting and get time
-        if ($data) {
-            $data->date = Carbon::parse($data->date)->locale('id')->translatedFormat('d-m-Y');
-            $time = Carbon::parse($data->created_at)->locale('id')->translatedFormat('H:i:s');
-            $data->time = $time;
-        }
-
-        // Get image logo
-        $imageLogo = '';
-        $rootPathLogo = 'assets/images/logo/';
-        $pathLogo = public_path($rootPathLogo . 'Si_Hitam_Manis_Panjang.png');
-        if (file_exists($pathLogo)) {
-            $imageLogo = base64_encode(file_get_contents($pathLogo));
-        }
-
-        // Calculate total discount
-        $totalDiscount = 0;
-        foreach ($data->saleDetails as $value) {
-            $totalDiscount += $value->discount;
-        }
-
-        $html = view('contents.pdfs.sale', compact('data', 'imageLogo', 'totalDiscount'))->render();
-
-        $pdf = SnappyPdf::loadHTML($html);
-        $pdf->setPaper('a5');
-        $pdf->setOrientation('portrait');
-        $pdfString = $pdf->output();
-
-        return $pdfString;
-    }
-
     public function generateInvoiceNumber($date)
     {
         try {
-            $sale = $this->saleRepository->getLastInvoiceNumber($date);
+            $sale = $this->saleRepository->getLastInvoiceNumberSaleByDate($date);
 
             $date = str_replace('-', '', $date);
             $invoiceNumber = '';
