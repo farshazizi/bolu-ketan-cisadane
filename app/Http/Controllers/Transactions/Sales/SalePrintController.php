@@ -3,31 +3,25 @@
 namespace App\Http\Controllers\Transactions\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Services\Transactions\Sales\SaleService;
-use Exception;
-use Illuminate\Support\Facades\Log;
+use App\Services\Transactions\Sales\SalePrintService;
 use Illuminate\Support\Facades\Response;
 
 class SalePrintController extends Controller
 {
-    private $saleService;
+    private $salePrintService;
 
-    public function __construct(SaleService $saleService)
+    public function __construct(SalePrintService $salePrintService)
     {
-        $this->saleService = $saleService;
+        $this->salePrintService = $salePrintService;
     }
 
     public function __invoke($id)
     {
-        try {
-            $pdf = $this->saleService->print($id);
+        $pdf = $this->salePrintService->print($id);
 
-            $response = Response::make($pdf, 200);
-            $response->header('Content-Type', 'application/pdf');
+        $response = Response::make($pdf, 200);
+        $response->header('Content-Type', 'application/pdf');
 
-            return $response;
-        } catch (Exception $exception) {
-            Log::error($exception);
-        }
+        return $response;
     }
 }

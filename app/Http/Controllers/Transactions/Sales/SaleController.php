@@ -126,13 +126,13 @@ class SaleController extends Controller
             $order = $this->orderService->getOrderById($sale->order_id);
         }
 
-        return view('contents.transactions.sales.show', compact('sale', 'order'));
+        return view('contents.transactions.sales.show', compact('order', 'sale'));
     }
 
     public function destroy($id)
     {
         try {
-            $sale = $this->saleService->destroyInventoryStockById($id);
+            $sale = $this->saleService->destroySale($id);
 
             if ($sale) {
                 return response()->json([

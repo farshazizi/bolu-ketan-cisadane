@@ -14,4 +14,6 @@ interface OrderInterface
     public function getOrdersWaiting();
     public function getOrdersByDateAndStatus($date, $status);
     public function getTotalOrdersByDate($date);
+    public function setOrderStatusSuccessById($orderId);
+    public function setOrderStatusFailedById($id);
 }

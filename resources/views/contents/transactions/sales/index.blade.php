@@ -35,7 +35,7 @@
                                     <th>No</th>
                                     <th>Tanggal</th>
                                     <th>No. Invoice</th>
-                                    <th>Tipe Penjualan</th>
+                                    <th>Penjualan</th>
                                     <th style="text-align: right">Grand Total</th>
                                     <th>Notes</th>
                                     <th>Aksi</th>

@@ -92,7 +92,7 @@ class PurchaseController extends Controller
             return response()->json([
                 'status' => 'error',
                 'code' => 'store-purchase-failed',
-                'message' => 'Pembelian gagal ditambahkan.',
+                'message' => $exception->getMessage(),
                 'data' => []
             ], 500);
         }
