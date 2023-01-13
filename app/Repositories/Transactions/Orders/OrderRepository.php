@@ -220,4 +220,18 @@ class OrderRepository implements OrderInterface
 
         return $totalOrders;
     }
+
+    public function setOrderStatusSuccessById($id)
+    {
+        $order = Order::where('id', $id)->update(['status' => 1]);
+
+        return $order;
+    }
+
+    public function setOrderStatusFailedById($id)
+    {
+        $order = Order::where('id', $id)->update(['status' => 0]);
+
+        return $order;
+    }
 }

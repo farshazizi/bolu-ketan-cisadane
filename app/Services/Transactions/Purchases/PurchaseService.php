@@ -2,16 +2,20 @@
 
 namespace App\Services\Transactions\Purchases;
 
+use App\Repositories\Transactions\Purchases\PurchaseDetailRepository;
 use App\Repositories\Transactions\Purchases\PurchaseRepository;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PurchaseService
 {
+    private $purchaseDetailRepository;
     private $purchaseRepository;
 
-    public function __construct(PurchaseRepository $purchaseRepository)
+    public function __construct(PurchaseDetailRepository $purchaseDetailRepository, PurchaseRepository $purchaseRepository)
     {
+        $this->purchaseDetailRepository = $purchaseDetailRepository;
         $this->purchaseRepository = $purchaseRepository;
     }
 
@@ -24,13 +28,21 @@ class PurchaseService
 
     public function storePurchase($data)
     {
+        DB::beginTransaction();
         try {
+            // Add Purchase
             $purchase = $this->purchaseRepository->storePurchase($data);
+
+            // Add Purchase Detail
+            $this->purchaseDetailRepository->storePurchaseDetail($data, $purchase->id);
+
+            DB::commit();
 
             return $purchase;
         } catch (Exception $exception) {
+            DB::rollBack();
             Log::error($exception);
-            throw new Exception('Pembelian gagal ditambahkan.');
+            throw $exception;
         }
     }
 
@@ -53,13 +65,21 @@ class PurchaseService
 
     public function destroyPurchaseById($id)
     {
+        DB::beginTransaction();
         try {
+            // Delete Purchase Detail
+            $this->purchaseDetailRepository->destoryPurchaseDetailsByPurchaseId($id);
+
+            // Delete Purchase
             $purchase = $this->purchaseRepository->destoryPurchaseById($id);
+
+            DB::commit();
 
             return $purchase;
         } catch (Exception $exception) {
+            DB::rollBack();
             Log::error($exception);
-            throw new Exception('Pembelian gagal dihapus.');
+            throw $exception;
         }
     }
 

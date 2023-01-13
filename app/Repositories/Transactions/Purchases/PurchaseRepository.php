@@ -3,7 +3,6 @@
 namespace App\Repositories\Transactions\Purchases;
 
 use App\Models\Transactions\Purchases\Purchase;
-use App\Models\Transactions\Purchases\PurchaseDetail;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -14,41 +13,23 @@ class PurchaseRepository implements PurchaseInterface
 {
     public function getPurchases()
     {
-        $sales = Purchase::all();
+        $sales = Purchase::orderByDesc('date')->get();
 
         return $sales;
     }
 
     public function storePurchase($data)
     {
-        DB::beginTransaction();
         try {
-            $sale = new Purchase;
-            $purchaseId = Uuid::uuid4();
-            $sale->id = $purchaseId;
-            $sale->date = $data['date'];
-            $sale->grand_total = $data['grandTotal'];
-            $sale->notes = $data['notes'];
-            $sale->save();
+            $purchase = new Purchase;
+            $purchase->id = Uuid::uuid4();
+            $purchase->date = $data['date'];
+            $purchase->grand_total = $data['grandTotal'];
+            $purchase->notes = $data['notes'];
+            $purchase->save();
 
-            if ($data['detail']) {
-                for ($index = 0; $index < count($data['detail']); $index++) {
-                    $purchaseDetail = new PurchaseDetail();
-                    $purchaseDetail->id = Uuid::uuid4();
-                    $purchaseDetail->purchase_id = $purchaseId;
-                    $purchaseDetail->ingredient_id = $data['detail'][$index]['ingredient'];
-                    $purchaseDetail->quantity = $data['detail'][$index]['quantity'];
-                    $purchaseDetail->price = $data['detail'][$index]['price'];
-                    $purchaseDetail->total = $data['detail'][$index]['total'];
-                    $purchaseDetail->notes = $data['detail'][$index]['notes'];
-                    $purchaseDetail->save();
-                }
-            }
-            DB::commit();
-
-            return $sale;
+            return $purchase;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Pembelian gagal ditambahkan.');
         }
@@ -63,21 +44,12 @@ class PurchaseRepository implements PurchaseInterface
 
     public function destoryPurchaseById($id)
     {
-        DB::beginTransaction();
         try {
-            $purchaseDetail = PurchaseDetail::where('purchase_id', $id);
-            $purchaseDetail->delete();
-
             $purchase = Purchase::findOrFail($id);
             $purchase->delete();
-            DB::commit();
 
-            return [
-                'purch$purchase' => $purchase,
-                'purch$purchaseDetail' => $purchaseDetail,
-            ];
+            return $purchase;
         } catch (Exception $exception) {
-            DB::rollBack();
             Log::error($exception);
             throw new Exception('Pembelian gagal dihapus.');
         }
