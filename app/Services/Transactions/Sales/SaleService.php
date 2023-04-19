@@ -124,16 +124,21 @@ class SaleService
 
             if ($sale) {
                 $lastInvoiceNumber = $sale->invoice_number;
-                $lastSequenceNumber = (int) substr($lastInvoiceNumber, -3);
+                $lastSequenceNumber = (int) substr($lastInvoiceNumber, -5);
+                $newSequenceNumber = $lastSequenceNumber + 1;
                 if ($lastSequenceNumber < 10) {
-                    $sequenceNumber = '00' . $lastSequenceNumber + 1;
+                    $sequenceNumber = '0000' . $newSequenceNumber;
                 } elseif ($lastSequenceNumber < 100) {
-                    $sequenceNumber = '0' . $lastSequenceNumber + 1;
+                    $sequenceNumber = '000' . $newSequenceNumber;
+                } elseif ($lastSequenceNumber < 1000) {
+                    $sequenceNumber = '00' . $newSequenceNumber;
+                } elseif ($lastSequenceNumber < 10000) {
+                    $sequenceNumber = '0' . $newSequenceNumber;
                 } else {
                     throw new Exception('Nomer Invoice sudah melebihi limit');
                 }
             } else {
-                $sequenceNumber = '001';
+                $sequenceNumber = '00001';
             }
 
             $invoiceNumber = 'INV' . $date . $sequenceNumber;
