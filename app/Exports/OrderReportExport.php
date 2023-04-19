@@ -19,7 +19,7 @@ class OrderReportExport implements FromView, WithEvents
     public function registerEvents(): array
     {
         // Set initial value
-        $alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        $alphabet = config('properties.alphabet');
 
         // Set variable and initial value
         $orders = $this->dataOrderReport['orders'];
