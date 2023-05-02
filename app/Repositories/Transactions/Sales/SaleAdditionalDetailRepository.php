@@ -49,7 +49,7 @@ class SaleAdditionalDetailRepository implements SaleAdditionalDetailInterface
     {
         try {
             $saleAdditionalDetails = SaleAdditionalDetail::whereHas('saleDetail.sale', function ($query) use ($saleId) {
-                $query->where('sale.id', $saleId);
+                $query->where('sales.id', $saleId);
             })->get()->each(function ($query) {
                 $query->delete();
             });

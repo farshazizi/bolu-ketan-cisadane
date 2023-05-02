@@ -57,7 +57,7 @@ class PurchaseRepository implements PurchaseInterface
 
     public function getGrandTotalDailyPurchase()
     {
-        $grandTotal = Purchase::where('date', Carbon::now())->sum('grand_total');
+        $grandTotal = Purchase::where('date', Carbon::now()->timezone(env('TIMEZONE')))->sum('grand_total');
 
         return $grandTotal;
     }
