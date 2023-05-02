@@ -71,7 +71,7 @@ class SaleRepository implements SaleInterface
 
     public function getGrandTotalDailySale()
     {
-        $grandTotal = Sale::where('date', Carbon::now())->sum('grand_total');
+        $grandTotal = Sale::where('date', Carbon::now()->timezone(env('TIMEZONE')))->sum('grand_total');
 
         return $grandTotal;
     }
