@@ -19,7 +19,7 @@ $(function () {
             {
                 data: "name",
                 orderable: false,
-                searchable: false,
+                searchable: true,
             },
             {
                 data: "address",
