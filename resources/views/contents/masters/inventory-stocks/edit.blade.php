@@ -33,8 +33,9 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="name">Nama</label>
-                                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                    id="name" name="name" placeholder="Nama"
+                                                <input type="text"
+                                                    class="form-control @error('name') is-invalid @enderror" id="name"
+                                                    name="name" placeholder="Nama"
                                                     value="{{ old('name', $inventoryStock->name) }}">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -66,7 +67,8 @@
                                                     id="category" name="category">
                                                     <option value="">Pilih Kategori</option>
                                                     @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}" @if (old('category', $inventoryStock->category_id) == $category->id) selected @endif>
+                                                        <option value="{{ $category->id }}"
+                                                            @if (old('category', $inventoryStock->category_id) == $category->id) selected @endif>
                                                             {{ $category->name }}
                                                         </option>
                                                     @endforeach
@@ -77,7 +79,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                                            <button type="submit" class="mb-1 btn btn-primary me-1">Simpan</button>
                                         </div>
                                     </div>
                                 </div>
