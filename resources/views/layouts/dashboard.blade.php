@@ -16,7 +16,12 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="stats-icon purple">
-                                                <i class="iconly-boldBag"></i>
+                                                @if ($stock['icon'])
+                                                    <img src="{{ asset('storage/' . $stock['icon']) }}"
+                                                        style="max-height: 32px; max-width: 32px" />
+                                                @else
+                                                    <i class="iconly-boldBag"></i>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-md-8">

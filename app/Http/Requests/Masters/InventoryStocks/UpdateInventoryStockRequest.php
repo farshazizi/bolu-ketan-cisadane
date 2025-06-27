@@ -28,6 +28,8 @@ class UpdateInventoryStockRequest extends FormRequest
             'minimalQuantity' => 'nullable|integer|min:0',
             'price' => 'required',
             'category' => 'required|uuid',
+            'icon' => 'nullable|image|mimes:png|max:2048',
+            'removeIcon' => 'nullable|boolean'
         ];
     }
 
@@ -42,5 +44,12 @@ class UpdateInventoryStockRequest extends FormRequest
             'min' => 'Minimal 0 atau lebih besar.',
             'required' => 'Kolom ini diperlukan.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'removeIcon' => filter_var($this->removeIcon, FILTER_VALIDATE_BOOLEAN),
+        ]);
     }
 }

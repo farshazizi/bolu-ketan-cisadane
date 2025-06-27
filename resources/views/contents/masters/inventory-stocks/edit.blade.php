@@ -25,7 +25,7 @@
                                 </div>
                             @endif
                             <form class="form form-vertical" action="{{ route('inventory_stocks.update', $id) }}"
-                                method="POST">
+                                method="POST" enctype="multipart/form-data">
                                 @method('PATCH')
                                 @csrf
                                 <div class="form-body">
@@ -76,6 +76,33 @@
                                                 @error('category')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="icon">Icon</label>
+                                                <input type="file"
+                                                    class="form-control @error('icon') is-invalid @enderror" id="icon"
+                                                    name="icon" accept="image/*">
+                                                @error('icon')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+
+                                                @if ($inventoryStock->icon)
+                                                    <div class="mt-2">
+                                                        <div class="mb-2 form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="removeIcon" id="removeIcon" value="1">
+                                                            <label class="form-check-label" for="removeIcon">
+                                                                Hapus Icon Lama <span class="text-muted">(opsional, tidak
+                                                                    perlu
+                                                                    jika Anda mengunggah icon baru)</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <img src="{{ asset('storage/' . $inventoryStock->icon) }}"
+                                                                alt="Icon Lama" style="max-height: 64px; max-width: 64px">
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-end">

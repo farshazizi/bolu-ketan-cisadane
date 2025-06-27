@@ -24,7 +24,8 @@
                                         aria-label="Close"></button>
                                 </div>
                             @endif
-                            <form class="form form-vertical" action="{{ route('inventory_stocks.store') }}" method="POST">
+                            <form class="form form-vertical" action="{{ route('inventory_stocks.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">
@@ -69,6 +70,15 @@
                                                     @endforeach
                                                 </select>
                                                 @error('category')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="icon">Icon</label>
+                                                <input type="file"
+                                                    class="form-control @error('icon') is-invalid @enderror" id="icon"
+                                                    name="icon" accept="image/*">
+                                                @error('icon')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
