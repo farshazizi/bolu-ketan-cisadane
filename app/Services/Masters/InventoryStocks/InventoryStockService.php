@@ -78,11 +78,14 @@ class InventoryStockService
 
             // Get Inventory Stock
             $inventoryStock = $this->inventoryStockRepository->getInventoryStockById($id);
+            $iconPathFilename = $inventoryStock->icon;
 
             // Hapus icon lama jika diminta ATAU ada icon baru
             if ($shouldRemoveIcon || $hasNewIcon) {
                 if ($inventoryStock->icon && Storage::disk('public')->exists($inventoryStock->icon)) {
                     Storage::disk('public')->delete($inventoryStock->icon);
+
+                    $iconPathFilename = null;
                 }
             }
 
