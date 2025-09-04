@@ -115,6 +115,7 @@ class StockService
             $stockExist = $this->getStockByInventoryStockId($stock->id);
             $dataStocks[$key]['name'] = $stock->name;
             $dataStocks[$key]['stock'] = $stockExist;
+            $dataStocks[$key]['icon'] = $stock->icon;
         }
 
         return $dataStocks;
