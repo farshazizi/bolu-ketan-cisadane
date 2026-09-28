@@ -26,8 +26,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>
-                                    <th style="text-align: right">Grand Total</th>
-                                    <th>Notes</th>
+                                    <th style="text-align: right">Total Keseluruhan</th>
+                                    <th>Catatan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

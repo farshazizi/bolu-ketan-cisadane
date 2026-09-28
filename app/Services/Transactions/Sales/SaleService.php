@@ -137,7 +137,7 @@ class SaleService
                 } elseif ($newSequenceNumber < 100000) {
                     $sequenceNumber = '' . $newSequenceNumber;
                 } else {
-                    throw new Exception('Nomer Invoice sudah melebihi limit');
+                    throw new Exception('Nomor faktur sudah melebihi batas.');
                 }
             } else {
                 $sequenceNumber = '00001';

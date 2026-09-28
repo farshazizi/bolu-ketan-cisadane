@@ -6,7 +6,7 @@
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
             <th rowspan="2" style="width: 150px; text-align: center"><b>Transaksi</b></th>
-            <th colspan="{{ count($inventoryStocks) }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+            <th colspan="{{ count($inventoryStocks) }}" style="width: 150px; text-align: center"><b>Stok</b></th>
         </tr>
         <tr>
             @foreach ($inventoryStocks as $inventoryStock)

@@ -28,7 +28,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="notes">Notes</label>
+                                            <label for="notes">Catatan</label>
                                             <textarea class="form-control" id="notes" name="notes" rows="3"
                                                 disabled>{{ $purchase->notes }}</textarea>
                                         </div>
@@ -40,7 +40,7 @@
                                                     <th>Kuantitas</th>
                                                     <th style="text-align: right">Harga</th>
                                                     <th style="text-align: right">Total</th>
-                                                    <th>Notes</th>
+                                                    <th>Catatan</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
@@ -60,7 +60,7 @@
                                     <div class="col-12 d-flex justify-content-end mt-3">
                                         <table>
                                             <tr>
-                                                <td style="width: 150px"><b>Grand Total</b></td>
+                                                <td style="width: 150px"><b>Total Keseluruhan</b></td>
                                                 <td style="width: 50px"><b>:</b></td>
                                                 <td style="width: 150px; text-align: right">
                                                     Rp. {{ $purchase->grand_total }}

@@ -19,9 +19,9 @@ class OrderAdditionalDetailController extends Controller
         $orderAdditionalDetails = $this->orderAdditionalDetailService->data($orderDetailId);
 
         return response()->json([
-            'message' => 'success',
+            'status' => 'success',
             'code' => 'get-order-additional-details-success',
-            'message' => 'Get order additional details success',
+            'message' => 'Berhasil mengambil data tambahan pesanan.',
             'data' => [
                 'orderAdditionalDetails' => $orderAdditionalDetails
             ]

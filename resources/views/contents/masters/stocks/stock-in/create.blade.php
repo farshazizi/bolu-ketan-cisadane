@@ -44,7 +44,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="notes">Notes</label>
+                                                <label for="notes">Catatan</label>
                                                 <textarea class="form-control" id="notes" name="notes" v-model="notes"
                                                     rows="3"></textarea>
                                                 @error('notes')
@@ -62,7 +62,7 @@
                                                         <th>No</th>
                                                         <th>Nama Stok</th>
                                                         <th>Kuantitas</th>
-                                                        <th>Notes</th>
+                                                        <th>Catatan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>

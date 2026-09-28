@@ -92,10 +92,10 @@
                         <p>2021 &copy; Bolu Ketan Cisadane</p>
                     </div>
                     <div class="float-end">
-                        <p>Crafted with
+                        <p>Dibuat dengan
                             <span class="text-danger">
                                 <i class="bi bi-heart"></i>
-                            </span> by Farsha Azizi</a>
+                            </span> oleh Farsha Azizi</a>
                         </p>
                     </div>
                 </div>
@@ -149,6 +149,28 @@
     <!-- End Additional -->
 
     <script type="text/javascript">
+        // Indonesian labels for every DataTable; page scripts may still override single keys (e.g. emptyTable)
+        $.extend(true, $.fn.dataTable.defaults, {
+            language: {
+                decimal: '',
+                emptyTable: 'Tidak ada data',
+                info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                infoEmpty: 'Menampilkan 0 sampai 0 dari 0 data',
+                infoFiltered: '(disaring dari _MAX_ total data)',
+                lengthMenu: 'Tampilkan _MENU_ data',
+                loadingRecords: 'Memuat...',
+                processing: 'Memproses...',
+                search: 'Cari:',
+                zeroRecords: 'Data tidak ditemukan',
+                paginate: {
+                    first: 'Pertama',
+                    last: 'Terakhir',
+                    next: 'Berikutnya',
+                    previous: 'Sebelumnya'
+                },
+            }
+        });
+
         $(function() {
             // Call function mask currency
             maskCurrency();

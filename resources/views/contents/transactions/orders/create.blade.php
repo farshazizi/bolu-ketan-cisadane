@@ -68,7 +68,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="notes">Notes</label>
+                                                <label for="notes">Catatan</label>
                                                 <textarea class="form-control" id="notes" name="notes" v-model="notes"
                                                     rows="3"></textarea>
                                                 @error('notes')
@@ -90,7 +90,7 @@
                                                         <th>Harga</th>
                                                         <th>Total</th>
                                                         <th>Total Tambahan</th>
-                                                        <th>Notes</th>
+                                                        <th>Catatan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -152,7 +152,7 @@
                                         <div class="col-12 d-flex justify-content-end mt-3">
                                             <table>
                                                 <tr>
-                                                    <td style="width: 150px"><b>Grand Total</b></td>
+                                                    <td style="width: 150px"><b>Total Keseluruhan</b></td>
                                                     <td style="width: 50px"><b>:</b></td>
                                                     <td style="width: 150px; text-align: right" id="grandTotal"
                                                         name="grandTotal">Rp. {> calculateGrandTotal | numberFormat <} </td>
@@ -232,7 +232,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                 </div>
             </div>

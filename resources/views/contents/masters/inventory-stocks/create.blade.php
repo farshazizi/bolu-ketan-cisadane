@@ -77,7 +77,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="icon">Icon</label>
+                                                <label for="icon">Ikon</label>
                                                 <input type="file"
                                                     class="form-control @error('icon') is-invalid @enderror" id="icon"
                                                     name="icon" accept="image/png">

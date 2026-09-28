@@ -34,10 +34,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>
-                                    <th>No. Invoice</th>
+                                    <th>No. Faktur</th>
                                     <th>Penjualan</th>
-                                    <th style="text-align: right">Grand Total</th>
-                                    <th>Notes</th>
+                                    <th style="text-align: right">Total Keseluruhan</th>
+                                    <th>Catatan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -80,7 +80,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                     <button type="button" class="btn btn-primary" id="btnChooseOrder" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>

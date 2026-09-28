@@ -81,7 +81,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="icon">Icon</label>
+                                                <label for="icon">Ikon</label>
                                                 <input type="file"
                                                     class="form-control @error('icon') is-invalid @enderror" id="icon"
                                                     name="icon" accept="image/png">
@@ -96,14 +96,14 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                 name="removeIcon" id="removeIcon" value="1">
                                                             <label class="form-check-label" for="removeIcon">
-                                                                Hapus Icon Lama <span class="text-muted">(opsional, tidak
+                                                                Hapus Ikon Lama <span class="text-muted">(opsional, tidak
                                                                     perlu
-                                                                    jika Anda mengunggah icon baru)</span>
+                                                                    jika Anda mengunggah ikon baru)</span>
                                                             </label>
                                                         </div>
                                                         <div class="mb-2">
                                                             <img src="{{ asset('storage/' . $inventoryStock->icon) }}"
-                                                                alt="Icon Lama" style="max-height: 64px; max-width: 64px">
+                                                                alt="Ikon Lama" style="max-height: 64px; max-width: 64px">
                                                         </div>
                                                     </div>
                                                 @endif

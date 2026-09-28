@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Dashboard</h3>
+    <h3>Beranda</h3>
 @endsection
 
 @section('content-body')
@@ -99,7 +99,7 @@
                     <div class="col-12 col-xl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Reminder</h4>
+                                <h4>Pengingat</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -142,7 +142,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                 </div>
             </div>
