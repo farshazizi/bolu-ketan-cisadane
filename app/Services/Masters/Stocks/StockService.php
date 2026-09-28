@@ -63,42 +63,11 @@ class StockService
     public function getStockByInventoryStockId($id)
     {
         try {
-            $stockExist = 0;
-
-            // Get stock from stock in
             $stockIn = $this->stockRepository->getStockInByInventoryStockId($id);
-
-            if ($stockIn) {
-                $stockFromStockIn = 0;
-                foreach ($stockIn as $item) {
-                    $stockFromStockIn += $item->quantity;
-                }
-            }
-
-            // Get stock from stock out
             $stockOut = $this->stockRepository->getStockOutByInventoryStockId($id);
-
-            if ($stockOut) {
-                $stockFromStockOut = 0;
-                foreach ($stockOut as $item) {
-                    $stockFromStockOut += $item->quantity;
-                }
-            }
-
-            // Get stock from sale
             $stockSale = $this->saleRepository->getStockByInventoryStockId($id);
 
-            if ($stockSale) {
-                $stockFromSale = 0;
-                foreach ($stockSale as $item) {
-                    $stockFromSale += $item->quantity;
-                }
-            }
-
-            // Calculate stock exist
-            $stockExist = $stockFromStockIn - $stockFromStockOut - $stockFromSale;
-
-            return $stockExist;
+            return $stockIn - $stockOut - $stockSale;
         } catch (Exception $exception) {
             Log::error($exception);
             throw new Exception('Gagal mendapatkan stock.');
@@ -107,14 +76,17 @@ class StockService
 
     public function getStocks()
     {
-        $stocks = $this->inventoryStockRepository->getInventoryStocks();
-        $stocks = $stocks->get();
+        $stocks = $this->inventoryStockRepository->getInventoryStocks()->get(['id', 'name', 'icon']);
+
+        // One grouped query per source instead of three queries per inventory stock
+        $stockIn = $this->stockRepository->getStockInQuantities();
+        $stockOut = $this->stockRepository->getStockOutQuantities();
+        $stockSale = $this->saleRepository->getSoldQuantities();
 
         $dataStocks = [];
         foreach ($stocks as $key => $stock) {
-            $stockExist = $this->getStockByInventoryStockId($stock->id);
             $dataStocks[$key]['name'] = $stock->name;
-            $dataStocks[$key]['stock'] = $stockExist;
+            $dataStocks[$key]['stock'] = $stockIn->get($stock->id, 0) - $stockOut->get($stock->id, 0) - $stockSale->get($stock->id, 0);
             $dataStocks[$key]['icon'] = $stock->icon;
         }
 

@@ -64,14 +64,19 @@ class SaleRepository implements SaleInterface
 
     public function getStockByInventoryStockId($id)
     {
-        $stockDetail = SaleDetail::where('inventory_stock_id', $id)->get();
+        return SaleDetail::where('inventory_stock_id', $id)->sum('quantity');
+    }
 
-        return $stockDetail;
+    public function getSoldQuantities()
+    {
+        return SaleDetail::groupBy('inventory_stock_id')
+            ->selectRaw('inventory_stock_id, SUM(quantity) as total')
+            ->pluck('total', 'inventory_stock_id');
     }
 
     public function getGrandTotalDailySale()
     {
-        $grandTotal = Sale::where('date', Carbon::now()->timezone(env('TIMEZONE')))->sum('grand_total');
+        $grandTotal = Sale::where('date', Carbon::today()->toDateString())->sum('grand_total');
 
         return $grandTotal;
     }
