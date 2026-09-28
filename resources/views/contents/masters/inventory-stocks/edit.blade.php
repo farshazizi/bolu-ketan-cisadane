@@ -53,10 +53,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="price">Harga</label>
-                                                <input type="text"
-                                                    class="form-control maskCurrency @error('price') is-invalid @enderror"
-                                                    id="price" name="price"
-                                                    value="{{ old('price', $inventoryStock->price) }}">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text"
+                                                        class="form-control maskCurrency @error('price') is-invalid @enderror"
+                                                        id="price" name="price"
+                                                        value="{{ old('price', $inventoryStock->price) }}">
+                                                </div>
                                                 @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -78,10 +81,11 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="icon">Icon</label>
+                                                <label for="icon">Ikon</label>
                                                 <input type="file"
                                                     class="form-control @error('icon') is-invalid @enderror" id="icon"
-                                                    name="icon" accept="image/*">
+                                                    name="icon" accept="image/png">
+                                                <small class="text-muted">Format PNG, maksimal 2MB.</small>
                                                 @error('icon')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -92,14 +96,14 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                 name="removeIcon" id="removeIcon" value="1">
                                                             <label class="form-check-label" for="removeIcon">
-                                                                Hapus Icon Lama <span class="text-muted">(opsional, tidak
+                                                                Hapus Ikon Lama <span class="text-muted">(opsional, tidak
                                                                     perlu
-                                                                    jika Anda mengunggah icon baru)</span>
+                                                                    jika Anda mengunggah ikon baru)</span>
                                                             </label>
                                                         </div>
                                                         <div class="mb-2">
                                                             <img src="{{ asset('storage/' . $inventoryStock->icon) }}"
-                                                                alt="Icon Lama" style="max-height: 64px; max-width: 64px">
+                                                                alt="Ikon Lama" style="max-height: 64px; max-width: 64px">
                                                         </div>
                                                     </div>
                                                 @endif

@@ -14,7 +14,7 @@
                 <li class="sidebar-item {{ request()->is('/') ? 'active' : '' }}">
                     <a href="{{ route('/') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
+                        <span>Beranda</span>
                     </a>
                 </li>
 

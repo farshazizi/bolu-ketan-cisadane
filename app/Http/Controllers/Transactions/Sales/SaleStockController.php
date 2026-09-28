@@ -24,7 +24,7 @@ class SaleStockController extends Controller
             return response()->json([
                 'status' => 'success',
                 'code' => 'get-stock-success',
-                'message' => 'Get stock success.',
+                'message' => 'Berhasil mengambil jumlah stok.',
                 'data' => [
                     'stock' => $stock
                 ]

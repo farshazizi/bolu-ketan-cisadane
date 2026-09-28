@@ -34,14 +34,17 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="date">Tanggal</label>
-                                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date" value="{{ old('date') }}">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('date') is-invalid @enderror js-datepicker"
+                                                    id="date" name="date" :value="date | displayDate" data-vue-model="date" autocomplete="off" placeholder="DD-MM-YYYY">
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="notes">Notes</label>
+                                                <label for="notes">Catatan</label>
                                                 <textarea class="form-control" id="notes" name="notes" v-model="notes"
                                                     rows="3"></textarea>
                                                 @error('notes')
@@ -59,7 +62,7 @@
                                                         <th>No</th>
                                                         <th>Nama Stok</th>
                                                         <th>Kuantitas</th>
-                                                        <th>Notes</th>
+                                                        <th>Catatan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>

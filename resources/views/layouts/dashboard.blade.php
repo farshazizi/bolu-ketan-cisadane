@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Dashboard</h3>
+    <h3>Beranda</h3>
 @endsection
 
 @section('content-body')
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Saldo harian</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $dailyBalance }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $dailyBalance }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Pembelian per hari</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $grandTotalPurchase }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalPurchase }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Penjualan per hari</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $grandTotalSale }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalSale }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                     <div class="col-12 col-xl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Reminder</h4>
+                                <h4>Pengingat</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -142,7 +142,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                 </div>
             </div>

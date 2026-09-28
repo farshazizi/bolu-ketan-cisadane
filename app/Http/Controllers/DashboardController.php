@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
 use Carbon\Carbon;
-use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
 {
@@ -34,9 +33,7 @@ class DashboardController extends Controller
         return datatables()->of($data)
             ->addIndexColumn()
             ->editColumn('totalOrder', function ($order) {
-                $totalOrder = count($order->orderDetails);
-
-                return $totalOrder;
+                return $order->order_details_count;
             })
             ->editColumn('date', function ($order) {
                 $date = Carbon::parse($order->date)->locale('id')->translatedFormat('d-M-Y');

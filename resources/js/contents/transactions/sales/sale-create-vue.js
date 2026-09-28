@@ -1,11 +1,17 @@
 Vue.component("date-picker", VueBootstrapDatetimePicker);
+
+// Local date as YYYY-MM-DD (toISOString() is UTC, which is still yesterday before 07:00 WIB)
+function today() {
+    return moment().format("YYYY-MM-DD");
+}
+
 var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
         orderId: "",
         indexDetail: 0,
-        date: new Date().toISOString().slice(0, 10),
+        date: today(),
         name: "",
         address: "",
         phone: "",
@@ -24,6 +30,11 @@ var app = new Vue({
     mounted: function () {
         const vm = this;
         vm.addSale();
+
+        // The date field is locked to today; keep it current if the page stays open past midnight
+        setInterval(function () {
+            vm.refreshDate();
+        }, 60000);
 
         if (Object.keys(dataOrder).length !== 0) {
             if (dataOrder.order) {
@@ -306,9 +317,16 @@ var app = new Vue({
         closeValidation: function () {
             this.errors = [];
         },
+        refreshDate: function () {
+            // A sale created from an order keeps the order's date
+            if (!this.orderId) {
+                this.date = today();
+            }
+        },
         submitForm: function (event) {
             this.errors = [];
             event.preventDefault();
+            this.refreshDate();
 
             let dataDetail = this.detail;
 

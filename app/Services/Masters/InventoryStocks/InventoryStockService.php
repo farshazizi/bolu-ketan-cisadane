@@ -4,6 +4,7 @@ namespace App\Services\Masters\InventoryStocks;
 
 use App\Repositories\Masters\InventoryStocks\InventoryStockRepository;
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -34,17 +35,8 @@ class InventoryStockService
             // Set Variable
             $id = Uuid::uuid4();
 
-            if (isset($data['icon']) && is_a($data['icon'], \Illuminate\Http\UploadedFile::class)) {
-                $image = Image::make($data['icon']);
-
-                // Resize to max 128x128 without cropping
-                $image->resize(128, 128, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-
-                $iconPathFilename = 'icons/' . $id . '.' . $data['icon']->getClientOriginalExtension();
-                Storage::disk('public')->put($iconPathFilename, (string) $image->encode());
+            if (isset($data['icon']) && $data['icon'] instanceof UploadedFile) {
+                $iconPathFilename = $this->storeIcon($data['icon'], $id);
             }
 
             // Set Key
@@ -70,10 +62,7 @@ class InventoryStockService
     public function updateInventoryStockById($data, $id)
     {
         try {
-            // Set Initial Value
-            $iconPathFilename = null;
-
-            $hasNewIcon = isset($data['icon']) && is_a($data['icon'], \Illuminate\Http\UploadedFile::class);
+            $hasNewIcon = isset($data['icon']) && $data['icon'] instanceof UploadedFile;
             $shouldRemoveIcon = $data['removeIcon'] ?? false;
 
             // Get Inventory Stock
@@ -84,21 +73,14 @@ class InventoryStockService
             if ($shouldRemoveIcon || $hasNewIcon) {
                 if ($inventoryStock->icon && Storage::disk('public')->exists($inventoryStock->icon)) {
                     Storage::disk('public')->delete($inventoryStock->icon);
-
-                    $iconPathFilename = null;
                 }
+
+                $iconPathFilename = null;
             }
 
             // Jika ada file icon baru, simpan
             if ($hasNewIcon) {
-                $image = Image::make($data['icon']);
-                $image->resize(128, 128, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-
-                $iconPathFilename = 'icons/' . $id . '.' . $data['icon']->getClientOriginalExtension();
-                Storage::disk('public')->put($iconPathFilename, (string) $image->encode());
+                $iconPathFilename = $this->storeIcon($data['icon'], $id);
             }
 
             // Set Key
@@ -130,5 +112,22 @@ class InventoryStockService
         $price = $this->inventoryStockRepository->getPriceById($id);
 
         return $price;
+    }
+
+    private function storeIcon(UploadedFile $file, $id)
+    {
+        $image = Image::make($file);
+
+        // Resize to max 128x128 without cropping
+        $image->resize(128, 128, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        // Timestamp in filename so browsers don't serve a cached old icon
+        $iconPathFilename = 'icons/' . $id . '-' . time() . '.' . $file->getClientOriginalExtension();
+        Storage::disk('public')->put($iconPathFilename, (string) $image->encode());
+
+        return $iconPathFilename;
     }
 }

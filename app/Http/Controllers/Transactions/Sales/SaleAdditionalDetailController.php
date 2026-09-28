@@ -19,9 +19,9 @@ class SaleAdditionalDetailController extends Controller
         $saleAdditionalDetails = $this->saleAdditionalDetailService->data($saleDetailId);
 
         return response()->json([
-            'message' => 'success',
+            'status' => 'success',
             'code' => 'get-sale-additional-details-success',
-            'message' => 'Get sale additional details success',
+            'message' => 'Berhasil mengambil data tambahan penjualan.',
             'data' => [
                 'saleAdditionalDetails' => $saleAdditionalDetails
             ]

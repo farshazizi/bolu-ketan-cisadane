@@ -51,9 +51,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="price">Harga</label>
-                                                <input type="text"
-                                                    class="form-control maskCurrency @error('price') is-invalid @enderror"
-                                                    id="price" name="price" value="{{ old('price') }}">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text"
+                                                        class="form-control maskCurrency @error('price') is-invalid @enderror"
+                                                        id="price" name="price" value="{{ old('price') }}">
+                                                </div>
                                                 @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -74,10 +77,11 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="icon">Icon</label>
+                                                <label for="icon">Ikon</label>
                                                 <input type="file"
                                                     class="form-control @error('icon') is-invalid @enderror" id="icon"
-                                                    name="icon" accept="image/*">
+                                                    name="icon" accept="image/png">
+                                                <small class="text-muted">Format PNG, maksimal 2MB.</small>
                                                 @error('icon')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror

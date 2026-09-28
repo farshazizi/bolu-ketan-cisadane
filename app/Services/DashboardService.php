@@ -26,16 +26,6 @@ class DashboardService
         $this->orderService = $orderService;
     }
 
-    public function calculateDailyBalance()
-    {
-        $dailyPurchaseBalance = $this->purchaseService->getGrandTotalDailyPurchase();
-        $dailySaleBalance = $this->saleService->getGrandTotalDailySale();
-
-        $dailyBalance = $dailySaleBalance - $dailyPurchaseBalance;
-
-        return $dailyBalance;
-    }
-
     public function getDashboardData()
     {
         $grandTotalPurchase = $this->purchaseService->getGrandTotalDailyPurchase();
