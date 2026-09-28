@@ -3,52 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
-use App\Services\Masters\Stocks\StockService;
-use App\Services\Transactions\Orders\OrderService;
-use App\Services\Transactions\Purchases\PurchaseService;
-use App\Services\Transactions\Sales\SaleService;
 use Carbon\Carbon;
+use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
 {
     private $dashboardService;
-    private $orderService;
-    private $purchaseService;
-    private $saleService;
-    private $stockService;
 
-    public function __construct(DashboardService $dashboardService, OrderService $orderService, PurchaseService $purchaseService, SaleService $saleService, StockService $stockService)
+    public function __construct(DashboardService $dashboardService)
     {
         $this->dashboardService = $dashboardService;
-        $this->orderService = $orderService;
-        $this->purchaseService = $purchaseService;
-        $this->saleService = $saleService;
-        $this->stockService = $stockService;
     }
 
     public function index()
     {
-        // Daily purchases
-        $grandTotalPurchase = $this->purchaseService->getGrandTotalDailyPurchase();
-        $grandTotalPurchase = number_format($grandTotalPurchase, 0);
+        $dashboardData = $this->dashboardService->getDashboardData();
 
-        // Daily sales
-        $grandTotalSale = $this->saleService->getGrandTotalDailySale();
-        $grandTotalSale = number_format($grandTotalSale, 0);
+        // Format the numbers
+        $dashboardData['dailyBalance'] = number_format($dashboardData['dailyBalance'], 0);
+        $dashboardData['grandTotalPurchase'] = number_format($dashboardData['grandTotalPurchase'], 0);
+        $dashboardData['grandTotalSale'] = number_format($dashboardData['grandTotalSale'], 0);
 
-        // Stock
-        $stocks = $this->stockService->getStocks();
-
-        // Daily balance
-        $dailyBalance = $this->dashboardService->calculateDailyBalance();
-        $dailyBalance = number_format($dailyBalance, 0);
-
-        return view('layouts.dashboard', compact('dailyBalance', 'grandTotalPurchase', 'grandTotalSale', 'stocks'));
+        return view('layouts.dashboard', $dashboardData);
     }
 
     public function data()
     {
-        $data = $this->orderService->dataOrdersWaiting();
+        $data = $this->dashboardService->getOrdersWaitingData();
 
         return datatables()->of($data)
             ->addIndexColumn()
