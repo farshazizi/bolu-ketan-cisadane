@@ -93,9 +93,12 @@
                                                             </input-currency>
                                                         </td>
                                                         <td>
-                                                            <input-currency type="text" class="form-control" id="price"
-                                                                name="price" v-model="data.price" :index="index">
-                                                            </input-currency>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rp</span>
+                                                                <input-currency type="text" class="form-control" id="price"
+                                                                    name="price" v-model="data.price" :index="index">
+                                                                </input-currency>
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control"

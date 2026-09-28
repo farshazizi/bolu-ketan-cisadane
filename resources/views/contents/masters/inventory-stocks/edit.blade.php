@@ -53,10 +53,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="price">Harga</label>
-                                                <input type="text"
-                                                    class="form-control maskCurrency @error('price') is-invalid @enderror"
-                                                    id="price" name="price"
-                                                    value="{{ old('price', $inventoryStock->price) }}">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text"
+                                                        class="form-control maskCurrency @error('price') is-invalid @enderror"
+                                                        id="price" name="price"
+                                                        value="{{ old('price', $inventoryStock->price) }}">
+                                                </div>
                                                 @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
