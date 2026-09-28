@@ -21,8 +21,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="dailyReportDate">Tanggal</label>
-                                                <input type="date" class="form-control @error('dailyReportDate') is-invalid @enderror"
-                                                    id="dailyReportDate" name="dailyReportDate">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('dailyReportDate') is-invalid @enderror js-datepicker"
+                                                    id="dailyReportDate" name="dailyReportDate" value="{{ old('dailyReportDate') }}" autocomplete="off" placeholder="DD-MM-YYYY">
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('dailyReportDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -52,8 +55,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="orderReportDate">Tanggal</label>
-                                                <input type="date" class="form-control @error('orderReportDate') is-invalid @enderror"
-                                                    id="orderReportDate" name="orderReportDate" value="{{ old('orderReportDate') }}">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('orderReportDate') is-invalid @enderror js-datepicker"
+                                                    id="orderReportDate" name="orderReportDate" value="{{ old('orderReportDate') }}" autocomplete="off" placeholder="DD-MM-YYYY">
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('orderReportDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -63,7 +69,7 @@
                                             <div class="form-group">
                                                 <label for="status">Status</label>
                                                 <select class="form-select @error('status') is-invalid @enderror"
-                                                    id="status" name="status" value="{{ old('status') }}">
+                                                    id="status" name="status">
                                                     <option value="">Pilih Status</option>
                                                     <option value="0" @if (old('status') === '0') selected @endif>
                                                         Menunggu Diproses
@@ -101,8 +107,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="monthlyReportDate">Tanggal</label>
-                                                <input type="month" class="form-control @error('monthlyReportDate') is-invalid @enderror"
-                                                    id="monthlyReportDate" name="monthlyReportDate">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('monthlyReportDate') is-invalid @enderror js-monthpicker"
+                                                    id="monthlyReportDate" name="monthlyReportDate" value="{{ old('monthlyReportDate') }}" autocomplete="off" placeholder="MM-YYYY">
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('monthlyReportDate')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror

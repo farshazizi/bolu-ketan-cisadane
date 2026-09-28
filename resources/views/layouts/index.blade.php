@@ -34,6 +34,38 @@
     <link href="{{ asset('assets/vendors/vue-datepicker/bootstrap-datetimepicker.css') }}" rel="stylesheet">
     <!-- End Vue -->
 
+    <!-- Date picker: adapt the Bootstrap 3 based datetimepicker to the Bootstrap 5 theme -->
+    <style>
+        .bootstrap-datetimepicker-widget.dropdown-menu {
+            z-index: 1060;
+            width: 18em;
+            padding: .5rem;
+            border-radius: .5rem;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+        }
+
+        .bootstrap-datetimepicker-widget table td,
+        .bootstrap-datetimepicker-widget table th {
+            border-radius: .375rem;
+        }
+
+        .bootstrap-datetimepicker-widget table td.active,
+        .bootstrap-datetimepicker-widget table td.active:hover,
+        .bootstrap-datetimepicker-widget table td span.active,
+        .bootstrap-datetimepicker-widget table td span.active:hover {
+            background-color: #435ebe;
+            color: #fff;
+        }
+
+        .bootstrap-datetimepicker-widget table td.today:before {
+            border-bottom-color: #435ebe;
+        }
+
+        .bootstrap-datetimepicker-widget .bi {
+            font-size: .9rem;
+        }
+    </style>
+
     @yield('content-css')
 </head>
 
@@ -120,7 +152,116 @@
         $(function() {
             // Call function mask currency
             maskCurrency();
+
+            // Runs after the page scripts (incl. Vue mount), so the pickers bind to the final DOM
+            initDatePickers();
         });
+
+        function initDatePickers() {
+            moment.defineLocale('id', {
+                months: 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
+                monthsShort: 'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Agt_Sep_Okt_Nov_Des'.split('_'),
+                weekdays: 'Minggu_Senin_Selasa_Rabu_Kamis_Jumat_Sabtu'.split('_'),
+                weekdaysShort: 'Min_Sen_Sel_Rab_Kam_Jum_Sab'.split('_'),
+                weekdaysMin: 'Mg_Sn_Sl_Rb_Km_Jm_Sb'.split('_'),
+                week: {
+                    dow: 1,
+                    doy: 4
+                },
+            });
+
+            var options = {
+                locale: 'id',
+                useCurrent: false,
+                icons: {
+                    time: 'bi bi-clock',
+                    date: 'bi bi-calendar',
+                    up: 'bi bi-chevron-up',
+                    down: 'bi bi-chevron-down',
+                    previous: 'bi bi-chevron-left',
+                    next: 'bi bi-chevron-right',
+                    today: 'bi bi-calendar-check',
+                    clear: 'bi bi-trash',
+                    close: 'bi bi-x',
+                },
+            };
+
+            // Inputs show DD-MM-YYYY (MM-YYYY for months) while the server and Vue keep ISO values.
+            // Plain forms: the ISO value is submitted through a hidden input that takes over the name.
+            // Vue forms: data-vue-model names the root data key the picker writes the ISO value to.
+            $('.js-datepicker, .js-monthpicker').each(function() {
+                var $input = $(this);
+                var isMonth = $input.hasClass('js-monthpicker');
+                var isoFormat = isMonth ? 'YYYY-MM' : 'YYYY-MM-DD';
+                var vueModel = $input.data('vue-model');
+                // Nearest ancestor Vue instance (layout and page may both use id="app", so don't rely on the id)
+                var vm = null;
+                if (vueModel) {
+                    $input.parents().each(function() {
+                        if (this.__vue__) {
+                            vm = this.__vue__.$root;
+                            return false;
+                        }
+                    });
+                }
+                var $hidden = null;
+
+                if (!vm) {
+                    $hidden = $('<input type="hidden">').attr('name', $input.attr('name')).val($input.val());
+                    $input.removeAttr('name').after($hidden);
+                }
+
+                var initialValue = vm ? vm[vueModel] : $hidden.val();
+
+                var displayFormat = isMonth ? 'MM-YYYY' : 'DD-MM-YYYY';
+                $input.val('').datetimepicker($.extend({}, options, {
+                    format: displayFormat,
+                    viewMode: isMonth ? 'months' : 'days'
+                }));
+                var picker = $input.data('DateTimePicker');
+                // Pass a display-format string: the plugin may not recognise moment objects from the global moment
+                var setPickerDate = function(iso) {
+                    picker.date(iso ? moment(iso, isoFormat).format(displayFormat) : null);
+                };
+                setPickerDate(initialValue);
+
+                $input.on('dp.change', function(event) {
+                    var iso = event.date ? event.date.format(isoFormat) : '';
+
+                    if (vm) {
+                        vm[vueModel] = iso;
+                    } else {
+                        $hidden.val(iso);
+                    }
+                });
+
+                // Vue may set the date later (e.g. after loading an order)
+                if (vm) {
+                    vm.$watch(vueModel, function(iso) {
+                        var current = picker.date();
+                        if ((current ? current.format(isoFormat) : '') !== (iso || '')) {
+                            setPickerDate(iso);
+                        }
+                    });
+                }
+            });
+
+            // Clicking the calendar icon opens the picker too
+            $('.js-datepicker, .js-monthpicker').siblings('.input-group-text').css('cursor', 'pointer').on('click', function() {
+                $(this).siblings('input').data('DateTimePicker').show();
+            });
+        }
+
+        // "2026-09-28" -> "28-09-2026", "2026-09" -> "09-2026"; used by Vue templates for read-only dates
+        function formatDisplayDate(value) {
+            if (!value) return '';
+            var parts = String(value).slice(0, 10).split('-');
+            return parts.reverse().join('-');
+        }
+
+        if (window.Vue) {
+            Vue.filter('displayDate', formatDisplayDate);
+        }
 
         function maskCurrency() {
             // Jquery inputmask

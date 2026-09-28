@@ -34,8 +34,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="date">Tanggal</label>
-                                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date" disabled>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('date') is-invalid @enderror"
+                                                    id="date" name="date" :value="date | displayDate" disabled>
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror

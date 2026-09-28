@@ -21,8 +21,11 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="date">Tanggal</label>
-                                            <input type="date" class="form-control" id="date" name="date"
-                                                value="{{ $purchase->date }}" disabled>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="date" name="date"
+                                                value="{{ \Carbon\Carbon::parse($purchase->date)->format('d-m-Y') }}" disabled>
+                                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="notes">Notes</label>
