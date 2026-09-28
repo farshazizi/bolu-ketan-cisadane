@@ -1,12 +1,12 @@
 <table>
     <thead>
         <tr>
-            <th><b>LAPORAN PENJUALAN BULANAN</b></th>
+            <th><b>LAPORAN PENJUALAN {{ $periodLabel }}</b></th>
         </tr>
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
-            <th rowspan="2" style="width: 150px; text-align: center"><b>Tanggal Transaksi</b></th>
-            <th colspan="{{ count($inventoryStocks) + 1 }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>{{ $timeColumnLabel }}</b></th>
+            <th colspan="{{ count($inventoryStocks) + 1 }}" style="width: 150px; text-align: center"><b>Stok</b></th>
         </tr>
         <tr>
             @foreach ($inventoryStocks as $inventoryStock)
@@ -20,7 +20,7 @@
         @foreach ($sales as $key => $sale)
             <tr>
                 <td style="text-align: center">{{ $key + 1 }}</td>
-                <td style="text-align: right">{{ $sale['date'] }}</td>
+                <td style="text-align: right">{{ $sale[$timeField] }}</td>
                 @foreach ($sale['saleDetails'] as $saleDetail)
                     <td style="text-align: right">{{ $saleDetail['quantity'] }}</td>
                 @endforeach
@@ -46,12 +46,12 @@
     <tr></tr>
     <thead>
         <tr>
-            <th><b>LAPORAN PEMBELIAN BULANAN</b></th>
+            <th><b>LAPORAN PEMBELIAN {{ $periodLabel }}</b></th>
         </tr>
         <tr>
             <th rowspan="2" style="width: 150px; text-align: center"><b>No</b></th>
-            <th rowspan="2" style="width: 150px; text-align: center"><b>Tanggal Transaksi</b></th>
-            <th colspan="{{ count($ingredients) }}" style="width: 150px; text-align: center"><b>Stock</b></th>
+            <th rowspan="2" style="width: 150px; text-align: center"><b>{{ $timeColumnLabel }}</b></th>
+            <th colspan="{{ count($ingredients) }}" style="width: 150px; text-align: center"><b>Stok</b></th>
         </tr>
         <tr>
             @foreach ($ingredients as $ingredient)
@@ -64,7 +64,7 @@
         @foreach ($purchases as $key => $purchase)
             <tr>
                 <td style="text-align: center">{{ $key + 1 }}</td>
-                <td style="text-align: right">{{ $purchase['date'] }}</td>
+                <td style="text-align: right">{{ $purchase[$timeField] }}</td>
                 @foreach ($purchase['purchaseDetails'] as $purchaseDetail)
                     <td style="text-align: right">{{ $purchaseDetail['quantity'] }}</td>
                 @endforeach

@@ -6,7 +6,6 @@ use App\Models\Transactions\Sales\Sale;
 use App\Models\Transactions\Sales\SaleDetail;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 
@@ -90,47 +89,22 @@ class SaleRepository implements SaleInterface
 
     public function getSalesByDate($date)
     {
-        $sales = Sale::with('saleDetails.inventoryStock')->where('date', $date)->orderBy('created_at')->get();
+        $sales = Sale::with('saleDetails')->where('date', $date)->orderBy('created_at')->get();
 
         return $sales;
-    }
-
-    public function getTotalSalesByDate($date)
-    {
-        $totalSales = DB::table('sales as s')
-            ->join('sale_details as sd', 'sd.sale_id', '=', 's.id')
-            ->leftJoin('inventory_stocks as is', 'is.id', '=', 'sd.inventory_stock_id')
-            ->groupBy('is.id')
-            ->where('s.date', $date)
-            ->whereNull('s.deleted_at')
-            ->whereNull('sd.deleted_at')
-            ->orderBy('is.name')
-            ->select('is.id', 'is.name', DB::raw('SUM(sd.quantity) as quantity'))
-            ->get();
-
-        return $totalSales;
     }
 
     public function getSalesByMonth($month)
     {
-        $sales = Sale::with('saleDetails.inventoryStock')->whereMonth('date', $month)->orderBy('created_at')->get();
-
-        return $sales;
-    }
-
-    public function getTotalSalesByMonth($month)
-    {
-        $totalSales = DB::table('sales as s')
-            ->join('sale_details as sd', 'sd.sale_id', '=', 's.id')
-            ->leftJoin('inventory_stocks as is', 'is.id', '=', 'sd.inventory_stock_id')
-            ->groupBy('is.id')
-            ->whereMonth('s.date', $month)
-            ->whereNull('s.deleted_at')
-            ->whereNull('sd.deleted_at')
-            ->orderBy('is.name')
-            ->select('is.id', 'is.name', DB::raw('SUM(sd.quantity) as quantity'))
+        // $month is "YYYY-MM"; filter on year too so the same month of other years is excluded
+        $date = Carbon::parse($month);
+        $sales = Sale::with('saleDetails')
+            ->whereYear('date', $date->year)
+            ->whereMonth('date', $date->month)
+            ->orderBy('date')
+            ->orderBy('created_at')
             ->get();
 
-        return $totalSales;
+        return $sales;
     }
 }

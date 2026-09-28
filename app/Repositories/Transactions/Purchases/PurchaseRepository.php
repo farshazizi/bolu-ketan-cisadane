@@ -5,7 +5,6 @@ namespace App\Repositories\Transactions\Purchases;
 use App\Models\Transactions\Purchases\Purchase;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 
@@ -64,47 +63,22 @@ class PurchaseRepository implements PurchaseInterface
 
     public function getPurchasesByDate($date)
     {
-        $purchases = Purchase::with('purchaseDetails.ingredient')->where('date', $date)->orderBy('created_at')->get();
+        $purchases = Purchase::with('purchaseDetails')->where('date', $date)->orderBy('created_at')->get();
 
         return $purchases;
-    }
-
-    public function getTotalPurchasesByDate($date)
-    {
-        $totalPurchases = DB::table('purchases as p')
-            ->join('purchase_details as pd', 'pd.purchase_id', '=', 'p.id')
-            ->leftJoin('ingredients as i', 'i.id', '=', 'pd.ingredient_id')
-            ->groupBy('i.id')
-            ->where('p.date', $date)
-            ->whereNull('p.deleted_at')
-            ->whereNull('pd.deleted_at')
-            ->orderBy('i.name')
-            ->select('i.id', 'i.name', DB::raw('SUM(pd.quantity) as quantity'))
-            ->get();
-
-        return $totalPurchases;
     }
 
     public function getPurchasesByMonth($month)
     {
-        $purchases = Purchase::with('purchaseDetails.ingredient')->whereMonth('date', $month)->orderBy('created_at')->get();
-
-        return $purchases;
-    }
-
-    public function getTotalPurchasesByMonth($month)
-    {
-        $totalPurchases = DB::table('purchases as p')
-            ->join('purchase_details as pd', 'pd.purchase_id', '=', 'p.id')
-            ->leftJoin('ingredients as i', 'i.id', '=', 'pd.ingredient_id')
-            ->groupBy('i.id')
-            ->whereMonth('p.date', $month)
-            ->whereNull('p.deleted_at')
-            ->whereNull('pd.deleted_at')
-            ->orderBy('i.name')
-            ->select('i.id', 'i.name', DB::raw('SUM(pd.quantity) as quantity'))
+        // $month is "YYYY-MM"; filter on year too so the same month of other years is excluded
+        $date = Carbon::parse($month);
+        $purchases = Purchase::with('purchaseDetails')
+            ->whereYear('date', $date->year)
+            ->whereMonth('date', $date->month)
+            ->orderBy('date')
+            ->orderBy('created_at')
             ->get();
 
-        return $totalPurchases;
+        return $purchases;
     }
 }
