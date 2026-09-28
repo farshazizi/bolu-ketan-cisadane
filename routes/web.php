@@ -119,7 +119,6 @@ Route::prefix('purchases')->group(function () {
     Route::post('/', [PurchaseController::class, 'store'])->name('purchases.store');
     Route::get('/{id}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::delete('/{id}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
-    Route::get('/inventory-stock', [PurchaseInventoryStockController::class, '__invoke'])->name('purchases.inventory_stocks');
     Route::get('/uom/{id}', [PurchaseUomController::class, '__invoke'])->name('purchases.uom');
 });
 

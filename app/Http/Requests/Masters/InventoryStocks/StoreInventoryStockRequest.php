@@ -28,6 +28,7 @@ class StoreInventoryStockRequest extends FormRequest
             'minimalQuantity' => 'nullable|integer|min:0',
             'price' => 'required',
             'category' => 'required|uuid',
+            'icon' => 'nullable|image|mimes:png|max:2048',
         ];
     }
 

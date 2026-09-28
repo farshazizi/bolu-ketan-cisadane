@@ -18,8 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 
     <!-- Jquery Datatable -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css') }}">
     <!-- End Jquery Datatable -->
 
     <!-- Sweet Alert 2 -->
@@ -56,7 +55,7 @@
             </div>
 
             <footer>
-                <div class="footer clearfix mb-0 text-muted">
+                <div class="clearfix mb-0 footer text-muted">
                     <div class="float-start">
                         <p>2021 &copy; Bolu Ketan Cisadane</p>
                     </div>
@@ -88,7 +87,7 @@
     <script src="{{ asset('assets/vendors/jquery/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/jquery-datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/jquery/jquery.inputmask.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
     <!-- End Jquery -->
 
     <!-- Sweet Alert 2 -->
