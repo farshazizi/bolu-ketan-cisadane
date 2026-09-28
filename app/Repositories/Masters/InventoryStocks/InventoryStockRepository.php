@@ -3,7 +3,6 @@
 namespace App\Repositories\Masters\InventoryStocks;
 
 use App\Models\Masters\InventoryStocks\InventoryStock;
-use Ramsey\Uuid\Uuid;
 
 class InventoryStockRepository implements InventoryStockInterface
 {
@@ -17,11 +16,12 @@ class InventoryStockRepository implements InventoryStockInterface
     public function storeInventoryStock($data)
     {
         $inventoryStock = new InventoryStock;
-        $inventoryStock->id = Uuid::uuid4();
+        $inventoryStock->id = $data['id'];
         $inventoryStock->name = $data['name'];
         $inventoryStock->minimal_quantity = parseStringToInteger($data['minimalQuantity']);
         $inventoryStock->price = parseStringToInteger($data['price']);
         $inventoryStock->category_id = $data['category'];
+        $inventoryStock->icon = $data['icon'];
         $inventoryStock->save();
 
         return $inventoryStock;
@@ -41,6 +41,7 @@ class InventoryStockRepository implements InventoryStockInterface
         $inventoryStock->minimal_quantity = parseStringToInteger($data['minimalQuantity']);
         $inventoryStock->price = parseStringToInteger($data['price']);
         $inventoryStock->category_id = $data['category'];
+        $inventoryStock->icon = $data['icon'];
         $inventoryStock->save();
 
         return $inventoryStock;

@@ -2,29 +2,25 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Exports\DailyReportExport;
-use App\Exports\MonthlyReportExport;
 use App\Exports\OrderReportExport;
+use App\Exports\SalesPurchasesReportExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reports\DailyReportRequest;
 use App\Http\Requests\Reports\MonthlyReportRequest;
 use App\Http\Requests\Reports\OrderReportRequest;
-use App\Services\Reports\DailyReportService;
-use App\Services\Reports\MonthlyReportService;
 use App\Services\Reports\OrderReportService;
+use App\Services\Reports\SalesPurchasesReportService;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-    private $dailyReportService;
-    private $monthlyReportService;
     private $orderReportService;
+    private $salesPurchasesReportService;
 
-    public function __construct(MonthlyReportService $monthlyReportService, DailyReportService $dailyReportService, OrderReportService $orderReportService)
+    public function __construct(OrderReportService $orderReportService, SalesPurchasesReportService $salesPurchasesReportService)
     {
-        $this->dailyReportService = $dailyReportService;
-        $this->monthlyReportService = $monthlyReportService;
         $this->orderReportService = $orderReportService;
+        $this->salesPurchasesReportService = $salesPurchasesReportService;
     }
 
     public function index()
@@ -34,40 +30,29 @@ class ReportController extends Controller
 
     public function dailyReport(DailyReportRequest $dailyReportRequest)
     {
-        // Request validate
-        $request = $dailyReportRequest->validated();
+        $date = $dailyReportRequest->validated()['dailyReportDate'];
 
-        // Set variabl from request
-        $date = $request['dailyReportDate'];
+        $report = $this->salesPurchasesReportService->dailyReport($date);
 
-        $dataDailyReport = $this->dailyReportService->dailyReport($date);
-
-        return Excel::download(new DailyReportExport($dataDailyReport), "Laporan-Harian_$date.xlsx");
+        return Excel::download(new SalesPurchasesReportExport($report, SalesPurchasesReportExport::DAILY), "Laporan-Harian_$date.xlsx");
     }
 
     public function orderReport(OrderReportRequest $orderReportRequest)
     {
-        // Request validate
         $request = $orderReportRequest->validated();
-
-        // Set variabl from request
         $date = $request['orderReportDate'];
 
-        $dataOrderReport = $this->orderReportService->orderReport($request);
+        $report = $this->orderReportService->orderReport($request);
 
-        return Excel::download(new OrderReportExport($dataOrderReport), "Laporan-Pesanan_$date.xlsx");
+        return Excel::download(new OrderReportExport($report), "Laporan-Pesanan_$date.xlsx");
     }
 
     public function monthlyReport(MonthlyReportRequest $monthlyReportRequest)
     {
-        // Request validate
-        $request = $monthlyReportRequest->validated();
+        $month = $monthlyReportRequest->validated()['monthlyReportDate'];
 
-        // Set variabl from request
-        $date = $request['monthlyReportDate'];
+        $report = $this->salesPurchasesReportService->monthlyReport($month);
 
-        $dataMonthlyReport = $this->monthlyReportService->monthlyReport($date);
-
-        return Excel::download(new MonthlyReportExport($dataMonthlyReport), "Laporan-Bulanan_$date.xlsx");
+        return Excel::download(new SalesPurchasesReportExport($report, SalesPurchasesReportExport::MONTHLY), "Laporan-Bulanan_$month.xlsx");
     }
 }

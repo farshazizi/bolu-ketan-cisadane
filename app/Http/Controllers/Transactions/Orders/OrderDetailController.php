@@ -23,7 +23,7 @@ class OrderDetailController extends Controller
         if ($orderDetails) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Get order details success',
+                'message' => 'Berhasil mengambil detail pesanan.',
                 'data' => $orderDetails,
             ]);
         }

@@ -65,7 +65,7 @@ $(document).on("click", "#delete", function (e) {
     e.preventDefault();
     Swal.fire({
         title: "Apakah kamu yakin?",
-        text: "Uom akan dihapus",
+        text: "Satuan akan dihapus",
         showCancelButton: true,
         confirmButtonText: "Hapus",
         cancelButtonText: "Batal",

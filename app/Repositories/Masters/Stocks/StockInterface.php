@@ -10,4 +10,6 @@ interface StockInterface
     public function destoryStockById($id);
     public function getStockInByInventoryStockId($id);
     public function getStockOutByInventoryStockId($id);
+    public function getStockInQuantities();
+    public function getStockOutQuantities();
 }

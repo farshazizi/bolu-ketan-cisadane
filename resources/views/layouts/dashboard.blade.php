@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 @section('content-header')
-    <h3>Dashboard</h3>
+    <h3>Beranda</h3>
 @endsection
 
 @section('content-body')
@@ -12,16 +12,21 @@
                     @foreach ($stocks as $stock)
                         <div class="col-6 col-lg-3 col-md-6">
                             <div class="card">
-                                <div class="card-body px-3 py-4-5">
+                                <div class="px-3 card-body py-4-5">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="stats-icon purple">
-                                                <i class="iconly-boldBag"></i>
+                                                @if ($stock['icon'])
+                                                    <img src="{{ asset('storage/' . $stock['icon']) }}"
+                                                        style="max-height: 32px; max-width: 32px" />
+                                                @else
+                                                    <i class="iconly-boldBag"></i>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">Stok <b>{{ $stock['name'] }}</b></h6>
-                                            <h6 class="font-extrabold mb-0">{{ $stock['stock'] }}</h6>
+                                            <h6 class="font-semibold text-muted">Stok <b>{{ $stock['name'] }}</b></h6>
+                                            <h6 class="mb-0 font-extrabold">{{ $stock['stock'] }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +41,7 @@
                 <div class="row">
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
-                            <div class="card-body px-3 py-4-5">
+                            <div class="px-3 card-body py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon red">
@@ -44,8 +49,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Saldo harian</h6>
-                                        <h6 class="font-extrabold mb-0">{{ $dailyBalance }}</h6>
+                                        <h6 class="font-semibold text-muted">Saldo harian</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $dailyBalance }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +58,7 @@
                     </div>
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
-                            <div class="card-body px-3 py-4-5">
+                            <div class="px-3 card-body py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon blue">
@@ -61,8 +66,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Pembelian per hari</h6>
-                                        <h6 class="font-extrabold mb-0">{{ $grandTotalPurchase }}</h6>
+                                        <h6 class="font-semibold text-muted">Pembelian per hari</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalPurchase }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +75,7 @@
                     </div>
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
-                            <div class="card-body px-3 py-4-5">
+                            <div class="px-3 card-body py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon green">
@@ -78,8 +83,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Penjualan per hari</h6>
-                                        <h6 class="font-extrabold mb-0">{{ $grandTotalSale }}</h6>
+                                        <h6 class="font-semibold text-muted">Penjualan per hari</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalSale }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +99,7 @@
                     <div class="col-12 col-xl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Reminder</h4>
+                                <h4>Pengingat</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -122,8 +127,7 @@
     <!-- Modal order detail -->
     <div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable modal-lg"
-            role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Detil Pesanan</h5>
@@ -138,7 +142,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                 </div>
             </div>

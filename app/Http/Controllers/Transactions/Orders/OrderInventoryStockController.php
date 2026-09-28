@@ -22,7 +22,7 @@ class OrderInventoryStockController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 'get-inventory-stocks-success',
-            'message' => 'Get inventory stocks success.',
+            'message' => 'Berhasil mengambil data stok.',
             'data' => [
                 'inventoryStocks' => $inventoryStocks
             ]

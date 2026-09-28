@@ -21,11 +21,14 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="date">Tanggal</label>
-                                            <input type="date" class="form-control" id="date" name="date"
-                                                value="{{ $purchase->date }}" disabled>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="date" name="date"
+                                                value="{{ \Carbon\Carbon::parse($purchase->date)->format('d-m-Y') }}" disabled>
+                                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="notes">Notes</label>
+                                            <label for="notes">Catatan</label>
                                             <textarea class="form-control" id="notes" name="notes" rows="3"
                                                 disabled>{{ $purchase->notes }}</textarea>
                                         </div>
@@ -37,7 +40,7 @@
                                                     <th>Kuantitas</th>
                                                     <th style="text-align: right">Harga</th>
                                                     <th style="text-align: right">Total</th>
-                                                    <th>Notes</th>
+                                                    <th>Catatan</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
@@ -57,7 +60,7 @@
                                     <div class="col-12 d-flex justify-content-end mt-3">
                                         <table>
                                             <tr>
-                                                <td style="width: 150px"><b>Grand Total</b></td>
+                                                <td style="width: 150px"><b>Total Keseluruhan</b></td>
                                                 <td style="width: 50px"><b>:</b></td>
                                                 <td style="width: 150px; text-align: right">
                                                     Rp. {{ $purchase->grand_total }}

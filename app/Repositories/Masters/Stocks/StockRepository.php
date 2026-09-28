@@ -82,25 +82,35 @@ class StockRepository implements StockInterface
 
     public function getStockInByInventoryStockId($id)
     {
-        $stockDetail = StockDetail::has('stock')
-            ->whereHas('stock', function ($query) {
-                $query->where('stock_type', 0);
-            })
-            ->where('inventory_stock_id', $id)
-            ->get();
-
-        return $stockDetail;
+        return $this->stockDetailsByType(0)->where('inventory_stock_id', $id)->sum('quantity');
     }
 
     public function getStockOutByInventoryStockId($id)
     {
-        $stockDetail = StockDetail::has('stock')
-            ->whereHas('stock', function ($query) {
-                $query->where('stock_type', 1);
-            })
-            ->where('inventory_stock_id', $id)
-            ->get();
+        return $this->stockDetailsByType(1)->where('inventory_stock_id', $id)->sum('quantity');
+    }
 
-        return $stockDetail;
+    public function getStockInQuantities()
+    {
+        return $this->sumQuantityPerInventoryStock($this->stockDetailsByType(0));
+    }
+
+    public function getStockOutQuantities()
+    {
+        return $this->sumQuantityPerInventoryStock($this->stockDetailsByType(1));
+    }
+
+    private function stockDetailsByType($stockType)
+    {
+        return StockDetail::whereHas('stock', function ($query) use ($stockType) {
+            $query->where('stock_type', $stockType);
+        });
+    }
+
+    private function sumQuantityPerInventoryStock($query)
+    {
+        return $query->groupBy('inventory_stock_id')
+            ->selectRaw('inventory_stock_id, SUM(quantity) as total')
+            ->pluck('total', 'inventory_stock_id');
     }
 }

@@ -21,7 +21,7 @@ class PurchaseUomController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 'get-ingredient-success',
-            'message' => 'Get ingredient success.',
+            'message' => 'Berhasil mengambil data bahan.',
             'data' => [
                 'ingredient' => $ingredient
             ]

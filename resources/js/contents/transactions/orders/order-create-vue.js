@@ -1,10 +1,16 @@
 Vue.component("date-picker", VueBootstrapDatetimePicker);
+
+// Local date as YYYY-MM-DD (toISOString() is UTC, which is still yesterday before 07:00 WIB)
+function today() {
+    return moment().format("YYYY-MM-DD");
+}
+
 var app = new Vue({
     el: "#app",
     delimiters: ["{>", "<}"],
     data: {
         indexDetail: 0,
-        date: new Date().toISOString().slice(0, 10),
+        date: today(),
         name: "",
         address: "",
         phone: "",

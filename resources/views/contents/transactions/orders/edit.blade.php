@@ -35,8 +35,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="date">Tanggal Pesanan</label>
-                                                <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                                    id="date" name="date" v-model="date">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control @error('date') is-invalid @enderror js-datepicker"
+                                                    id="date" name="date" :value="date | displayDate" data-vue-model="date" autocomplete="off" placeholder="DD-MM-YYYY">
+                                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                                </div>
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -66,7 +69,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="notes">Notes</label>
+                                                <label for="notes">Catatan</label>
                                                 <textarea class="form-control" id="notes" name="notes" v-model="notes"
                                                     rows="3"></textarea>
                                                 @error('notes')
@@ -88,7 +91,7 @@
                                                         <th>Harga</th>
                                                         <th>Total</th>
                                                         <th>Total Tambahan</th>
-                                                        <th>Notes</th>
+                                                        <th>Catatan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -113,8 +116,11 @@
                                                             </input-currency>
                                                         </td>
                                                         <td>
-                                                            <input-currency type="text" class="form-control"
-                                                                v-model="data.price" disabled></input-currency>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rp</span>
+                                                                <input-currency type="text" class="form-control"
+                                                                    v-model="data.price" disabled></input-currency>
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <input-currency type="text" class="form-control"
@@ -147,7 +153,7 @@
                                         <div class="col-12 d-flex justify-content-end mt-3">
                                             <table>
                                                 <tr>
-                                                    <td style="width: 150px"><b>Grand Total</b></td>
+                                                    <td style="width: 150px"><b>Total Keseluruhan</b></td>
                                                     <td style="width: 50px"><b>:</b></td>
                                                     <td style="width: 150px; text-align: right" id="grandTotal"
                                                         name="grandTotal">Rp. {> calculateGrandTotal | numberFormat <} </td>
@@ -227,7 +233,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                 </div>
             </div>

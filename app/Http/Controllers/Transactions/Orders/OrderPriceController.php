@@ -25,7 +25,7 @@ class OrderPriceController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'code' => 'get-price-success',
-                    'message' => 'Get price success.',
+                    'message' => 'Berhasil mengambil harga.',
                     'data' => [
                         'price' => $price->price
                     ]
@@ -35,7 +35,7 @@ class OrderPriceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'code' => 'get-price-failed',
-                'message' => 'Get price failed.',
+                'message' => 'Gagal mengambil harga.',
                 'data' => []
             ], 200);
         } catch (Exception $exception) {
@@ -43,7 +43,7 @@ class OrderPriceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'code' => 'get-price-failed',
-                'message' => 'Get price success.',
+                'message' => 'Berhasil mengambil harga.',
                 'data' => []
             ], 500);
         }

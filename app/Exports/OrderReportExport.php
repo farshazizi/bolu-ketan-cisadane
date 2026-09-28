@@ -2,71 +2,35 @@
 
 namespace App\Exports;
 
+use App\Exports\Concerns\AppliesTableBorders;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\AfterSheet;
 
 class OrderReportExport implements FromView, WithEvents
 {
-    protected $dataOrderReport;
+    use AppliesTableBorders;
 
-    public function __construct($dataOrderReport)
+    protected $report;
+
+    public function __construct($report)
     {
-        $this->dataOrderReport = $dataOrderReport;
+        $this->report = $report;
     }
 
     public function registerEvents(): array
     {
-        // Set initial value
-        $alphabet = config('properties.alphabet');
+        // Title + two header rows, one row per order, then the "Jumlah" footer
+        $lastRow = 3 + count($this->report['orders']) + 1;
 
-        // Set variable and initial value
-        $orders = $this->dataOrderReport['orders'];
-        $inventoryStocks = $this->dataOrderReport['inventoryStocks'];
-        $numberOfStaticColumnOrder = 2;
-
-        // Calculate end of column order
-        $totalInventoryStocks = count($inventoryStocks);
-        $totalColumnOrder = ($numberOfStaticColumnOrder + $totalInventoryStocks) - 1;
-        $endOfColumnOrder = $alphabet[$totalColumnOrder];
-
-        $startColumnOrder = $alphabet[0];
-        $endColumnOrder = $endOfColumnOrder;
-        $startRowHeaderOrder = 1;
-        $startRowContentOrder = 3;
-        $cellInitialSale = $startColumnOrder . $startRowHeaderOrder . ':' . $endColumnOrder;
-
-        $dataLengthOrder = count($orders);
-        $endRowOrder = ($startRowContentOrder + $dataLengthOrder) + 1;
-        $cellRangeOrder = $cellInitialSale . $endRowOrder;
-
-        return [
-            AfterSheet::class => function (AfterSheet $event) use ($cellRangeOrder) {
-                $event->getSheet()->getDelegate()->getStyle($cellRangeOrder)->applyFromArray(
-                    [
-                        'borders' => [
-                            'allBorders' => [
-                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                'color' => ['argb' => '000000'],
-                            ]
-                        ]
-                    ]
-                );
-            }
-        ];
+        // Columns: No, order name, one per inventory stock
+        return $this->bordersEvent([
+            $this->tableRange(1, $lastRow, 2 + count($this->report['inventoryStocks'])),
+        ]);
     }
 
     public function view(): View
     {
-        $inventoryStocks = $this->dataOrderReport['inventoryStocks'];
-        $orders = $this->dataOrderReport['orders'];
-        $totalOrders = $this->dataOrderReport['totalOrders'];
-
-        return view('contents.exports.order-report', [
-            'inventoryStocks' => $inventoryStocks,
-            'orders' => $orders,
-            'totalOrders' => $totalOrders,
-        ]);
+        return view('contents.exports.order-report', $this->report);
     }
 }
