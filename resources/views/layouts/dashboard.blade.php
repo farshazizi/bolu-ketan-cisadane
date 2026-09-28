@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Saldo harian</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $dailyBalance }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $dailyBalance }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Pembelian per hari</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $grandTotalPurchase }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalPurchase }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="font-semibold text-muted">Penjualan per hari</h6>
-                                        <h6 class="mb-0 font-extrabold">{{ $grandTotalSale }}</h6>
+                                        <h6 class="mb-0 font-extrabold">Rp {{ $grandTotalSale }}</h6>
                                     </div>
                                 </div>
                             </div>
