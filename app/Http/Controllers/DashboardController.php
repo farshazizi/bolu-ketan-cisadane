@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
 use Carbon\Carbon;
-use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
 {

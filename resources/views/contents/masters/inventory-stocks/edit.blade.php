@@ -81,7 +81,8 @@
                                                 <label for="icon">Icon</label>
                                                 <input type="file"
                                                     class="form-control @error('icon') is-invalid @enderror" id="icon"
-                                                    name="icon" accept="image/*">
+                                                    name="icon" accept="image/png">
+                                                <small class="text-muted">Format PNG, maksimal 2MB.</small>
                                                 @error('icon')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
